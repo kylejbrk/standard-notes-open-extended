@@ -4,7 +4,7 @@
         "main": "dist/index.html"
     },
     "index": {
-        "id": "org.standardnotes.bold-editor",
+        "identifier": "org.standardnotes.bold-editor",
         "name": "Bold Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",

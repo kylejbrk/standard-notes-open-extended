@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "org.standardnotes.theme-focus",
+        "identifier": "org.standardnotes.theme-focus",
         "name": "Focus",
         "content_type": "SN|Theme",
         "area": "themes",

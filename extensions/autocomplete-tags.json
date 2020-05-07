@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.autocomplete-tags",
+        "identifier": "org.standardnotes.autocomplete-tags",
         "name": "Quick Tags",
         "content_type": "SN|Component",
         "area": "note-tags",

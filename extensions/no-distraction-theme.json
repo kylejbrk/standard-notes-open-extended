@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "org.standardnotes.theme-no-distraction",
+        "identifier": "org.standardnotes.theme-no-distraction",
         "name": "No Distraction",
         "content_type": "SN|Theme",
         "area": "themes",

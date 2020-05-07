@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.vim-editor",
+        "identifier": "org.standardnotes.vim-editor",
         "name": "Vim Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",

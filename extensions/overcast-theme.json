@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "com.ceiphr.overcast",
+        "identifier": "com.ceiphr.overcast",
         "name": "Overcast",
         "content_type": "SN|Theme",
         "area": "themes",

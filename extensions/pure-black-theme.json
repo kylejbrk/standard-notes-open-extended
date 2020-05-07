@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "io.github.christianhans.sn-pure-black-theme",
+        "identifier": "io.github.christianhans.sn-pure-black-theme",
         "name": "Pure Black",
         "content_type": "SN|Theme",
         "area": "themes",

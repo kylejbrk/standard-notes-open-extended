@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.github-push",
+        "identifier": "org.standardnotes.github-push",
         "name": "GitHub Push",
         "content_type": "SN|Component",
         "area": "editor-stack",

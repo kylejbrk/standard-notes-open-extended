@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "org.standardnotes.theme-futura",
+        "identifier": "org.standardnotes.theme-futura",
         "name": "Futura",
         "content_type": "SN|Theme",
         "area": "themes",

@@ -4,7 +4,7 @@
         "main": "dist/index.html"
     },
     "index": {
-        "id": "org.standardnotes.simple-task-editor",
+        "identifier": "org.standardnotes.simple-task-editor",
         "name": "Simple Task Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",

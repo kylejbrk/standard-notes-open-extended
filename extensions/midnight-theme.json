@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "org.standardnotes.theme-midnight",
+        "identifier": "org.standardnotes.theme-midnight",
         "name": "Midnight",
         "content_type": "SN|Theme",
         "area": "themes",

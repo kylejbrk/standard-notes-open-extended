@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "org.standardnotes.theme-titanium",
+        "identifier": "org.standardnotes.theme-titanium",
         "name": "Titanium",
         "content_type": "SN|Theme",
         "area": "themes",

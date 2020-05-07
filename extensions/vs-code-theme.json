@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "io.github.hyphone.sn-theme-vscode",
+        "identifier": "io.github.hyphone.sn-theme-vscode",
         "name": "VS Code Theme",
         "content_type": "SN|Theme",
         "area": "themes",

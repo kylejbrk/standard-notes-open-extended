@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "org.standardnotes.theme-solarized-dark",
+        "identifier": "org.standardnotes.theme-solarized-dark",
         "name": "Solarized Dark",
         "content_type": "SN|Theme",
         "area": "themes",

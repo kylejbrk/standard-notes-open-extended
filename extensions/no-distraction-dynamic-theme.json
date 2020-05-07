@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "com.iganesh.theme-no-distraction-dynamic",
+        "identifier": "com.iganesh.theme-no-distraction-dynamic",
         "name": "No Distraction (Dynamic)",
         "layerable": true,
         "content_type": "SN|Theme",

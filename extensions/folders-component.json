@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.folders-component",
+        "identifier": "org.standardnotes.folders-component",
         "name": "Folders Component",
         "content_type": "SN|Component",
         "area": "tags-list",

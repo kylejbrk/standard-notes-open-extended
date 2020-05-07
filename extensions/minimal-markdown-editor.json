@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.minimal-markdown-editor",
+        "identifier": "org.standardnotes.minimal-markdown-editor",
         "name": "Minimal Markdown Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",

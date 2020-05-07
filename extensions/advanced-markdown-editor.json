@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.advanced-markdown-editor",
+        "identifier": "org.standardnotes.advanced-markdown-editor",
         "name": "Advanced Markdown Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",

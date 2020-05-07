@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "org.standardnotes.theme-dynamic",
+        "identifier": "org.standardnotes.theme-dynamic",
         "name": "Dynamic",
         "layerable": true,
         "content_type": "SN|Theme",

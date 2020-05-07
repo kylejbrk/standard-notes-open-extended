@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.fancy-markdown-editor",
+        "identifier": "org.standardnotes.fancy-markdown-editor",
         "name": "Math Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",

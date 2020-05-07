@@ -4,7 +4,7 @@
         "main": "dist/index.html"
     },
     "index": {
-        "id": "org.standardnotes.simple-markdown-editor",
+        "identifier": "org.standardnotes.simple-markdown-editor",
         "name": "Simple Markdown Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",

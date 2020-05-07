@@ -4,7 +4,7 @@
         "main": "dist/dist.css"
     },
     "index": {
-        "id": "dev.cldn.sn-theme-dracula",
+        "identifier": "dev.cldn.sn-theme-dracula",
         "name": "Dracula",
         "content_type": "SN|Theme",
         "area": "themes",

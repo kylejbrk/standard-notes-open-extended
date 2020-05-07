@@ -4,7 +4,7 @@
         "main": "dist/index.html"
     },
     "index": {
-        "id": "org.standardnotes.standard-sheets",
+        "identifier": "org.standardnotes.standard-sheets",
         "name": "Secure Spreadsheets",
         "content_type": "SN|Component",
         "area": "editor-editor",

@@ -4,7 +4,7 @@
         "main": "dist/index.html"
     },
     "index": {
-        "id": "org.standardnotes.mfa-link",
+        "identifier": "org.standardnotes.mfa-link",
         "name": "2FA Manager",
         "content_type": "SN|Component",
         "area": "modal",

@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.code-editor",
+        "identifier": "org.standardnotes.code-editor",
         "name": "Code Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",

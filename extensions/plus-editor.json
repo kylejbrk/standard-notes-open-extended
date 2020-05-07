@@ -4,7 +4,7 @@
         "main": "index.html"
     },
     "index": {
-        "id": "org.standardnotes.plus-editor",
+        "identifier": "org.standardnotes.plus-editor",
         "name": "Plus Editor",
         "content_type": "SN|Component",
         "area": "editor-editor",
