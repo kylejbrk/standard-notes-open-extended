@@ -1,0 +1,16 @@
+{
+    "meta": {
+        "github": "sn-extensions/minimal-markdown-editor",
+        "main": "index.html"
+    },
+    "index": {
+        "id": "org.standardnotes.minimal-markdown-editor",
+        "name": "Minimal Markdown Editor",
+        "content_type": "SN|Component",
+        "area": "editor-editor",
+        "marketing_url": "https://standardnotes.org/extensions/minimal-markdown-editor",
+        "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/min-markdown.jpg",
+        "description": "A minimal Markdown editor with live rendering and in-text search via Ctrl/Cmd + F",
+        "flags": []
+    }
+}

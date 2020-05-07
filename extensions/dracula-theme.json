@@ -1,0 +1,22 @@
+{
+    "meta": {
+        "github": "cameronldn/sn-theme-dracula",
+        "main": "dist/dist.css"
+    },
+    "index": {
+        "id": "dev.cldn.sn-theme-dracula",
+        "name": "Dracula",
+        "content_type": "SN|Theme",
+        "area": "themes",
+        "marketing_url": "https://github.com/cameronldn/sn-theme-dracula",
+        "thumbnail_url": "https://raw.githubusercontent.com/cameronldn/sn-theme-dracula/master/preview.png",
+        "description": "A Dracula inspired theme for Standard Notes.",
+        "statusBar": "dark-content",
+        "dock_icon": {
+            "type": "circle",
+            "background_color": "#8be9fd",
+            "foreground_color": "#8be9fd",
+            "border_color": "#8be9fd"
+        }
+    }
+}

@@ -1,0 +1,15 @@
+{
+    "meta": {
+        "github": "sn-extensions/math-editor",
+        "main": "index.html"
+    },
+    "index": {
+        "id": "org.standardnotes.fancy-markdown-editor",
+        "name": "Math Editor",
+        "content_type": "SN|Component",
+        "area": "editor-editor",
+        "marketing_url": "https://standardnotes.org/extensions/math-editor",
+        "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/fancy-markdown.jpg",
+        "description": "A beautiful split-pane Markdown editor with synced-scroll and LaTeX support. When LaTeX is detected, makes external render network request."
+    }
+}

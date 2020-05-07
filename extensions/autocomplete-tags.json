@@ -1,0 +1,14 @@
+{
+    "meta": {
+        "github": "sn-extensions/autocomplete-tags",
+        "main": "index.html"
+    },
+    "index": {
+        "id": "org.standardnotes.autocomplete-tags",
+        "name": "Quick Tags",
+        "content_type": "SN|Component",
+        "area": "note-tags",
+        "description": "Work more efficiently by quickly selecting from a live list of tags while you type. Supports keyboard shortcuts and folders.",
+        "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/autocomplete.jpg"
+    }
+}

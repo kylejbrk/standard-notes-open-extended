@@ -1,0 +1,16 @@
+{
+    "meta": {
+        "github": "sn-extensions/secure-spreadsheets",
+        "main": "dist/index.html"
+    },
+    "index": {
+        "id": "org.standardnotes.standard-sheets",
+        "name": "Secure Spreadsheets",
+        "content_type": "SN|Component",
+        "area": "editor-editor",
+        "marketing_url": null,
+        "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/spreadsheets.png",
+        "description": "A powerful spreadsheet editor with formatting and formula support. Not recommended for large data sets, as encryption of such data may decrease editor performance.",
+        "flags": []
+    }
+}

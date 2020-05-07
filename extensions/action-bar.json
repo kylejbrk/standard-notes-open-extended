@@ -1,0 +1,16 @@
+{
+    "meta": {
+        "github": "sn-extensions/action-bar",
+        "main": "index.html"
+    },
+    "index": {
+        "id": "org.standardnotes.action-bar",
+        "name": "Action Bar",
+        "content_type": "SN|Component",
+        "area": "editor-stack",
+        "marketing_url": "https://standardnotes.org/extensions/action-bar",
+        "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/action-bar.jpg",
+        "description": "Useful utility bar with information about the current note as well as actions like duplicate, copy, and save.",
+        "flags": []
+    }
+}
