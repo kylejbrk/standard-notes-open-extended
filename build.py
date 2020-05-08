@@ -9,8 +9,7 @@ def main():
     ext_dir = 'extensions'
     public_dir = 'public'
 
-    if not os.path.exists(public_dir):
-        os.makedirs(public_dir)
+    os.makedirs(public_dir, exist_ok=True)
 
     github_session = create_session(os.environ['GITHUB_USER'], os.environ['GITHUB_TOKEN'])
     domain = os.environ['DOMAIN']
@@ -44,19 +43,27 @@ def main():
         with open(os.path.join(output_dir, 'index.json'), 'w') as f:
             json.dump(index, f, indent=4)
 
+        print('Extension: {:34s} {:6s}\t(created)'.format(index['name'], version))
 
-def get_zip_contents(session, url, dir):
+
+def get_zip_contents(session, url, output_dir):
     resp = session.get(url)
     data = BytesIO(resp.content) 
     
     with ZipFile(data) as zip_file:
-        for file in zip_file.namelist():
-            filename = '/'.join(file.split('/')[1:]) # Parse files list excluding the top/parent/root directory
+        for member in zip_file.namelist():
+            filename = '/'.join(member.split('/')[1:])
 
-            if filename == '' or filename.startswith('.'):
-                continue #  Ignore dot file and top level directory 
+            if filename.endswith('/') or not filename: # Ignore dot file and directories
+                continue 
             
-            zip_file.extract(filename, dir)
+            content = zip_file.read(member)
+            output_path = os.path.join(output_dir, filename)
+            
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
+            with open(output_path, 'wb') as f:
+                f.write(content)
             
 def create_session(user, token):
     session = requests.Session()
