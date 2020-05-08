@@ -1,0 +1,11 @@
+{
+    "area": "modal",
+    "content_type": "SN|Component",
+    "description": "Configure two-factor authentication to add an extra level of security to your account.",
+    "identifier": "org.standardnotes.mfa-link",
+    "name": "2FA Manager",
+    "version": "1.2.2",
+    "download_url": "https://api.github.com/repos/sn-extensions/mfa-link/zipball/1.2.2",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/mfa-link.yaml/1.2.2/dist/index.html",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/mfa-link.yaml/index.json"
+}

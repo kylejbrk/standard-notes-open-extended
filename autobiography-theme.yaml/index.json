@@ -1,0 +1,18 @@
+{
+    "area": "themes",
+    "content_type": "SN|Theme",
+    "description": "A theme for writers and readers.",
+    "dock_icon": {
+        "background_color": "#9D7441",
+        "border_color": "#9D7441",
+        "foreground_color": "#ECE4DB",
+        "type": "circle"
+    },
+    "identifier": "org.standardnotes.theme-autobiography",
+    "name": "Autobiography",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/autobiography.jpg",
+    "version": "1.0.0",
+    "download_url": "https://api.github.com/repos/sn-extensions/autobiography-theme/zipball/1.0.0",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/autobiography-theme.yaml/1.0.0/dist/dist.css",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/autobiography-theme.yaml/index.json"
+}

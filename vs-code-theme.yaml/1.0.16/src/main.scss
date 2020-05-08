@@ -1,0 +1,179 @@
+:root {
+  --background-1: #252526;
+  --background-2: #1e1e1e;
+  --foreground-color: #D4D4D4;
+  // --border-color: #3d3e3d;
+  --border-color: var(--background-1);
+  --highlight-color: #0b4a73;
+  --highlight-contrast: #083c5a;
+
+  --selected: rgba(123, 167, 138, .99);  // fix too dark selection by chrome
+  --selected-dark: #314136;
+
+  --field-color: #3c3c3c;
+
+  --sn-stylekit-info-color: #7ba78a;
+  --sn-stylekit-info-contrast-color: #25412f;
+
+  --sn-stylekit-neutral-color: #bea18a;
+  --sn-stylekit-neutral-contrast-color: #e7ddd2;
+
+  --sn-stylekit-success-color: #6ab785;
+  --sn-stylekit-success-contrast-color: #25412f;
+
+  --sn-stylekit-warning-color: #ddbc8a;
+  --sn-stylekit-warning-contrast-color: #504432;
+
+  --sn-stylekit-danger-color: #e6507f;
+  --sn-stylekit-danger-contrast-color: #3a1420;
+
+  --sn-stylekit-shadow-color: var(--background-2);
+
+  --sn-stylekit-background-color: var(--background-1);
+  --sn-stylekit-foreground-color: var(--foreground-color);
+  --sn-stylekit-border-color: var(--border-color);
+
+  --sn-stylekit-paragraph-text-color: var(--foreground-color);
+
+  --sn-stylekit-contrast-background-color: var(--background-2);
+  --sn-stylekit-contrast-foreground-color: var(--foreground-color);
+  --sn-stylekit-contrast-border-color: var(--border-color);
+
+  --sn-stylekit-secondary-background-color: var(--background-1);
+  --sn-stylekit-secondary-foreground-color: var(--foreground-color);
+  --sn-stylekit-secondary-border-color: var(--border-color);
+
+  --sn-stylekit-secondary-contrast-background-color: var(--background-2);
+  --sn-stylekit-secondary-contrast-foreground-color: var(--foreground-color);
+  --sn-stylekit-secondary-contrast-border-color: var(--border-color);
+
+  --sn-stylekit-editor-background-color: var(--background-2);
+  --sn-stylekit-editor-foreground-color: var(--sn-stylekit-foreground-color);
+
+  --sn-stylekit-scrollbar-track-border-color: var(--border-color);
+  --sn-stylekit-scrollbar-thumb-color: var(--field-color);
+
+  --sn-desktop-titlebar-bg-color: var(--background-1);
+  --sn-desktop-titlebar-border-color: var(--border-color);
+  --sn-desktop-titlebar-ui-color: var(--foreground-color);
+  --sn-desktop-titlebar-ui-hover-color: var(--highlight-color);
+}
+
+#notes-column .note.selected, .notes .note.selected {
+  background-color: #37373d;
+  color: var(--sn-stylekit-contrast-foreground-color);
+}
+
+.sn-component .sk-button.info, .sn-component .info.sk-box, .sn-component .sk-box.info, .sn-component .sk-circle.info{
+  background-color: var(--sn-stylekit-foreground-color);
+}
+
+#notes-column .note progress[value]::-webkit-progress-value, .notes .note progress[value]::-webkit-progress-value{
+  background-color: var(--selected-dark);
+}
+#notes-column .note.selected progress[value]::-webkit-progress-value, .notes .note.selected progress[value]::-webkit-progress-value{
+  background-color: var(--sn-stylekit-info-color);
+}
+
+#editor,
+.redactor-box.redactor-styles-on .redactor-toolbar,
+.CodeMirror,
+.editor-content, #editor-content,
+#plus-editor .note-editor.fullscreen,
+#plus-editor .note-editor,
+#plus-editor .panel-default > .panel-heading,
+#plus-editor .note-editor.note-frame.fullscreen .note-editable, #plus-editor .note-editor.note-frame.fullscreen .panel-body{
+  background-color: var(--background-2);
+}
+
+.editor-toolbar button,
+.sn-component .sk-button.sk-secondary-contrast, .sn-component .sk-secondary-contrast.sk-box, .sn-component .sk-box.sk-secondary-contrast, .sn-component .sk-circle.sk-secondary-contrast,
+.sn-component .sk-button.sk-secondary-contrast:before, .sn-component .sk-secondary-contrast.sk-box:before, .sn-component .sk-box.sk-secondary-contrast:before, .sn-component .sk-circle.sk-secondary-contrast:before,
+.sn-component .sk-button.contrast, .sn-component .contrast.sk-box, .sn-component .sk-box.contrast, .sn-component .sk-circle.contrast,
+.sn-component .sk-button.contrast:before, .sn-component .contrast.sk-box:before, .sn-component .sk-box.contrast:before, .sn-component .sk-circle.contrast:before{
+  color: var(--foreground-color);
+}
+.editor-toolbar button,
+.editor-toolbar button i{
+  color: var(--foreground-color) !important;
+}
+
+#notes-column .filter-section .filter-bar, .notes .filter-section .filter-bar,
+.tags .tag:hover:not(.selected), .tags .tag.selected,
+.sn-component .sk-menu-panel .sk-menu-panel-row:hover,
+.sn-component .sk-button.sk-secondary-contrast, .sn-component .sk-secondary-contrast.sk-box, .sn-component .sk-box.sk-secondary-contrast, .sn-component .sk-circle.sk-secondary-contrast,
+.sn-component .sk-button.sk-secondary-contrast:before, .sn-component .sk-secondary-contrast.sk-box:before, .sn-component .sk-box.sk-secondary-contrast:before, .sn-component .sk-circle.sk-secondary-contrast:before,
+.sn-component .sk-button.contrast, .sn-component .contrast.sk-box, .sn-component .sk-box.contrast, .sn-component .sk-circle.contrast,
+.sn-component .sk-button.contrast:before, .sn-component .contrast.sk-box:before, .sn-component .sk-box.contrast:before, .sn-component .sk-circle.contrast:before,
+.create-task-input,
+.task .checkmark{
+  background-color: var(--field-color);
+}
+
+#editor-title-bar > .title > .input{
+  color: var(--foreground-color);
+}
+#editor-title-bar > .title > .input:focus,
+input:focus,
+textarea:focus,
+.task textarea.task-input-textarea:focus,
+.task .checkbox-container input:focus+.checkmark{
+  background-color: var(--field-color);
+}
+#editor-title-bar > .title > .input::selection,
+input::selection, textarea::selection,
+*::selection{
+  background: var(--selected) !important;
+  color: var(--background-2) !important;
+}
+
+.redactor-modal button.redactor-button-unstyled{
+  color: var(--sn-stylekit-contrast-foreground-color) !important;
+}
+
+.redactor-modal button.redactor-button-danger{
+  color: var(--sn-stylekit-danger-color) !important;
+  background-color: var(--sn-stylekit-danger-contrast-color) !important;
+}
+
+.task{
+  margin-bottom: 15px;
+
+  .checkmark{
+    height: 30px;
+    width: 30px;
+    margin: 0;
+    top: 0;
+    border: none;
+
+    &:after{
+      left: 9px;
+      top: 1px;
+      width: 10px;
+      height: 20px;
+      border-width: 0 2px 2px 0;
+    }
+  }
+  
+  .checkbox-container{
+    width: 45px;
+    padding: 0;
+    margin: 0;
+  }
+
+  textarea.task-input-textarea{
+    height: 30px !important;
+    padding: 0 6px;
+    line-height: 30px;
+  }
+}
+.task-section a{
+  font-size: 12px;
+}
+#completed-tasks{
+  margin-bottom: 10px;
+}
+.create-task-input{
+  padding: 0 6px;
+  width: calc(100% - 12px);
+}
