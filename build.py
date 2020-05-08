@@ -1,5 +1,6 @@
 import requests
 import json
+import yaml
 import os
 from urllib.parse import urljoin
 from io import BytesIO
@@ -95,9 +96,9 @@ def get_latest(repo, session):
 
 def extract_config(fp):
     with open(fp, 'r') as f:
-        json_txt = json.load(f)
+        yml_txt = yaml.load(f, Loader=yaml.FullLoader)
 
-    return json_txt['meta'], json_txt['index']
+    return yml_txt['meta'], yml_txt['index']
 
 if __name__ == '__main__':
     main()

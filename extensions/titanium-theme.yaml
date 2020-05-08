@@ -1,0 +1,16 @@
+index:
+  area: themes
+  content_type: SN|Theme
+  description: Light on the eyes, heavy on the spirit.
+  dock_icon:
+    background_color: '#6e2b9e'
+    border_color: '#6e2b9e'
+    foreground_color: '#ffffff'
+    type: circle
+  identifier: org.standardnotes.theme-titanium
+  marketing_url: https://standardnotes.org/extensions/titanium
+  name: Titanium
+  thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/themes/titanium-with-mobile.jpg
+meta:
+  github: sn-extensions/titanium-theme
+  main: dist/dist.css

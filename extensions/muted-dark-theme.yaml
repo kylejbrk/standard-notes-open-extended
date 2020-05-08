@@ -1,0 +1,11 @@
+index:
+  area: themes
+  content_type: SN|Theme
+  description: A dark theme with muted colors for Standard Notes
+  identifier: io.github.ntran.sn-theme-muteddark
+  marketing_url: https://github.com/ntran/sn-theme-muteddark
+  name: Muted Dark
+  thumbnail_url: https://raw.githubusercontent.com/ntran/sn-theme-muteddark/master/thumbnail.png
+meta:
+  github: ntran/sn-theme-muteddark
+  main: dist/dist.css
