@@ -11,7 +11,7 @@ def main():
 
     os.makedirs(public_dir, exist_ok=True)
 
-    github_session = create_session(os.environ['GITHUB_USER'], os.environ['GITHUB_TOKEN'])
+    github_session = create_session(os.environ['GH_USER'], os.environ['GH_TOKEN'])
     domain = os.environ['DOMAIN']
 
     for file in os.listdir(ext_dir):
