@@ -37,6 +37,17 @@ def main():
 
         print('Extension: {:34s} {:6s}\t(created)'.format(index['name'], version))
 
+    with open(os.path.join(public_dir, 'index.json'), 'w') as f:
+        json.dump(
+            {
+                'content_type': 'SN|Repo',
+                'valid_until': '2030-05-16T18:35:33.000Z',
+                'packages': 'extensions',
+            },
+            f,
+            indent=4,
+        )
+
 def create_urls(domain, ext_name, version, main):
     url = urljoin(
         domain, 
