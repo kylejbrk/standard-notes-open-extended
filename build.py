@@ -24,15 +24,7 @@ def main():
         output_dir = os.path.join(public_dir, ext_name)
         get_zip_contents(github_session, download_url, os.path.join(output_dir, version))
 
-        url = urljoin(
-            domain, 
-            '/'.join([ext_name, version, meta['main']])
-        )
-        latest_url = urljoin(
-            domain, 
-            '/'.join([ext_name, 'index.json'])
-        )
-
+        url, latest_url = create_urls(domain, ext_name, version, meta['main'])
         index.update({
             'version': version,
             'download_url': download_url,
@@ -45,6 +37,17 @@ def main():
 
         print('Extension: {:34s} {:6s}\t(created)'.format(index['name'], version))
 
+def create_urls(domain, ext_name, version, main):
+    url = urljoin(
+        domain, 
+        '/'.join([ext_name, version, main])
+    )
+    latest_url = urljoin(
+        domain, 
+        '/'.join([ext_name, 'index.json'])
+    )
+
+    return url, latest_url
 
 def get_zip_contents(session, url, output_dir):
     resp = session.get(url)
