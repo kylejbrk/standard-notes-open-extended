@@ -1,5 +1,8 @@
 name: Build and Deploy
-on: [push]
+on: 
+  push
+  schedule:
+      - cron: '0 0 * * *' # Once per day at midnight
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
