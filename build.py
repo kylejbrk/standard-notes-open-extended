@@ -41,15 +41,7 @@ def main():
         print('Extension: {:34s} {:6s}\t(created)'.format(index['name'], version))
 
     with open(os.path.join(public_dir, 'index.json'), 'w') as f:
-        json.dump(
-            {
-                'content_type': 'SN|Repo',
-                'valid_until': '2030-05-16T18:35:33.000Z',
-                'packages': packages,
-            },
-            f,
-            indent=4,
-        )
+        json.dump({'content_type': 'SN|Repo', 'packages': packages,}, f, indent=4)
 
 def create_urls(domain, ext_name, version, main):
     url = urljoin(
@@ -71,7 +63,7 @@ def get_zip_contents(session, url, output_dir):
         for member in zip_file.namelist():
             filename = '/'.join(member.split('/')[1:])
 
-            if filename.endswith('/') or not filename: # Ignore dot file and directories
+            if filename.endswith('/') or not filename:
                 continue 
             
             content = zip_file.read(member)
