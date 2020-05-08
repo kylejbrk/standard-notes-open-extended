@@ -1,0 +1,19 @@
+{
+    "identifier": "io.github.christianhans.sn-pure-black-theme",
+    "name": "Pure Black",
+    "content_type": "SN|Theme",
+    "area": "themes",
+    "marketing_url": "https://github.com/christianhans/sn-pure-black-theme",
+    "thumbnail_url": "https://raw.githubusercontent.com/christianhans/sn-pure-black-theme/master/preview1.png",
+    "description": "Theme optimized for Optimized for OLED devices such as iPhone X.",
+    "dock_icon": {
+        "type": "circle",
+        "background_color": "#000000",
+        "foreground_color\"": "#000000",
+        "border_color": "#000000"
+    },
+    "version": "1.0.9",
+    "download_url": "https://api.github.com/repos/christianhans/sn-pure-black-theme/zipball/1.0.9",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/pure-black-theme/1.0.9/dist/dist.css",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/pure-black-theme/index.json"
+}

@@ -1,0 +1,15 @@
+{
+    "identifier": "org.standardnotes.token-vault",
+    "name": "TokenVault",
+    "content_type": "SN|Component",
+    "area": "editor-editor",
+    "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
+    "description": "Encrypt and protect your 2FA secrets for all your internet accounts. TokenVault handles your 2FA secrets so that you never lose them again, or have to start over when you get a new device.",
+    "flags": [
+        "Beta"
+    ],
+    "version": "1.0.5",
+    "download_url": "https://api.github.com/repos/sn-extensions/token-vault/zipball/1.0.5",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/token-vault/1.0.5/dist/index.html",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/token-vault/index.json"
+}

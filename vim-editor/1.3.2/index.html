@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_blank">
+    <meta charset="UTF-8">
+    <script src="dist/dist.js"></script>
+    <link rel="stylesheet" media="all" href="dist/dist.css">
+
+    <script src="dist/vendor/vim.js"></script>
+
+    <script>
+      CodeMirror.modeURL = "dist/vendor/modes/%N/%N.js";
+    </script>
+
+  </head>
+
+  <body onload="setKeyMap('vim')">
+    <div id="wrapper">
+      <textarea id="code" name="code"></textarea>
+    <div>
+
+    <div id="select-wrapper">
+      <span id="language-label">Language:</span>
+      <select id="select" onchange="onLanguageSelect(event)"></select>
+      <span id="default-label" onclick="setDefaultLanguage(event)">Set as Default</span>
+      <span id="default-message" class="shown"></span>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,13 @@
+{
+    "identifier": "io.github.ntran.sn-theme-muteddark",
+    "name": "Muted Dark",
+    "content_type": "SN|Theme",
+    "area": "themes",
+    "marketing_url": "https://github.com/ntran/sn-theme-muteddark",
+    "thumbnail_url": "https://raw.githubusercontent.com/ntran/sn-theme-muteddark/master/thumbnail.png",
+    "description": "A dark theme with muted colors for Standard Notes",
+    "version": "1.0.8",
+    "download_url": "https://api.github.com/repos/ntran/sn-theme-muteddark/zipball/1.0.8",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/muted-dark-theme/1.0.8/dist/dist.css",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/muted-dark-theme/index.json"
+}

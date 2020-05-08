@@ -1,0 +1,14 @@
+{
+    "identifier": "org.standardnotes.advanced-markdown-editor",
+    "name": "Advanced Markdown Editor",
+    "content_type": "SN|Component",
+    "area": "editor-editor",
+    "marketing_url": "https://standardnotes.org/extensions/advanced-markdown",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/adv-markdown.jpg",
+    "description": "A fully featured Markdown editor that supports live preview, a styling toolbar, and split pane support.",
+    "flags": [],
+    "version": "1.3.7",
+    "download_url": "https://api.github.com/repos/standardnotes/advanced-markdown-editor/zipball/1.3.7",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/advanced-markdown-editor/1.3.7/index.html",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/advanced-markdown-editor/index.json"
+}

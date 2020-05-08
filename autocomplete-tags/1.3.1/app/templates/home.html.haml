@@ -1,0 +1,13 @@
+.flex-container
+  %input{"type" => "text", "placeholder" => "Add tags...", "ng-model" => "formData.input",
+  "ng-change" => "tagsInputChange($event)", "ng-keyup" => "$event.keyCode == 13 && onEnter()"}
+
+  .associates
+    .associate{"ng-repeat" => "tag in activeTags", "ng-click" => "removeActiveTag(tag)"}
+      .circle
+      .title {{tag.content.title}}
+
+.results{"ng-if" => "formData.showAutocomplete"}
+  .result{"ng-repeat" => "tag in results", "ng-click" => "selectTag(tag)", "ng-mouseover" => "highlightTag(tag)", "ng-class" => "{'highlighted' : highlightedTag == tag}"}
+    .circle
+    .title {{tag.content.title}}

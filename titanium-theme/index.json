@@ -1,0 +1,19 @@
+{
+    "identifier": "org.standardnotes.theme-titanium",
+    "name": "Titanium",
+    "content_type": "SN|Theme",
+    "area": "themes",
+    "marketing_url": "https://standardnotes.org/extensions/titanium",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/titanium-with-mobile.jpg",
+    "description": "Light on the eyes, heavy on the spirit.",
+    "dock_icon": {
+        "type": "circle",
+        "background_color": "#6e2b9e",
+        "foreground_color": "#ffffff",
+        "border_color": "#6e2b9e"
+    },
+    "version": "1.2.2",
+    "download_url": "https://api.github.com/repos/sn-extensions/titanium-theme/zipball/1.2.2",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/titanium-theme/1.2.2/dist/dist.css",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/titanium-theme/index.json"
+}

@@ -1,0 +1,13 @@
+<div ng-if='tag'>
+<div class='self' draggable='true' drop='onDrop' is-draggable='!tag.master' ng-class='{&#39;selected&#39; : tag.selected}' ng-click='selectTag()' tag-id='tag.uuid'>
+<div class='info'>
+<div class='circle' ng-class='circleClassForTag(tag)'></div>
+<div class='title'>
+{{tag.displayTitle}}
+</div>
+</div>
+</div>
+<div ng-repeat='child in tag.children'>
+<div change-parent='changeParent()' class='tag-tree' on-select='onSelect()' tag='child'></div>
+</div>
+</div>

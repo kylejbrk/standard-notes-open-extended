@@ -1,0 +1,19 @@
+{
+    "identifier": "org.standardnotes.theme-futura",
+    "name": "Futura",
+    "content_type": "SN|Theme",
+    "area": "themes",
+    "marketing_url": "https://standardnotes.org/extensions/futura",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/futura-with-mobile.jpg",
+    "description": "Calm and relaxed. Take some time off.",
+    "dock_icon": {
+        "type": "circle",
+        "background_color": "#fca429",
+        "foreground_color": "#ffffff",
+        "border_color": "#fca429"
+    },
+    "version": "1.2.2",
+    "download_url": "https://api.github.com/repos/sn-extensions/futura-theme/zipball/1.2.2",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/futura-theme/1.2.2/dist/dist.css",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/futura-theme/index.json"
+}
