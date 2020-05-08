@@ -1,5 +1,475 @@
 {
     "content_type": "SN|Repo",
     "valid_until": "2030-05-16T18:35:33.000Z",
-    "packages": "extensions"
+    "packages": [
+        {
+            "identifier": "org.standardnotes.theme-solarized-dark",
+            "name": "Solarized Dark",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://standardnotes.org/extensions/solarized-dark",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
+            "description": "The perfect theme for any time.",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#2AA198",
+                "foreground_color": "#ffffff",
+                "border_color": "#2AA198"
+            },
+            "version": "1.2.1",
+            "download_url": "https://api.github.com/repos/sn-extensions/solarized-dark-theme/zipball/1.2.1",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/solarized-dark-theme/1.2.1/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/solarized-dark-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.theme-no-distraction",
+            "name": "No Distraction",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "layerable": true,
+            "marketing_url": "https://standardnotes.org/extensions/no-distraction",
+            "description": "A theme for focusing on your writing.",
+            "dock_icon": {
+                "type": "svg",
+                "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path d=\"M424 64H88c-26.6 0-48 21.6-48 48v288c0 26.4 21.4 48 48 48h336c26.4 0 48-21.6 48-48V112c0-26.4-21.4-48-48-48zm0 336H88V176h336v224z\"/></svg>"
+            },
+            "version": "1.2.2",
+            "download_url": "https://api.github.com/repos/sn-extensions/no-distraction-theme/zipball/1.2.2",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-theme/1.2.2/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-theme/index.json"
+        },
+        {
+            "identifier": "io.github.ntran.sn-theme-muteddark",
+            "name": "Muted Dark",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://github.com/ntran/sn-theme-muteddark",
+            "thumbnail_url": "https://raw.githubusercontent.com/ntran/sn-theme-muteddark/master/thumbnail.png",
+            "description": "A dark theme with muted colors for Standard Notes",
+            "version": "1.0.8",
+            "download_url": "https://api.github.com/repos/ntran/sn-theme-muteddark/zipball/1.0.8",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/muted-dark-theme/1.0.8/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/muted-dark-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.minimal-markdown-editor",
+            "name": "Minimal Markdown Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": "https://standardnotes.org/extensions/minimal-markdown-editor",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/min-markdown.jpg",
+            "description": "A minimal Markdown editor with live rendering and in-text search via Ctrl/Cmd + F",
+            "flags": [],
+            "version": "1.3.4",
+            "download_url": "https://api.github.com/repos/sn-extensions/minimal-markdown-editor/zipball/1.3.4",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/minimal-markdown-editor/1.3.4/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/minimal-markdown-editor/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.theme-autobiography",
+            "name": "Autobiography",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/autobiography.jpg",
+            "description": "A theme for writers and readers.",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#9D7441",
+                "foreground_color": "#ECE4DB",
+                "border_color": "#9D7441"
+            },
+            "version": "1.0.0",
+            "download_url": "https://api.github.com/repos/sn-extensions/autobiography-theme/zipball/1.0.0",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/autobiography-theme/1.0.0/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/autobiography-theme/index.json"
+        },
+        {
+            "identifier": "com.iganesh.theme-no-distraction-dynamic",
+            "name": "No Distraction (Dynamic)",
+            "layerable": true,
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://standardnotes.org/extensions/dynamic",
+            "description": "A smart theme that minimizes the tags and notes panels when they are not in use.",
+            "dock_icon": {
+                "type": "svg",
+                "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\"><path d=\"M15.093 6.694h0.92v2.862l3.987-4.024-3.988-4.025v2.387h-0.92c-3.694 0-5.776 2.738-7.614 5.152-1.652 2.172-3.080 4.049-5.386 4.049h-2.092v2.799h2.093c3.694 0 5.776-2.736 7.614-5.152 1.652-2.173 3.080-4.048 5.386-4.048zM5.41 8.458c0.158-0.203 0.316-0.412 0.477-0.623 0.39-0.514 0.804-1.055 1.252-1.596-1.322-1.234-2.915-2.144-5.046-2.144h-2.093v2.799h2.093c1.327 0 2.362 0.623 3.317 1.564zM16.012 13.294h-0.92c-1.407 0-2.487-0.701-3.491-1.738-0.1 0.131-0.201 0.264-0.303 0.397-0.441 0.58-0.915 1.201-1.439 1.818 1.356 1.324 3 2.324 5.232 2.324h0.92v2.398l3.989-4.025-3.988-4.025v2.851z\"></path></svg>"
+            },
+            "version": "1.0.0",
+            "download_url": "https://api.github.com/repos/iganeshk/sn-theme-no-distraction-dynamic/zipball/1.0.0",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-dynamic-theme/1.0.0/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-dynamic-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.advanced-markdown-editor",
+            "name": "Advanced Markdown Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": "https://standardnotes.org/extensions/advanced-markdown",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/adv-markdown.jpg",
+            "description": "A fully featured Markdown editor that supports live preview, a styling toolbar, and split pane support.",
+            "flags": [],
+            "version": "1.3.7",
+            "download_url": "https://api.github.com/repos/standardnotes/advanced-markdown-editor/zipball/1.3.7",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/advanced-markdown-editor/1.3.7/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/advanced-markdown-editor/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.theme-focus",
+            "name": "Focus",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://standardnotes.org/extensions/focused",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/focus-with-mobile.jpg",
+            "description": "For when you need to go in.",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#a464c2",
+                "foreground_color": "#ffffff",
+                "border_color": "#a464c2"
+            },
+            "version": "1.2.3",
+            "download_url": "https://api.github.com/repos/sn-extensions/focus-theme/zipball/1.2.3",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/focus-theme/1.2.3/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/focus-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.theme-futura",
+            "name": "Futura",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://standardnotes.org/extensions/futura",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/futura-with-mobile.jpg",
+            "description": "Calm and relaxed. Take some time off.",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#fca429",
+                "foreground_color": "#ffffff",
+                "border_color": "#fca429"
+            },
+            "version": "1.2.2",
+            "download_url": "https://api.github.com/repos/sn-extensions/futura-theme/zipball/1.2.2",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/futura-theme/1.2.2/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/futura-theme/index.json"
+        },
+        {
+            "identifier": "dev.cldn.sn-theme-dracula",
+            "name": "Dracula",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://github.com/cameronldn/sn-theme-dracula",
+            "thumbnail_url": "https://raw.githubusercontent.com/cameronldn/sn-theme-dracula/master/preview.png",
+            "description": "A Dracula inspired theme for Standard Notes.",
+            "statusBar": "dark-content",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#8be9fd",
+                "foreground_color": "#8be9fd",
+                "border_color": "#8be9fd"
+            },
+            "version": "1.2.1",
+            "download_url": "https://api.github.com/repos/cameronldn/sn-theme-dracula/zipball/1.2.1",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/dracula-theme/1.2.1/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/dracula-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.simple-task-editor",
+            "name": "Simple Task Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": "https://standardnotes.org/extensions/simple-task-editor",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/task-editor.jpg",
+            "description": "A great way to manage short-term and long-term to-do's. You can mark tasks as completed, change their order, and edit the text naturally in place.",
+            "flags": [],
+            "version": "1.3.5",
+            "download_url": "https://api.github.com/repos/sn-extensions/simple-task-editor/zipball/1.3.5",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/simple-task-editor/1.3.5/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/simple-task-editor/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.bold-editor",
+            "name": "Bold Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": null,
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/bold.jpg",
+            "description": "A simple and peaceful rich editor that helps you write and think clearly. Features FileSafe integration, so you can embed your encrypted images, videos, and audio recordings directly inline.",
+            "flags": [],
+            "version": "1.0.5",
+            "download_url": "https://api.github.com/repos/standardnotes/bold-editor/zipball/1.0.5",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/bold-editor/1.0.5/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/bold-editor/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.mfa-link",
+            "name": "2FA Manager",
+            "content_type": "SN|Component",
+            "area": "modal",
+            "description": "Configure two-factor authentication to add an extra level of security to your account.",
+            "version": "1.2.2",
+            "download_url": "https://api.github.com/repos/sn-extensions/mfa-link/zipball/1.2.2",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/mfa-link/1.2.2/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/mfa-link/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.plus-editor",
+            "name": "Plus Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": "https://standardnotes.org/extensions/plus-editor",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/plus-editor.jpg",
+            "description": "From highlighting to custom font sizes and colors, to tables and lists, this editor is perfect for crafting any document.",
+            "flags": [],
+            "version": "1.4.0",
+            "download_url": "https://api.github.com/repos/sn-extensions/plus-editor/zipball/1.4.0",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/plus-editor/1.4.0/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/plus-editor/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.autocomplete-tags",
+            "name": "Quick Tags",
+            "content_type": "SN|Component",
+            "area": "note-tags",
+            "description": "Work more efficiently by quickly selecting from a live list of tags while you type. Supports keyboard shortcuts and folders.",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/autocomplete.jpg",
+            "version": "1.3.1",
+            "download_url": "https://api.github.com/repos/sn-extensions/autocomplete-tags/zipball/1.3.1",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/autocomplete-tags/1.3.1/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/autocomplete-tags/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.simple-markdown-editor",
+            "name": "Simple Markdown Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": "https://standardnotes.org/extensions/simple-markdown-editor",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/simple-markdown.jpg",
+            "description": "A Markdown editor with dynamic split-pane preview.",
+            "flags": [],
+            "version": "1.3.6",
+            "download_url": "https://api.github.com/repos/sn-extensions/markdown-basic/zipball/1.3.6",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/markdown-basic/1.3.6/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/markdown-basic/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.vim-editor",
+            "name": "Vim Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": "https://standardnotes.org/extensions/vim-editor",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/vim.jpg",
+            "description": "A code editor with Vim key bindings.",
+            "flags": [],
+            "version": "1.3.2",
+            "download_url": "https://api.github.com/repos/sn-extensions/vim-editor/zipball/1.3.2",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/vim-editor/1.3.2/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/vim-editor/index.json"
+        },
+        {
+            "identifier": "io.github.hyphone.sn-theme-vscode",
+            "name": "VS Code Theme",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://github.com/hyphone/sn-theme-vscode",
+            "thumbnail_url": "https://github.com/hyphone/sn-theme-vscode/raw/master/screenshot.png",
+            "description": "A theme for Standard Notes inspired by the VS Code Dark theme.",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#252526",
+                "foreground_color": "#D4D4D4",
+                "border_color": "#7ba78a"
+            },
+            "version": "1.0.16",
+            "download_url": "https://api.github.com/repos/hyphone/sn-theme-vscode/zipball/1.0.16",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/vs-code-theme/1.0.16/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/vs-code-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.github-push",
+            "name": "GitHub Push",
+            "content_type": "SN|Component",
+            "area": "editor-stack",
+            "marketing_url": "https://standardnotes.org/extensions/github-push",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/github-push.jpg",
+            "description": "Push note changes to a public or private GitHub repository, with options for file extension and commit message.",
+            "version": "1.2.1",
+            "download_url": "https://api.github.com/repos/sn-extensions/github-push/zipball/1.2.1",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/github-push/1.2.1/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/github-push/index.json"
+        },
+        {
+            "identifier": "io.github.christianhans.sn-pure-black-theme",
+            "name": "Pure Black",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://github.com/christianhans/sn-pure-black-theme",
+            "thumbnail_url": "https://raw.githubusercontent.com/christianhans/sn-pure-black-theme/master/preview1.png",
+            "description": "Theme optimized for Optimized for OLED devices such as iPhone X.",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#000000",
+                "foreground_color\"": "#000000",
+                "border_color": "#000000"
+            },
+            "version": "1.0.9",
+            "download_url": "https://api.github.com/repos/christianhans/sn-pure-black-theme/zipball/1.0.9",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/pure-black-theme/1.0.9/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/pure-black-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.fancy-markdown-editor",
+            "name": "Math Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": "https://standardnotes.org/extensions/math-editor",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/fancy-markdown.jpg",
+            "description": "A beautiful split-pane Markdown editor with synced-scroll and LaTeX support. When LaTeX is detected, makes external render network request.",
+            "version": "1.3.4",
+            "download_url": "https://api.github.com/repos/sn-extensions/math-editor/zipball/1.3.4",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/math-editor/1.3.4/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/math-editor/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.code-editor",
+            "name": "Code Editor",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": "https://standardnotes.org/extensions/code-editor",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/code.jpg",
+            "description": "Syntax highlighting and convenient keyboard shortcuts for over 120 programming languages. Ideal for code snippets and procedures.",
+            "version": "1.3.3",
+            "download_url": "https://api.github.com/repos/sn-extensions/code-editor/zipball/1.3.3",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/code-editor/1.3.3/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/code-editor/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.theme-dynamic",
+            "name": "Dynamic",
+            "layerable": true,
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://standardnotes.org/extensions/dynamic",
+            "description": "A smart theme that minimizes the tags and notes panels when they are not in use.",
+            "dock_icon": {
+                "type": "svg",
+                "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\"><path d=\"M15.093 6.694h0.92v2.862l3.987-4.024-3.988-4.025v2.387h-0.92c-3.694 0-5.776 2.738-7.614 5.152-1.652 2.172-3.080 4.049-5.386 4.049h-2.092v2.799h2.093c3.694 0 5.776-2.736 7.614-5.152 1.652-2.173 3.080-4.048 5.386-4.048zM5.41 8.458c0.158-0.203 0.316-0.412 0.477-0.623 0.39-0.514 0.804-1.055 1.252-1.596-1.322-1.234-2.915-2.144-5.046-2.144h-2.093v2.799h2.093c1.327 0 2.362 0.623 3.317 1.564zM16.012 13.294h-0.92c-1.407 0-2.487-0.701-3.491-1.738-0.1 0.131-0.201 0.264-0.303 0.397-0.441 0.58-0.915 1.201-1.439 1.818 1.356 1.324 3 2.324 5.232 2.324h0.92v2.398l3.989-4.025-3.988-4.025v2.851z\"></path></svg>"
+            },
+            "version": "1.0.0",
+            "download_url": "https://api.github.com/repos/sn-extensions/dynamic-theme/zipball/1.0.0",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/dynamic-theme/1.0.0/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/dynamic-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.action-bar",
+            "name": "Action Bar",
+            "content_type": "SN|Component",
+            "area": "editor-stack",
+            "marketing_url": "https://standardnotes.org/extensions/action-bar",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/action-bar.jpg",
+            "description": "Useful utility bar with information about the current note as well as actions like duplicate, copy, and save.",
+            "flags": [],
+            "version": "1.3.0",
+            "download_url": "https://api.github.com/repos/sn-extensions/action-bar/zipball/1.3.0",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/action-bar/1.3.0/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/action-bar/index.json"
+        },
+        {
+            "identifier": "com.ceiphr.overcast",
+            "name": "Overcast",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "description": "Overcast to become cloudy or dark \u2014 just like this theme.",
+            "marketing_url": "https://github.com/ceiphr/sn-overcast-theme",
+            "thumbnail_url": "https://i.imgur.com/KDnyBGx.png",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#039be5",
+                "foreground_color": "#19181a",
+                "border_color": "#039be5"
+            },
+            "version": "v1.1.3",
+            "download_url": "https://api.github.com/repos/ceiphr/sn-overcast-theme/zipball/v1.1.3",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/overcast-theme/v1.1.3/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/overcast-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.theme-midnight",
+            "name": "Midnight",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://standardnotes.org/extensions/midnight",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/midnight-with-mobile.jpg",
+            "description": "Elegant utilitarianism.",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#086DD6",
+                "foreground_color": "#ffffff",
+                "border_color": "#086DD6"
+            },
+            "version": "1.2.1",
+            "download_url": "https://api.github.com/repos/sn-extensions/midnight-theme/zipball/1.2.1",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/midnight-theme/1.2.1/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/midnight-theme/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.token-vault",
+            "name": "TokenVault",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
+            "description": "Encrypt and protect your 2FA secrets for all your internet accounts. TokenVault handles your 2FA secrets so that you never lose them again, or have to start over when you get a new device.",
+            "flags": [
+                "Beta"
+            ],
+            "version": "1.0.5",
+            "download_url": "https://api.github.com/repos/sn-extensions/token-vault/zipball/1.0.5",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/token-vault/1.0.5/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/token-vault/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.standard-sheets",
+            "name": "Secure Spreadsheets",
+            "content_type": "SN|Component",
+            "area": "editor-editor",
+            "marketing_url": null,
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/spreadsheets.png",
+            "description": "A powerful spreadsheet editor with formatting and formula support. Not recommended for large data sets, as encryption of such data may decrease editor performance.",
+            "flags": [],
+            "version": "1.3.3",
+            "download_url": "https://api.github.com/repos/sn-extensions/secure-spreadsheets/zipball/1.3.3",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/secure-spreadsheets/1.3.3/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/secure-spreadsheets/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.folders-component",
+            "name": "Folders Component",
+            "content_type": "SN|Component",
+            "area": "tags-list",
+            "description": "Create nested folders from your tags with easy drag and drop. Folders also supports Smart Tags, which allow you to build custom filters for viewing your notes.",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/folders.jpg",
+            "version": "1.3.3",
+            "download_url": "https://api.github.com/repos/standardnotes/folders-component/zipball/1.3.3",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/folders-component/1.3.3/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/folders-component/index.json"
+        },
+        {
+            "identifier": "org.standardnotes.theme-titanium",
+            "name": "Titanium",
+            "content_type": "SN|Theme",
+            "area": "themes",
+            "marketing_url": "https://standardnotes.org/extensions/titanium",
+            "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/titanium-with-mobile.jpg",
+            "description": "Light on the eyes, heavy on the spirit.",
+            "dock_icon": {
+                "type": "circle",
+                "background_color": "#6e2b9e",
+                "foreground_color": "#ffffff",
+                "border_color": "#6e2b9e"
+            },
+            "version": "1.2.2",
+            "download_url": "https://api.github.com/repos/sn-extensions/titanium-theme/zipball/1.2.2",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/titanium-theme/1.2.2/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/titanium-theme/index.json"
+        }
+    ]
 }
