@@ -14,6 +14,7 @@ def main():
     github_session = create_session(os.environ['GH_USER'], os.environ['GH_TOKEN'])
     domain = os.environ['DOMAIN']
 
+    packages = []
     for file in os.listdir(ext_dir):
         fp = os.path.join(ext_dir,file)
         meta, index = extract_config(fp)
@@ -31,6 +32,7 @@ def main():
             'url': url,
             "latest_url": latest_url
         })
+        packages.append(index)
 
         with open(os.path.join(output_dir, 'index.json'), 'w') as f:
             json.dump(index, f, indent=4)
@@ -42,7 +44,7 @@ def main():
             {
                 'content_type': 'SN|Repo',
                 'valid_until': '2030-05-16T18:35:33.000Z',
-                'packages': 'extensions',
+                'packages': packages,
             },
             f,
             indent=4,
