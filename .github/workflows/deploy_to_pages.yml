@@ -17,6 +17,8 @@ jobs:
           export GH_USER=${{ secrets.GH_USER }}
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
           export DOMAIN=${{ secrets.DOMAIN }}
+
+          pip3 install -r requirements.txt
           python3  build.py
 
       - name: Deploy 🚀
