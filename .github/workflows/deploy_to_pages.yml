@@ -18,6 +18,7 @@ jobs:
           export GH_TOKEN=${{ secrets.GH_TOKEN }}
           export DOMAIN=${{ secrets.DOMAIN }}
 
+          sudo apt-get install python3-setuptools
           pip3 install -r requirements.txt
           python3  build.py
 
