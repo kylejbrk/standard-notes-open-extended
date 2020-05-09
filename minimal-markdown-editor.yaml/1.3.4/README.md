@@ -1,1 +1,0 @@
-# Minimal Markdown Editor
