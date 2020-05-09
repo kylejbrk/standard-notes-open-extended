@@ -1,15 +1,15 @@
 {
-    "identifier": "org.standardnotes.theme-no-distraction",
-    "name": "No Distraction",
-    "content_type": "SN|Theme",
     "area": "themes",
-    "layerable": true,
-    "marketing_url": "https://standardnotes.org/extensions/no-distraction",
+    "content_type": "SN|Theme",
     "description": "A theme for focusing on your writing.",
     "dock_icon": {
-        "type": "svg",
-        "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path d=\"M424 64H88c-26.6 0-48 21.6-48 48v288c0 26.4 21.4 48 48 48h336c26.4 0 48-21.6 48-48V112c0-26.4-21.4-48-48-48zm0 336H88V176h336v224z\"/></svg>"
+        "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path d=\"M424 64H88c-26.6 0-48 21.6-48 48v288c0 26.4 21.4 48 48 48h336c26.4 0 48-21.6 48-48V112c0-26.4-21.4-48-48-48zm0 336H88V176h336v224z\"/></svg>",
+        "type": "svg"
     },
+    "identifier": "org.standardnotes.theme-no-distraction",
+    "layerable": true,
+    "marketing_url": "https://standardnotes.org/extensions/no-distraction",
+    "name": "No Distraction",
     "version": "1.2.2",
     "download_url": "https://api.github.com/repos/sn-extensions/no-distraction-theme/zipball/1.2.2",
     "url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-theme/1.2.2/dist/dist.css",

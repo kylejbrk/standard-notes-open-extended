@@ -1,17 +1,17 @@
 {
-    "identifier": "org.standardnotes.theme-solarized-dark",
-    "name": "Solarized Dark",
-    "content_type": "SN|Theme",
     "area": "themes",
-    "marketing_url": "https://standardnotes.org/extensions/solarized-dark",
-    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
+    "content_type": "SN|Theme",
     "description": "The perfect theme for any time.",
     "dock_icon": {
-        "type": "circle",
         "background_color": "#2AA198",
+        "border_color": "#2AA198",
         "foreground_color": "#ffffff",
-        "border_color": "#2AA198"
+        "type": "circle"
     },
+    "identifier": "org.standardnotes.theme-solarized-dark",
+    "marketing_url": "https://standardnotes.org/extensions/solarized-dark",
+    "name": "Solarized Dark",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
     "version": "1.2.1",
     "download_url": "https://api.github.com/repos/sn-extensions/solarized-dark-theme/zipball/1.2.1",
     "url": "https://kylejbrk.github.io/standard-notes-open-extended/solarized-dark-theme/1.2.1/dist/dist.css",
