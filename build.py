@@ -12,8 +12,8 @@ def main():
 
     os.makedirs(build_dir, exist_ok=True)
 
-    github_session = create_session(os.environ['GH_USER'], os.environ['GH_TOKEN'])
-    domain = os.environ['DOMAIN']
+    github_session = create_session(os.environ['GITHUB_TOKEN'])
+    domain = create_domain(os.environ['GITHUB_REPOSITORY'])
 
     packages = []
     for file in os.listdir(ext_dir):
@@ -46,6 +46,12 @@ def main():
     
     print("\nResults: {:22s}{} extensions {}".format("", len(packages), get_stats(packages)))
     print("Repository Endpoint URL: {:6s}{}".format("", urljoin(domain, 'index.json')))
+
+def create_domain(repo):
+    user = repo.split('/')[0]
+    name = repo.split('/')[1]
+
+    return 'https://{}.github.io/{}/'.format(user, name)
 
 def get_stats(packages):
     stats = {}
@@ -90,9 +96,9 @@ def get_zip_contents(session, url, output_dir):
             with open(output_path, 'wb') as f:
                 f.write(content)
             
-def create_session(user, token):
+def create_session(token):
     session = requests.Session()
-    session.auth = (user, token)
+    session.headers.update({'Authorization': 'token ' + token})
 
     return session
 

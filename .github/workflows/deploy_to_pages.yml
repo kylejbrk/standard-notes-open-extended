@@ -16,10 +16,6 @@ jobs:
 
       - name: Install and Build 🔧
         run: |
-          export GH_USER=${{ secrets.GH_USER }}
-          export GH_TOKEN=${{ secrets.GH_TOKEN }}
-          export DOMAIN=${{ secrets.DOMAIN }}
-
           sudo apt-get install python3-setuptools
           pip3 install -r requirements.txt
           python3  build.py
@@ -27,7 +23,7 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
-          ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}
+          ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: build # The folder the action should deploy.
           CLEAN: True # Removes any files that are not currently in the current deployment.
