@@ -8,9 +8,9 @@ from zipfile import ZipFile
 
 def main():
     ext_dir = 'extensions'
-    public_dir = 'public'
+    build_dir = 'build'
 
-    os.makedirs(public_dir, exist_ok=True)
+    os.makedirs(build_dir, exist_ok=True)
 
     github_session = create_session(os.environ['GH_USER'], os.environ['GH_TOKEN'])
     domain = os.environ['DOMAIN']
@@ -21,9 +21,9 @@ def main():
         meta, index = extract_config(fp)
 
         version, download_url = get_latest(meta['github'], github_session)
-        ext_name = file.replace('.json', '')
+        ext_name = file.replace('.yaml', '')
 
-        output_dir = os.path.join(public_dir, ext_name)
+        output_dir = os.path.join(build_dir, ext_name)
         get_zip_contents(github_session, download_url, os.path.join(output_dir, version))
 
         url, latest_url = create_urls(domain, ext_name, version, meta['main'])
@@ -40,7 +40,8 @@ def main():
 
         print('Extension: {:34s} {:6s}\t(created)'.format(index['name'], version))
 
-    with open(os.path.join(public_dir, 'index.json'), 'w') as f:
+    # TODO: sort packages by type/name
+    with open(os.path.join(build_dir, 'index.json'), 'w') as f:
         json.dump({'content_type': 'SN|Repo', 'packages': packages,}, f, indent=4)
 
 def create_urls(domain, ext_name, version, main):
