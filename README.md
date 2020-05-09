@@ -1,4 +1,6 @@
-# Standard Notes Open Extended ![Build and Deploy](https://github.com/kylejbrk/standard-notes-open-extended/workflows/Build%20and%20Deploy/badge.svg)
+# Standard Notes Open Extended 
+![Build and Deploy](https://github.com/kylejbrk/standard-notes-open-extended/workflows/Build%20and%20Deploy/badge.svg)
+
 A Free Open Source Standard Notes Extensions Repository Hosted via Github Pages.
 
 # Use 
