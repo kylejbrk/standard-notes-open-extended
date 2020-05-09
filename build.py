@@ -23,9 +23,11 @@ def main():
         version, download_url = get_latest(meta['github'], github_session)
         ext_name = file.replace('.yaml', '')
 
+        # Get source from github releases 
         output_dir = os.path.join(build_dir, ext_name)
         get_zip_contents(github_session, download_url, os.path.join(output_dir, version))
 
+        # Build index.json
         url, latest_url = create_urls(domain, ext_name, version, meta['main'])
         index.update({'version': version, 'download_url': download_url, 'url': url, 'latest_url': latest_url})
         packages.append(index)
@@ -33,14 +35,29 @@ def main():
         with open(os.path.join(output_dir, 'index.json'), 'w') as f:
             json.dump(index, f, indent=4)
 
-        print('Extension: {:34s} {:6s}\t(created)'.format(index['name'], version))
+        print('{:36} {:16} {:10}\t(created)'.format(index['name'], index['content_type'] , version))
 
-    # TODO: sort packages by type/name
+    # Sort packages by content/name
+    packages.sort(key=lambda k: k['name'])
+    packages.sort(key=lambda k: k['content_type'])
+
     with open(os.path.join(build_dir, 'index.json'), 'w') as f:
         json.dump({'content_type': 'SN|Repo', 'packages': packages,}, f, indent=4)
     
-    print('{} extensions created'.format(len(packages)))
-    print('Pushing build files to {}'.format(urljoin(domain, 'index.json')))
+    print("\nResults: {:22s}{} extensions {}".format("", len(packages), get_stats(packages)))
+    print("Repository Endpoint URL: {:6s}{}".format("", urljoin(domain, 'index.json')))
+
+def get_stats(packages):
+    stats = {}
+    for package in packages:
+        content = package['content_type']
+
+        if content in stats:
+            stats[content] += 1
+        else:
+            stats[content] = 1
+    
+    return stats
 
 def create_urls(domain, ext_name, version, main):
     url = urljoin(
