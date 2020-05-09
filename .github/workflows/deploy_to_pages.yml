@@ -1,6 +1,8 @@
 name: Build and Deploy
 on: 
   push:
+    branches:
+      - master
   schedule:
       - cron: '0 0 * * *' # Once per day at midnight
 jobs:
@@ -28,3 +30,4 @@ jobs:
           ACCESS_TOKEN: ${{ secrets.GH_TOKEN }}
           BRANCH: gh-pages # The branch the action should deploy to.
           FOLDER: build # The folder the action should deploy.
+          CLEAN: True # Removes any files that are not currently in the current deployment.

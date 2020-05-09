@@ -27,12 +27,7 @@ def main():
         get_zip_contents(github_session, download_url, os.path.join(output_dir, version))
 
         url, latest_url = create_urls(domain, ext_name, version, meta['main'])
-        index.update({
-            'version': version,
-            'download_url': download_url,
-            'url': url,
-            "latest_url": latest_url
-        })
+        index.update({'version': version, 'download_url': download_url, 'url': url, 'latest_url': latest_url})
         packages.append(index)
 
         with open(os.path.join(output_dir, 'index.json'), 'w') as f:
@@ -43,6 +38,9 @@ def main():
     # TODO: sort packages by type/name
     with open(os.path.join(build_dir, 'index.json'), 'w') as f:
         json.dump({'content_type': 'SN|Repo', 'packages': packages,}, f, indent=4)
+    
+    print('{} extensions created'.format(len(packages)))
+    print('Pushing build files to {}'.format(urljoin(domain, 'index.json')))
 
 def create_urls(domain, ext_name, version, main):
     url = urljoin(
