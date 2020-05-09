@@ -15,6 +15,9 @@ jobs:
           persist-credentials: false
 
       - name: Install and Build 🔧
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ secrets.GITHUB_REPOSITORY }}
         run: |
           sudo apt-get install python3-setuptools
           pip3 install -r requirements.txt
