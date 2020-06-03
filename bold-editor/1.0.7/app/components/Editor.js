@@ -19,13 +19,8 @@ export default class Editor extends React.Component {
   }
 
   configureEditorKit() {
-    // EditorKit is a wrapper on top of the component manager to make it easier to build editors
-    // As such, it very general and does not know how the functions are implemented, just that they are needed 
-    // It is up to the Bold Editor wrapper to implement these important functions
-
     let delegate = new EditorKitDelegate({
       insertRawText: (rawText) => {
-        // Used to insert Filesafe file descriptor syntax
         this.redactor.insertion.insertHtml(rawText);
       },
       preprocessElement: (element) => {
@@ -75,18 +70,8 @@ export default class Editor extends React.Component {
         return this.redactor.editor.getElement().find(selector).nodes;
       },
       getCurrentLineText: () => {
-        // Returns the text content of the node where the cursor currently is. Typically a paragraph if no formatter, otherwise the closest formatted element
+        // Returns the node where the cursor currently is. Typically a paragraph if no formatter, otherwise the closest formatted element
         let node = this.redactor.selection.getCurrent();
-
-        // If the node is a figure, remove the <figure> tag and return the child nodes
-        // This is to allow for saving of images, videos, audio when loading Filesafe elements
-        if (node.nodeName === "FIGURE") {
-          let inserted = node.innerHTML;
-          node.remove();
-          this.redactor.insertion.insertHtml(inserted);
-          return inserted;
-        }
-        
         return node.textContent;
       },
       getPreviousLineText: () => {
@@ -129,23 +114,8 @@ export default class Editor extends React.Component {
         $R('#editor', 'module.buffer.clear');
       },
       setEditorRawText: (rawText) => {
-        // Get the current caret location
-        let caretLocation = this.redactor.selection.getPosition();
-        let point = {clientX: caretLocation.left, clientY: caretLocation.top};
-
         let cleaned = this.redactor.cleaner.input(rawText);
         $R('#editor', 'source.setCode', cleaned);
-
-        // Place caret at saved location, insert custom marker node to avoid inserting newlines
-        let marker = this.redactor.insertion.insertToPoint(point, "<marker>");
-
-        this.redactor.caret.setAfter(marker[0]);
-
-        for (let i = 0; i < marker.length; i++){
-          // Immediately remove the custom marker node
-          // If for whatever reason there is more than one marker, remove them all
-          marker[i].remove();
-        }        
       }
     });
 
@@ -208,6 +178,8 @@ export default class Editor extends React.Component {
       });
     });
 
+    // "Set the focus to the editor layer to the end of the content."
+    // Doesn't seem to currently work, focuses at the beginning.
     this.redactor.editor.endFocus();
   }
 
@@ -218,7 +190,7 @@ export default class Editor extends React.Component {
       return;
     }
     for(let file of files) {
-      // Observers in EditorKitInternal.js will handle successful upload
+      // Observers will handle successful upload
       this.editorKit.uploadJSFileObject(file).then((descriptor) => {
         if(!descriptor || !descriptor.uuid) {
           // alert("File failed to upload. Please try again");
