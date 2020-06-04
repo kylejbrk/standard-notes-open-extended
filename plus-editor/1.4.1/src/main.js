@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     // summernote.change
     $('#summernote').on('summernote.change', function(we, contents, $editable) {
+      $('.note-editable *').attr("dir", "auto");
       if(!ignoreTextChange) {
         save();
       }

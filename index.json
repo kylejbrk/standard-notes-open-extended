@@ -63,7 +63,7 @@
             "name": "Code Editor",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/code.jpg",
             "version": "1.3.3",
-            "download_url": "https://api.github.com/repos/sn-extensions/code-editor/zipball/1.3.3",
+            "download_url": "https://api.github.com/repos/standardnotes/code-editor/zipball/1.3.3",
             "url": "https://kylejbrk.github.io/standard-notes-open-extended/code-editor/1.3.3/index.html",
             "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/code-editor/index.json"
         },
@@ -128,9 +128,9 @@
             "marketing_url": "https://standardnotes.org/extensions/plus-editor",
             "name": "Plus Editor",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/plus-editor.jpg",
-            "version": "1.4.0",
-            "download_url": "https://api.github.com/repos/standardnotes/plus-editor/zipball/1.4.0",
-            "url": "https://kylejbrk.github.io/standard-notes-open-extended/plus-editor/1.4.0/index.html",
+            "version": "1.4.1",
+            "download_url": "https://api.github.com/repos/standardnotes/plus-editor/zipball/1.4.1",
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/plus-editor/1.4.1/index.html",
             "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/plus-editor/index.json"
         },
         {

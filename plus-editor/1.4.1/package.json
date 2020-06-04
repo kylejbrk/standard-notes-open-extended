@@ -1,6 +1,6 @@
 {
   "name": "sn-plus-editor",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "",
   "main": "dist/dist.js",
   "author": "Standard Notes <hello@standardnotes.org>",
