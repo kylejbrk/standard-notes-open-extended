@@ -66,7 +66,8 @@ module.exports = function(grunt) {
         src: [
           'node_modules/codemirror/lib/codemirror.js',
           'node_modules/sn-components-api/dist/dist.js',
-          'vendor/*.js'
+          'vendor/*.js',
+          'vendor/addon/mode/*.js'
         ],
         dest: 'dist/lib.js',
       },
@@ -88,7 +89,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: false, src: ['vendor/modes/**/*'], dest: 'dist/', filter: 'isFile'}
+          {expand: false, src: ['vendor/modes/**/*', 'vendor/addon/mode/*'], dest: 'dist/', filter: 'isFile'}
         ]
       }
     }

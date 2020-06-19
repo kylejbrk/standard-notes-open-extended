@@ -85,6 +85,7 @@ body, html {
     border: 1px solid var(--sn-stylekit-border-color);
     padding: 20px;
     border-radius: 3px;
+    overflow-x: auto;
   }
 
   table {
