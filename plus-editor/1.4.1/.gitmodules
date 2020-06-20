@@ -1,3 +1,0 @@
-[submodule "vendor/summernote"]
-	path = vendor/summernote
-	url = git@github.com:mobitar/summernote.git

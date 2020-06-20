@@ -66,7 +66,7 @@ module.exports = function(grunt) {
         src: [
           'node_modules/jquery/dist/jquery.min.js',
           'node_modules/bootstrap/dist/js/bootstrap.min.js',
-          'vendor/summernote/dist/summernote.min.js',
+          'node_modules/summernote/dist/summernote.min.js',
           'node_modules/sn-components-api/dist/dist.js',
           'vendor/modes/markdown/markdown.js'
         ],
@@ -90,8 +90,8 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, flatten: true, src: ['vendor/summernote/dist/font/**/*'], dest: 'dist/font/', filter: 'isFile'},
-          {expand: true, flatten: true, src: ['vendor/summernote/dist/summernote.css'], dest: 'dist/', filter: 'isFile'}
+          {expand: true, flatten: true, src: ['node_modules/summernote/dist/font/**/*'], dest: 'dist/font/', filter: 'isFile'},
+          {expand: true, flatten: true, src: ['node_modules/summernote/dist/summernote.css'], dest: 'dist/', filter: 'isFile'}
         ]
       }
     }
