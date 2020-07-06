@@ -15,7 +15,11 @@ This theme is based off of Standard Notes' official [Midnight Theme](https://git
 
 ## Preview
 
-![Standard Notes Screenshot](https://cdn.ceiphr.io/standardnotes/overcast/sn-overcast-theme-screenshot.png)
+&nbsp;
+
+![Standard Notes Screenshot](https://i.imgur.com/KDnyBGx.png)
+
+&nbsp;
 
 ## License
 
