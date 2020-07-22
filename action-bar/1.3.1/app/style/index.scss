@@ -1,6 +1,7 @@
 @import 'reset';
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   overflow: auto;
@@ -13,7 +14,10 @@ html {
   width: 100%;
 }
 
-.ng-scope, .sn-component, .panel, .content {
+.ng-scope,
+.sn-component,
+.panel,
+.content {
   height: 100%;
   overflow-x: hidden;
 }
@@ -83,6 +87,7 @@ body {
 .meta {
   display: inline-block;
   vertical-align: middle;
+
   .title {
     font-style: italic;
     margin-bottom: 1px;
@@ -93,7 +98,8 @@ body {
 
   }
 
-  .created, .updated {
+  .created,
+  .updated {
     font-size: 10px;
     opacity: 0.5;
   }
@@ -103,9 +109,7 @@ body {
     white-space: nowrap;
   }
 
-  .updated {
-
-  }
+  .updated {}
 }
 
 
