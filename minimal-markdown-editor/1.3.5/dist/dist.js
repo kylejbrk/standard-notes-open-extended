@@ -11763,7 +11763,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         "Alt-F": "findPersistent"
       }
     });
-    editor.setSize("100%", "100%");
+    editor.setSize(undefined, "100%");
     editor.on("change", function () {
       if (ignoreTextChange) {
         return;
