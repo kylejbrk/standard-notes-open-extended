@@ -31,7 +31,7 @@ body {
   height: 100%;
   overflow: hidden;
   &:hover {
-    overflow: scroll;
+    overflow: auto;
     overflow: overlay;
   }
 }
@@ -197,7 +197,7 @@ body {
       .title {
         display: flex;
         background-color: transparent;
-        font-weight: 200;
+        font-weight: 400;
         font-size: $font-size;
         border: none;
         cursor: pointer;

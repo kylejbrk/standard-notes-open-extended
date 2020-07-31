@@ -12,7 +12,10 @@ class HomeCtrl {
 
     $scope.resolveRawTags = function(masterTag) {
       let sortTags = (tags) => {
-        return tags.sort((a, b) => (a.content.title > b.content.title) - (a.content.title < b.content.title));
+        return tags.sort((a, b) => {
+          const aTitle = a.content.title.toLowerCase(), bTitle = b.content.title.toLowerCase();
+          return (aTitle > bTitle) - (aTitle < bTitle);
+        });
       }
       var resolved = masterTag.rawTags.slice();
 
