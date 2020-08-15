@@ -10,7 +10,7 @@ Add https://kylejbrk.github.io/standard-notes-open-extended/index.json as your E
 </p>
 
 # Features
-- Collection of themes and components from both official and user created sources on github
+- A repository containing official Standard Notes themes and components  
 - Updated daily (via Github Actions)
 - Free Hosting (via Github Pages)
 
@@ -24,5 +24,4 @@ This project is intended to be used with Github Pages and Github actions.
 
 # Acknowledgements
 - Inspired by: https://github.com/iganeshk/standardnotes-extensions and https://github.com/JokerQyou/snextensions
-- Standard Notes and Content Creators for the extensions
 - https://github.com/peaceiris/actions-gh-pages for deployments
