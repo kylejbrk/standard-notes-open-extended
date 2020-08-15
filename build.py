@@ -25,7 +25,7 @@ def main():
 
         # Get source from github releases 
         output_dir = os.path.join(public_dir, ext_name)
-        get_zip_contents(github_session, download_url, os.path.join(output_dir, version))
+        get_zip_contents(github_session, download_url, output_dir)
 
         # Build index.json
         url, latest_url = create_urls(domain, ext_name, version, meta['main'])
