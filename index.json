@@ -237,26 +237,6 @@
         {
             "area": "themes",
             "content_type": "SN|Theme",
-            "description": "A Dracula inspired theme for Standard Notes.",
-            "dock_icon": {
-                "background_color": "#8be9fd",
-                "border_color": "#8be9fd",
-                "foreground_color": "#8be9fd",
-                "type": "circle"
-            },
-            "identifier": "dev.cldn.sn-theme-dracula",
-            "marketing_url": "https://github.com/cameronldn/sn-theme-dracula",
-            "name": "Dracula",
-            "statusBar": "dark-content",
-            "thumbnail_url": "https://raw.githubusercontent.com/cameronldn/sn-theme-dracula/master/preview.png",
-            "version": "1.2.1",
-            "download_url": "https://api.github.com/repos/cameronldn/sn-theme-dracula/zipball/1.2.1",
-            "url": "https://kylejbrk.github.io/standard-notes-open-extended/dracula-theme/1.2.1/dist/dist.css",
-            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/dracula-theme/index.json"
-        },
-        {
-            "area": "themes",
-            "content_type": "SN|Theme",
             "description": "A smart theme that minimizes the tags and notes panels when they are not in use.",
             "dock_icon": {
                 "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\"><path d=\"M15.093 6.694h0.92v2.862l3.987-4.024-3.988-4.025v2.387h-0.92c-3.694 0-5.776 2.738-7.614 5.152-1.652 2.172-3.080 4.049-5.386 4.049h-2.092v2.799h2.093c3.694 0 5.776-2.736 7.614-5.152 1.652-2.173 3.080-4.048 5.386-4.048zM5.41 8.458c0.158-0.203 0.316-0.412 0.477-0.623 0.39-0.514 0.804-1.055 1.252-1.596-1.322-1.234-2.915-2.144-5.046-2.144h-2.093v2.799h2.093c1.327 0 2.362 0.623 3.317 1.564zM16.012 13.294h-0.92c-1.407 0-2.487-0.701-3.491-1.738-0.1 0.131-0.201 0.264-0.303 0.397-0.441 0.58-0.915 1.201-1.439 1.818 1.356 1.324 3 2.324 5.232 2.324h0.92v2.398l3.989-4.025-3.988-4.025v2.851z\"></path></svg>",
@@ -331,19 +311,6 @@
         {
             "area": "themes",
             "content_type": "SN|Theme",
-            "description": "A dark theme with muted colors for Standard Notes",
-            "identifier": "io.github.ntran.sn-theme-muteddark",
-            "marketing_url": "https://github.com/ntran/sn-theme-muteddark",
-            "name": "Muted Dark",
-            "thumbnail_url": "https://raw.githubusercontent.com/ntran/sn-theme-muteddark/master/thumbnail.png",
-            "version": "1.0.8",
-            "download_url": "https://api.github.com/repos/ntran/sn-theme-muteddark/zipball/1.0.8",
-            "url": "https://kylejbrk.github.io/standard-notes-open-extended/muted-dark-theme/1.0.8/dist/dist.css",
-            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/muted-dark-theme/index.json"
-        },
-        {
-            "area": "themes",
-            "content_type": "SN|Theme",
             "description": "A theme for focusing on your writing.",
             "dock_icon": {
                 "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 512 512\"><path d=\"M424 64H88c-26.6 0-48 21.6-48 48v288c0 26.4 21.4 48 48 48h336c26.4 0 48-21.6 48-48V112c0-26.4-21.4-48-48-48zm0 336H88V176h336v224z\"/></svg>",
@@ -357,61 +324,6 @@
             "download_url": "https://api.github.com/repos/sn-extensions/no-distraction-theme/zipball/1.2.2",
             "url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-theme/1.2.2/dist/dist.css",
             "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-theme/index.json"
-        },
-        {
-            "area": "themes",
-            "content_type": "SN|Theme",
-            "description": "A smart theme that minimizes the tags and notes panels when they are not in use.",
-            "dock_icon": {
-                "source": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"20\" height=\"20\" viewBox=\"0 0 20 20\"><path d=\"M15.093 6.694h0.92v2.862l3.987-4.024-3.988-4.025v2.387h-0.92c-3.694 0-5.776 2.738-7.614 5.152-1.652 2.172-3.080 4.049-5.386 4.049h-2.092v2.799h2.093c3.694 0 5.776-2.736 7.614-5.152 1.652-2.173 3.080-4.048 5.386-4.048zM5.41 8.458c0.158-0.203 0.316-0.412 0.477-0.623 0.39-0.514 0.804-1.055 1.252-1.596-1.322-1.234-2.915-2.144-5.046-2.144h-2.093v2.799h2.093c1.327 0 2.362 0.623 3.317 1.564zM16.012 13.294h-0.92c-1.407 0-2.487-0.701-3.491-1.738-0.1 0.131-0.201 0.264-0.303 0.397-0.441 0.58-0.915 1.201-1.439 1.818 1.356 1.324 3 2.324 5.232 2.324h0.92v2.398l3.989-4.025-3.988-4.025v2.851z\"></path></svg>",
-                "type": "svg"
-            },
-            "identifier": "com.iganesh.theme-no-distraction-dynamic",
-            "layerable": true,
-            "marketing_url": "https://standardnotes.org/extensions/dynamic",
-            "name": "No Distraction (Dynamic)",
-            "version": "1.0.0",
-            "download_url": "https://api.github.com/repos/iganeshk/sn-theme-no-distraction-dynamic/zipball/1.0.0",
-            "url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-dynamic-theme/1.0.0/dist/dist.css",
-            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-dynamic-theme/index.json"
-        },
-        {
-            "area": "themes",
-            "content_type": "SN|Theme",
-            "description": "Overcast to become cloudy or dark \u2014 just like this theme.",
-            "dock_icon": {
-                "background_color": "#039be5",
-                "border_color": "#039be5",
-                "foreground_color": "#19181a",
-                "type": "circle"
-            },
-            "identifier": "com.ceiphr.overcast",
-            "marketing_url": "https://github.com/ceiphr/sn-overcast-theme",
-            "name": "Overcast",
-            "thumbnail_url": "https://i.imgur.com/KDnyBGx.png",
-            "version": "v1.1.3",
-            "download_url": "https://api.github.com/repos/ceiphr/sn-overcast-theme/zipball/v1.1.3",
-            "url": "https://kylejbrk.github.io/standard-notes-open-extended/overcast-theme/v1.1.3/dist/dist.css",
-            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/overcast-theme/index.json"
-        },
-        {
-            "area": "themes",
-            "content_type": "SN|Theme",
-            "description": "Theme optimized for Optimized for OLED devices such as iPhone X.",
-            "dock_icon": {
-                "background_color": "#000000",
-                "border_color": "#000000",
-                "foreground_color\"": "#000000",
-                "type": "circle"
-            },
-            "identifier": "io.github.christianhans.sn-pure-black-theme",
-            "marketing_url": "https://github.com/christianhans/sn-pure-black-theme",
-            "name": "Pure Black",
-            "thumbnail_url": "https://raw.githubusercontent.com/christianhans/sn-pure-black-theme/master/preview1.png",
-            "version": "1.0.9",
-            "download_url": "https://api.github.com/repos/christianhans/sn-pure-black-theme/zipball/1.0.9",
-            "url": "https://kylejbrk.github.io/standard-notes-open-extended/pure-black-theme/1.0.9/dist/dist.css",
-            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/pure-black-theme/index.json"
         },
         {
             "area": "themes",
@@ -450,25 +362,6 @@
             "download_url": "https://api.github.com/repos/sn-extensions/titanium-theme/zipball/1.2.2",
             "url": "https://kylejbrk.github.io/standard-notes-open-extended/titanium-theme/1.2.2/dist/dist.css",
             "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/titanium-theme/index.json"
-        },
-        {
-            "area": "themes",
-            "content_type": "SN|Theme",
-            "description": "A theme for Standard Notes inspired by the VS Code Dark theme.",
-            "dock_icon": {
-                "background_color": "#252526",
-                "border_color": "#7ba78a",
-                "foreground_color": "#D4D4D4",
-                "type": "circle"
-            },
-            "identifier": "io.github.hyphone.sn-theme-vscode",
-            "marketing_url": "https://github.com/hyphone/sn-theme-vscode",
-            "name": "VS Code Theme",
-            "thumbnail_url": "https://github.com/hyphone/sn-theme-vscode/raw/master/screenshot.png",
-            "version": "1.0.17",
-            "download_url": "https://api.github.com/repos/hyphone/sn-theme-vscode/zipball/1.0.17",
-            "url": "https://kylejbrk.github.io/standard-notes-open-extended/vs-code-theme/1.0.17/dist/dist.css",
-            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/vs-code-theme/index.json"
         }
     ]
 }
