@@ -28,7 +28,7 @@ def main():
         get_zip_contents(github_session, download_url, output_dir)
 
         # Build index.json
-        url, latest_url = create_urls(domain, ext_name, version, meta['main'])
+        url, latest_url = create_urls(domain, ext_name, meta['main'])
         index.update({'version': version, 'download_url': download_url, 'url': url, 'latest_url': latest_url})
         packages.append(index)
 
@@ -65,10 +65,10 @@ def get_stats(packages):
     
     return stats
 
-def create_urls(domain, ext_name, version, main):
+def create_urls(domain, ext_name, main):
     url = urljoin(
         domain, 
-        '/'.join([ext_name, version, main])
+        '/'.join([ext_name, main])
     )
     latest_url = urljoin(
         domain, 
