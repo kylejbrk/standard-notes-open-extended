@@ -6,7 +6,7 @@ A Free Open Source Standard Notes Extensions Repository Hosted via Github Pages.
 Add https://gitcdn.xyz/repo/kylejbrk/standard-notes-open-extended/gh-pages/index.json as your Extended Activation Code, and click submit. 
 
 <p align="center">
-	<img alt="Standard Notes Extension Repository Activation" src="https://github.com/kylejbrk/standard-notes-open-extended/blob/assets/activation.png?raw=true" width="80%" />
+	<img alt="Standard Notes Extension Repository Activation" src="https://github.com/kylejbrk/standard-notes-open-extended/blob/master/assets/activation.png?raw=true" width="80%" />
 </p>
 
 # Features
