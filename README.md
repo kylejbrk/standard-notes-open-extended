@@ -20,7 +20,7 @@ This project is intended to be used with Github Pages and Github actions.
 - Fork the Repo
 - Let the action generate via the build files (this may require deleting and recreating the .github/workflows folder)
 - Make sure the gh-pages branch is set as your github page
-- Add `https://{USERNAME}.github.io/standard-notes-open-extended/index.json` as your Extended Activation Code
+- Add `https://gitcdn.xyz/repo/{USERNAME}/standard-notes-open-extended/gh-pages/index.json` as your Extended Activation Code
 
 # Acknowledgements
 - Inspired by: https://github.com/iganeshk/standardnotes-extensions and https://github.com/JokerQyou/snextensions
