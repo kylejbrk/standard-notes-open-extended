@@ -3,13 +3,11 @@
 A Free Open Source Standard Notes Extensions Repository Hosted via Github Pages.
 
 # Use 
-Add https://kylejbrk.github.io/standard-notes-open-extended/index.json as your Extended Activation Code, and click submit. 
+Add https://gitcdn.xyz/repo/kylejbrk/standard-notes-open-extended/gh-pages/index.json as your Extended Activation Code, and click submit. 
 
 <p align="center">
 	<img alt="Standard Notes Extension Repository Activation" src="https://github.com/kylejbrk/standard-notes-open-extended/blob/assets/activation.png?raw=true" width="80%" />
 </p>
-
-*(Note: This currently can only be activated on the Desktop app)*
 
 # Features
 - A repository containing official Standard Notes themes and components  
@@ -27,3 +25,5 @@ This project is intended to be used with Github Pages and Github actions.
 # Acknowledgements
 - Inspired by: https://github.com/iganeshk/standardnotes-extensions and https://github.com/JokerQyou/snextensions
 - https://github.com/peaceiris/actions-gh-pages for deployments
+- https://github.com/schme16/gitcdn.xyz for CDN
+- https://github.com/standardnotes for all their Extensions
