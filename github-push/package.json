@@ -1,6 +1,6 @@
 {
   "name": "sn-github-push",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "devDependencies": {
     "grunt": "^1.0.1",
     "grunt-contrib-cssmin": "^1.0.2",
@@ -19,7 +19,7 @@
     "grunt-contrib-uglify": "^2.0.0",
     "grunt-ng-annotate": "^3.0.0",
     "github-api": "^3.0.0",
-    "sn-components-api": "1.2.3",
+    "sn-components-api": "1.2.8",
     "sn-stylekit": "2.0.12"
   }
 }

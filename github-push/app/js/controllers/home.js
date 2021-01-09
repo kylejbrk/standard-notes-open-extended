@@ -74,7 +74,6 @@ class HomeCtrl {
         // default pref
         var defaultRepo = componentManager.componentDataValueForKey("defaultRepo");
         if(defaultRepo) {
-          $scope.formData.hasDefaultRepo = true;
           $scope.selectRepoWithName(defaultRepo);
         }
       }
@@ -102,14 +101,22 @@ class HomeCtrl {
       $scope.setDataForNote("repoName", repo.name);
 
       // save this as default repo globally
-      if(!$scope.formData.hasDefaultRepo) {
+      if(!$scope.hasDefaultRepo) {
         componentManager.setComponentDataValueForKey("defaultRepo", repo.name);
+        $scope.hasDefaultRepo = true;
       }
     }
 
     $scope.setDataForNote = function(key, value) {
       var notesData = componentManager.componentDataValueForKey("notes") || {};
       var noteData = notesData[$scope.note.uuid] || {};
+      /**
+       * Skip updating the component data if the current value and the new value for the key are the same.
+       * This will prevent spamming the postMessage API with the same message, which causes high CPU usage.
+       */
+      if (noteData[key] === value) {
+        return;
+      }
       noteData[key] = value;
       notesData[$scope.note.uuid] = noteData;
       componentManager.setComponentDataValueForKey("notes", notesData);
@@ -183,6 +190,7 @@ class HomeCtrl {
 
     $scope.logout = function() {
       componentManager.clearComponentData();
+      $scope.hasDefaultRepo = null;
       $scope.defaultFileExtension = null;
       $scope.defaultFileDirectory = null;
       $scope.noteFileExtension = null;

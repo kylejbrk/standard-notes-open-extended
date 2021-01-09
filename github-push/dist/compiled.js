@@ -33891,23 +33891,25 @@ $provide.value("$locale", {
 
 function _classCallCheck2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var _createClass = function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
-  };
-}();
-
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
   }
 }
 
-var ComponentManager = function () {
+function _defineProperties(target, props) {
+  for (var i = 0; i < props.length; i++) {
+    var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+  }
+}
+
+function _createClass(Constructor, protoProps, staticProps) {
+  if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;
+}
+
+var ComponentManager =
+/*#__PURE__*/
+function () {
   function ComponentManager(permissions, onReady) {
     _classCallCheck(this, ComponentManager);
 
@@ -33916,13 +33918,10 @@ var ComponentManager = function () {
     this.loggingEnabled = false;
     this.acceptsThemes = true;
     this.activeThemes = [];
-
     this.initialPermissions = permissions;
     this.onReadyCallback = onReady;
-
     this.coallesedSaving = true;
     this.coallesedSavingDelay = 250;
-
     this.registerMessageHandler();
   }
 
@@ -33931,31 +33930,54 @@ var ComponentManager = function () {
     value: function registerMessageHandler() {
       var _this = this;
 
-      var messageHandler = function messageHandler(event, mobileSource) {
+      var messageHandler = function messageHandler(event) {
         if (_this.loggingEnabled) {
-          console.log("Components API Message received:", event.data, "mobile?", mobileSource);
-        }
+          console.log("Components API Message received:", event.data);
+        } // We don't have access to window.parent.origin due to cross-domain restrictions.
+        // Check referrer if available, otherwise defer to checking for first-run value.
+        // Craft URL objects so that example.com === example.com/
 
-        // The first message will be the most reliable one, so we won't change it after any subsequent events,
+
+        if (document.referrer) {
+          var referrer = new URL(document.referrer).origin;
+          var eventOrigin = new URL(event.origin).origin;
+
+          if (referrer !== eventOrigin) {
+            return;
+          }
+        } // The first message will be the most reliable one, so we won't change it after any subsequent events,
         // in case you receive an event from another window.
+
+
         if (!_this.origin) {
           _this.origin = event.origin;
-        }
-        _this.mobileSource = mobileSource;
-        // If from mobile app, JSON needs to be used.
-        var data = mobileSource ? JSON.parse(event.data) : event.data;
-        _this.handleMessage(data);
-      };
+        } else if (event.origin !== _this.origin) {
+          // If event origin doesn't match first-run value, return.
+          return;
+        } // Mobile environment sends data as JSON string
 
-      // Mobile (React Native) uses `document`, web/desktop uses `window`.addEventListener
-      // for postMessage API to work properly.
+
+        var data = event.data;
+        var parsedData = typeof data === "string" ? JSON.parse(data) : data;
+
+        _this.handleMessage(parsedData);
+      };
+      /*
+        Mobile (React Native) uses `document`, web/desktop uses `window`.addEventListener
+        for postMessage API to work properly.
+         Update May 2019:
+        As part of transitioning React Native webview into the community package,
+        we'll now only need to use window.addEventListener.
+         However, we want to maintain backward compatibility for Mobile < v3.0.5, so we'll keep document.addEventListener
+         Also, even with the new version of react-native-webview, Android may still require document.addEventListener (while iOS still only requires window.addEventListener)
+        https://github.com/react-native-community/react-native-webview/issues/323#issuecomment-467767933
+       */
 
       document.addEventListener("message", function (event) {
-        messageHandler(event, true);
+        messageHandler(event);
       }, false);
-
       window.addEventListener("message", function (event) {
-        messageHandler(event, false);
+        messageHandler(event);
       }, false);
     }
   }, {
@@ -33964,7 +33986,6 @@ var ComponentManager = function () {
       if (payload.action === "component-registered") {
         this.sessionKey = payload.sessionKey;
         this.componentData = payload.componentData;
-
         this.onReady(payload.data);
 
         if (this.loggingEnabled) {
@@ -33993,6 +34014,11 @@ var ComponentManager = function () {
   }, {
     key: "onReady",
     value: function onReady(data) {
+      this.environment = data.environment;
+      this.platform = data.platform;
+      this.uuid = data.uuid;
+      this.isMobile = this.environment == "mobile";
+
       if (this.initialPermissions && this.initialPermissions.length > 0) {
         this.requestPermissions(this.initialPermissions);
       }
@@ -34004,7 +34030,6 @@ var ComponentManager = function () {
       try {
         for (var _iterator = this.messageQueue[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var message = _step.value;
-
           this.postMessage(message.action, message.data, message.callback);
         }
       } catch (err) {
@@ -34012,8 +34037,8 @@ var ComponentManager = function () {
         _iteratorError = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
           }
         } finally {
           if (_didIteratorError) {
@@ -34023,9 +34048,6 @@ var ComponentManager = function () {
       }
 
       this.messageQueue = [];
-      this.environment = data.environment;
-      this.platform = data.platform;
-      this.uuid = data.uuid;
 
       if (this.loggingEnabled) {
         console.log("onReadyData", data);
@@ -34051,13 +34073,17 @@ var ComponentManager = function () {
     key: "setComponentDataValueForKey",
     value: function setComponentDataValueForKey(key, value) {
       this.componentData[key] = value;
-      this.postMessage("set-component-data", { componentData: this.componentData }, function (data) {});
+      this.postMessage("set-component-data", {
+        componentData: this.componentData
+      }, function (data) {});
     }
   }, {
     key: "clearComponentData",
     value: function clearComponentData() {
       this.componentData = {};
-      this.postMessage("set-component-data", { componentData: this.componentData }, function (data) {});
+      this.postMessage("set-component-data", {
+        componentData: this.componentData
+      }, function (data) {});
     }
   }, {
     key: "componentDataValueForKey",
@@ -34083,13 +34109,11 @@ var ComponentManager = function () {
         sessionKey: this.sessionKey,
         api: "component"
       };
-
       var sentMessage = JSON.parse(JSON.stringify(message));
       sentMessage.callback = callback;
-      this.sentMessages.push(sentMessage);
+      this.sentMessages.push(sentMessage); // Mobile (React Native) requires a string for the postMessage API.
 
-      // Mobile (React Native) requires a string for the postMessage API.
-      if (this.mobileSource) {
+      if (this.isMobile) {
         message = JSON.stringify(message);
       }
 
@@ -34102,12 +34126,18 @@ var ComponentManager = function () {
   }, {
     key: "setSize",
     value: function setSize(type, width, height) {
-      this.postMessage("set-size", { type: type, width: width, height: height }, function (data) {});
+      this.postMessage("set-size", {
+        type: type,
+        width: width,
+        height: height
+      }, function (data) {});
     }
   }, {
     key: "requestPermissions",
     value: function requestPermissions(permissions, callback) {
-      this.postMessage("request-permissions", { permissions: permissions }, function (data) {
+      this.postMessage("request-permissions", {
+        permissions: permissions
+      }, function (data) {
         callback && callback();
       }.bind(this));
     }
@@ -34117,44 +34147,58 @@ var ComponentManager = function () {
       if (!Array.isArray(contentTypes)) {
         contentTypes = [contentTypes];
       }
-      this.postMessage("stream-items", { content_types: contentTypes }, function (data) {
+
+      this.postMessage("stream-items", {
+        content_types: contentTypes
+      }, function (data) {
         callback(data.items);
       }.bind(this));
     }
   }, {
     key: "streamContextItem",
     value: function streamContextItem(callback) {
+      var _this2 = this;
+
       this.postMessage("stream-context-item", null, function (data) {
         var item = data.item;
         /*
-          When an item is saved via saveItem, its updated_at value is set client side to the current date.
-          If we make a change locally, then for whatever reason receive an item via streamItems/streamContextItem,
-          we want to ignore that change if it was made prior to the latest change we've made.
-           Update 1/22/18: However, if a user is restoring a note from version history, this change
-          will not pass through this filter and will thus be ignored. Because the client now handles
-          this case with isMetadataUpdate, we no longer need the below.
+          If this is a new context item than the context item the component was currently entertaining,
+          we want to immediately commit any pending saves, because if you send the new context item to the
+          component before it has commited its presave, it will end up first replacing the UI with new context item,
+          and when the debouncer executes to read the component UI, it will be reading the new UI for the previous item.
         */
-        // if(this.streamedContextItem && this.streamedContextItem.uuid == item.uuid
-        //   && this.streamedContextItem.updated_at > item.updated_at) {
-        //   return;
-        // }
-        // this.streamedContextItem = item;
-        callback(item);
+
+        var isNewItem = !_this2.lastStreamedItem || _this2.lastStreamedItem.uuid !== item.uuid;
+
+        if (isNewItem && _this2.pendingSaveTimeout) {
+          clearTimeout(_this2.pendingSaveTimeout);
+
+          _this2._performSavingOfItems(_this2.pendingSaveParams);
+
+          _this2.pendingSaveTimeout = null;
+          _this2.pendingSaveParams = null;
+        }
+
+        _this2.lastStreamedItem = item;
+        callback(_this2.lastStreamedItem);
       });
     }
   }, {
     key: "selectItem",
     value: function selectItem(item) {
-      this.postMessage("select-item", { item: this.jsonObjectForItem(item) });
+      this.postMessage("select-item", {
+        item: this.jsonObjectForItem(item)
+      });
     }
   }, {
     key: "createItem",
     value: function createItem(item, callback) {
-      this.postMessage("create-item", { item: this.jsonObjectForItem(item) }, function (data) {
-        var item = data.item;
-
-        // A previous version of the SN app had an issue where the item in the reply to create-item
+      this.postMessage("create-item", {
+        item: this.jsonObjectForItem(item)
+      }, function (data) {
+        var item = data.item; // A previous version of the SN app had an issue where the item in the reply to create-item
         // would be nested inside "items" and not "item". So handle both cases here.
+
         if (!item && data.items && data.items.length > 0) {
           item = data.items[0];
         }
@@ -34166,29 +34210,37 @@ var ComponentManager = function () {
   }, {
     key: "createItems",
     value: function createItems(items, callback) {
-      var _this2 = this;
+      var _this3 = this;
 
       var mapped = items.map(function (item) {
-        return _this2.jsonObjectForItem(item);
+        return _this3.jsonObjectForItem(item);
       });
-      this.postMessage("create-items", { items: mapped }, function (data) {
+      this.postMessage("create-items", {
+        items: mapped
+      }, function (data) {
         callback && callback(data.items);
       }.bind(this));
     }
   }, {
     key: "associateItem",
     value: function associateItem(item) {
-      this.postMessage("associate-item", { item: this.jsonObjectForItem(item) });
+      this.postMessage("associate-item", {
+        item: this.jsonObjectForItem(item)
+      });
     }
   }, {
     key: "deassociateItem",
     value: function deassociateItem(item) {
-      this.postMessage("deassociate-item", { item: this.jsonObjectForItem(item) });
+      this.postMessage("deassociate-item", {
+        item: this.jsonObjectForItem(item)
+      });
     }
   }, {
     key: "clearSelection",
     value: function clearSelection() {
-      this.postMessage("clear-selection", { content_type: "Tag" });
+      this.postMessage("clear-selection", {
+        content_type: "Tag"
+      });
     }
   }, {
     key: "deleteItem",
@@ -34203,7 +34255,6 @@ var ComponentManager = function () {
           return this.jsonObjectForItem(item);
         }.bind(this))
       };
-
       this.postMessage("delete-items", params, function (data) {
         callback && callback(data);
       });
@@ -34219,10 +34270,8 @@ var ComponentManager = function () {
     key: "saveItem",
     value: function saveItem(item, callback) {
       var skipDebouncer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
       this.saveItems([item], callback, skipDebouncer);
     }
-
     /* Presave allows clients to perform any actions last second before the save actually occurs (like setting previews).
        Saves debounce by default, so if a client needs to compute a property on an item before saving, it's best to
        hook into the debounce cycle so that clients don't have to implement their own debouncing.
@@ -34238,53 +34287,98 @@ var ComponentManager = function () {
     value: function saveItemsWithPresave(items, presave, callback) {
       this.saveItems(items, callback, false, presave);
     }
+  }, {
+    key: "_performSavingOfItems",
+    value: function _performSavingOfItems(_ref) {
+      var items = _ref.items,
+          presave = _ref.presave,
+          callback = _ref.callback;
+      // presave block allows client to gain the benefit of performing something in the debounce cycle.
+      presave && presave();
+      var mappedItems = [];
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
 
+      try {
+        for (var _iterator2 = items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var item = _step2.value;
+          mappedItems.push(this.jsonObjectForItem(item));
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
+          }
+        }
+      }
+
+      this.postMessage("save-items", {
+        items: mappedItems
+      }, function (data) {
+        callback && callback();
+      });
+    }
     /*
     skipDebouncer allows saves to go through right away rather than waiting for timeout.
     This should be used when saving items via other means besides keystrokes.
-     */
+    */
 
   }, {
     key: "saveItems",
     value: function saveItems(items, callback) {
-      var _this3 = this;
+      var _this4 = this;
 
       var skipDebouncer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var presave = arguments[3];
+      var presave = arguments.length > 3 ? arguments[3] : undefined;
 
-      var saveBlock = function saveBlock() {
-        // presave block allows client to gain the benefit of performing something in the debounce cycle.
-        presave && presave();
+      // We need to make sure that when we clear a pending save timeout,
+      // we carry over those pending items into the new save.
+      if (!this.pendingSaveItems) {
+        this.pendingSaveItems = [];
+      }
 
-        var mappedItems = items.map(function (item) {
-          item.updated_at = new Date();
-          return this.jsonObjectForItem(item);
-        }.bind(_this3));
-
-        _this3.postMessage("save-items", { items: mappedItems }, function (data) {
-          callback && callback();
-        });
-      };
-
-      /*
-        Coallesed saving prevents saves from being made after every keystroke, and instead
-        waits coallesedSavingDelay before performing action. For example, if a user types a keystroke, and the clienet calls saveItem,
-        a 250ms delay will begin. If they type another keystroke within 250ms, the previously pending
-        save will be cancelled, and another 250ms delay occurs. If ater 250ms the pending delay is not cleared by a future call,
-        the save will finally trigger.
-         Note: it's important to modify saving items updated_at immediately and not after delay. If you modify after delay,
-        a delayed sync could just be wrapping up, and will send back old data and replace what the user has typed.
-      */
       if (this.coallesedSaving == true && !skipDebouncer) {
-        if (this.pendingSave) {
-          clearTimeout(this.pendingSave);
+        if (this.pendingSaveTimeout) {
+          clearTimeout(this.pendingSaveTimeout);
         }
 
-        this.pendingSave = setTimeout(function () {
-          saveBlock();
+        var incomingIds = items.map(function (item) {
+          return item.uuid;
+        }); // Replace any existing save items with incoming values
+        // Only keep items here who are not in incomingIds
+
+        var preexistingItems = this.pendingSaveItems.filter(function (item) {
+          return !incomingIds.includes(item.uuid);
+        }); // Add new items, now that we've made sure it's cleared of incoming items.
+
+        this.pendingSaveItems = preexistingItems.concat(items); // We'll potentially need to commit early if stream-context-item message comes in
+
+        this.pendingSaveParams = {
+          items: this.pendingSaveItems,
+          presave: presave,
+          callback: callback
+        };
+        this.pendingSaveTimeout = setTimeout(function () {
+          _this4._performSavingOfItems(_this4.pendingSaveParams);
+
+          _this4.pendingSaveItems = [];
+          _this4.pendingSaveTimeout = null;
+          _this4.pendingSaveParams = null;
         }, this.coallesedSavingDelay);
       } else {
-        saveBlock();
+        this._performSavingOfItems({
+          items: items,
+          presave: presave,
+          callback: callback
+        });
       }
     }
   }, {
@@ -34300,13 +34394,13 @@ var ComponentManager = function () {
     value: function getItemAppDataValue(item, key) {
       var AppDomain = "org.standardnotes.sn";
       var data = item.content.appData && item.content.appData[AppDomain];
+
       if (data) {
         return data[key];
       } else {
         return null;
       }
     }
-
     /* Themes */
 
   }, {
@@ -34315,6 +34409,7 @@ var ComponentManager = function () {
       if (this.loggingEnabled) {
         console.log("Incoming themes", incomingUrls);
       }
+
       if (this.activeThemes.sort().toString() == incomingUrls.sort().toString()) {
         // incoming are same as active, do nothing
         return;
@@ -34322,14 +34417,13 @@ var ComponentManager = function () {
 
       var themesToActivate = incomingUrls || [];
       var themesToDeactivate = [];
-
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
+      var _iteratorNormalCompletion3 = true;
+      var _didIteratorError3 = false;
+      var _iteratorError3 = undefined;
 
       try {
-        for (var _iterator2 = this.activeThemes[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var activeUrl = _step2.value;
+        for (var _iterator3 = this.activeThemes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
+          var activeUrl = _step3.value;
 
           if (!incomingUrls.includes(activeUrl)) {
             // active not present in incoming, deactivate it
@@ -34342,16 +34436,16 @@ var ComponentManager = function () {
           }
         }
       } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
+        _didIteratorError3 = true;
+        _iteratorError3 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
+          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
+            _iterator3["return"]();
           }
         } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
+          if (_didIteratorError3) {
+            throw _iteratorError3;
           }
         }
       }
@@ -34361,33 +34455,12 @@ var ComponentManager = function () {
         console.log("Activating themes:", themesToActivate);
       }
 
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = themesToDeactivate[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var theme = _step3.value;
-
-          this.deactivateTheme(theme);
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
+      for (var _i = 0, _themesToDeactivate = themesToDeactivate; _i < _themesToDeactivate.length; _i++) {
+        var theme = _themesToDeactivate[_i];
+        this.deactivateTheme(theme);
       }
 
       this.activeThemes = incomingUrls;
-
       var _iteratorNormalCompletion4 = true;
       var _didIteratorError4 = false;
       var _iteratorError4 = undefined;
@@ -34414,8 +34487,8 @@ var ComponentManager = function () {
         _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-            _iterator4.return();
+          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
+            _iterator4["return"]();
           }
         } finally {
           if (_didIteratorError4) {
@@ -34437,13 +34510,14 @@ var ComponentManager = function () {
     key: "deactivateTheme",
     value: function deactivateTheme(url) {
       var element = this.themeElementForUrl(url);
+
       if (element) {
         element.disabled = true;
         element.parentNode.removeChild(element);
       }
     }
-
     /* Theme caching is currently disabled. Might be enabled in the future if neccessary. */
+
     /*
     activateCachedThemes() {
       let themes = this.getCachedThemeUrls();
@@ -34474,6 +34548,7 @@ var ComponentManager = function () {
     key: "generateUUID",
     value: function generateUUID() {
       var crypto = window.crypto || window.msCrypto;
+
       if (crypto) {
         var buf = new Uint32Array(4);
         crypto.getRandomValues(buf);
@@ -34486,9 +34561,11 @@ var ComponentManager = function () {
         });
       } else {
         var d = new Date().getTime();
+
         if (window.performance && typeof window.performance.now === "function") {
           d += performance.now(); //use high-precision timer if available
         }
+
         var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
           var r = (d + Math.random() * 16) % 16 | 0;
           d = Math.floor(d / 16);
@@ -34587,7 +34664,6 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
       // default pref
       var defaultRepo = componentManager.componentDataValueForKey("defaultRepo");
       if (defaultRepo) {
-        $scope.formData.hasDefaultRepo = true;
         $scope.selectRepoWithName(defaultRepo);
       }
     }
@@ -34614,14 +34690,22 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
     $scope.setDataForNote("repoName", repo.name);
 
     // save this as default repo globally
-    if (!$scope.formData.hasDefaultRepo) {
+    if (!$scope.hasDefaultRepo) {
       componentManager.setComponentDataValueForKey("defaultRepo", repo.name);
+      $scope.hasDefaultRepo = true;
     }
   };
 
   $scope.setDataForNote = function (key, value) {
     var notesData = componentManager.componentDataValueForKey("notes") || {};
     var noteData = notesData[$scope.note.uuid] || {};
+    /**
+     * Skip updating the component data if the current value and the new value for the key are the same.
+     * This will prevent spamming the postMessage API with the same message, which causes high CPU usage.
+     */
+    if (noteData[key] === value) {
+      return;
+    }
     noteData[key] = value;
     notesData[$scope.note.uuid] = noteData;
     componentManager.setComponentDataValueForKey("notes", notesData);
@@ -34694,6 +34778,7 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
 
   $scope.logout = function () {
     componentManager.clearComponentData();
+    $scope.hasDefaultRepo = null;
     $scope.defaultFileExtension = null;
     $scope.defaultFileDirectory = null;
     $scope.noteFileExtension = null;
