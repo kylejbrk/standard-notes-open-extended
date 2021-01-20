@@ -9657,677 +9657,8 @@ CodeMirror$1.version = "5.31.0";
 return CodeMirror$1;
 
 })));
-;"use strict";
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ComponentManager = function () {
-  function ComponentManager(permissions, onReady) {
-    _classCallCheck(this, ComponentManager);
-
-    this.sentMessages = [];
-    this.messageQueue = [];
-    this.loggingEnabled = false;
-    this.acceptsThemes = true;
-    this.activeThemes = [];
-
-    this.initialPermissions = permissions;
-    this.onReadyCallback = onReady;
-
-    this.coallesedSaving = true;
-    this.coallesedSavingDelay = 250;
-
-    this.registerMessageHandler();
-  }
-
-  _createClass(ComponentManager, [{
-    key: "registerMessageHandler",
-    value: function registerMessageHandler() {
-      var _this = this;
-
-      var messageHandler = function messageHandler(event) {
-        if (_this.loggingEnabled) {
-          console.log("Components API Message received:", event.data);
-        }
-
-        // The first message will be the most reliable one, so we won't change it after any subsequent events,
-        // in case you receive an event from another window.
-        if (!_this.origin) {
-          _this.origin = event.origin;
-        }
-
-        // Mobile environment sends data as JSON string
-        var data = event.data;
-        var parsedData = typeof data === "string" ? JSON.parse(data) : data;
-        _this.handleMessage(parsedData);
-      };
-
-      /*
-        Mobile (React Native) uses `document`, web/desktop uses `window`.addEventListener
-        for postMessage API to work properly.
-         Update May 2019:
-        As part of transitioning React Native webview into the community package,
-        we'll now only need to use window.addEventListener.
-         However, we want to maintain backward compatibility for Mobile < v3.0.5, so we'll keep document.addEventListener
-         Also, even with the new version of react-native-webview, Android may still require document.addEventListener (while iOS still only requires window.addEventListener)
-        https://github.com/react-native-community/react-native-webview/issues/323#issuecomment-467767933
-       */
-
-      document.addEventListener("message", function (event) {
-        messageHandler(event);
-      }, false);
-
-      window.addEventListener("message", function (event) {
-        messageHandler(event);
-      }, false);
-    }
-  }, {
-    key: "handleMessage",
-    value: function handleMessage(payload) {
-      if (payload.action === "component-registered") {
-        this.sessionKey = payload.sessionKey;
-        this.componentData = payload.componentData;
-
-        this.onReady(payload.data);
-
-        if (this.loggingEnabled) {
-          console.log("Component successfully registered with payload:", payload);
-        }
-      } else if (payload.action === "themes") {
-        if (this.acceptsThemes) {
-          this.activateThemes(payload.data.themes);
-        }
-      } else if (payload.original) {
-        // get callback from queue
-        var originalMessage = this.sentMessages.filter(function (message) {
-          return message.messageId === payload.original.messageId;
-        })[0];
-
-        if (!originalMessage) {
-          // Connection must have been reset. Alert the user.
-          alert("This extension is attempting to communicate with Standard Notes, but an error is preventing it from doing so. Please restart this extension and try again.");
-        }
-
-        if (originalMessage.callback) {
-          originalMessage.callback(payload.data);
-        }
-      }
-    }
-  }, {
-    key: "onReady",
-    value: function onReady(data) {
-      this.environment = data.environment;
-      this.platform = data.platform;
-      this.uuid = data.uuid;
-      this.isMobile = this.environment == "mobile";
-
-      if (this.initialPermissions && this.initialPermissions.length > 0) {
-        this.requestPermissions(this.initialPermissions);
-      }
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.messageQueue[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var message = _step.value;
-
-          this.postMessage(message.action, message.data, message.callback);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator.return) {
-            _iterator.return();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      this.messageQueue = [];
-
-      if (this.loggingEnabled) {
-        console.log("onReadyData", data);
-      }
-
-      this.activateThemes(data.activeThemeUrls || []);
-
-      if (this.onReadyCallback) {
-        this.onReadyCallback();
-      }
-    }
-  }, {
-    key: "getSelfComponentUUID",
-    value: function getSelfComponentUUID() {
-      return this.uuid;
-    }
-  }, {
-    key: "isRunningInDesktopApplication",
-    value: function isRunningInDesktopApplication() {
-      return this.environment === "desktop";
-    }
-  }, {
-    key: "setComponentDataValueForKey",
-    value: function setComponentDataValueForKey(key, value) {
-      this.componentData[key] = value;
-      this.postMessage("set-component-data", { componentData: this.componentData }, function (data) {});
-    }
-  }, {
-    key: "clearComponentData",
-    value: function clearComponentData() {
-      this.componentData = {};
-      this.postMessage("set-component-data", { componentData: this.componentData }, function (data) {});
-    }
-  }, {
-    key: "componentDataValueForKey",
-    value: function componentDataValueForKey(key) {
-      return this.componentData[key];
-    }
-  }, {
-    key: "postMessage",
-    value: function postMessage(action, data, callback) {
-      if (!this.sessionKey) {
-        this.messageQueue.push({
-          action: action,
-          data: data,
-          callback: callback
-        });
-        return;
-      }
-
-      var message = {
-        action: action,
-        data: data,
-        messageId: this.generateUUID(),
-        sessionKey: this.sessionKey,
-        api: "component"
-      };
-
-      var sentMessage = JSON.parse(JSON.stringify(message));
-      sentMessage.callback = callback;
-      this.sentMessages.push(sentMessage);
-
-      // Mobile (React Native) requires a string for the postMessage API.
-      if (this.isMobile) {
-        message = JSON.stringify(message);
-      }
-
-      if (this.loggingEnabled) {
-        console.log("Posting message:", message);
-      }
-
-      window.parent.postMessage(message, this.origin);
-    }
-  }, {
-    key: "setSize",
-    value: function setSize(type, width, height) {
-      this.postMessage("set-size", { type: type, width: width, height: height }, function (data) {});
-    }
-  }, {
-    key: "requestPermissions",
-    value: function requestPermissions(permissions, callback) {
-      this.postMessage("request-permissions", { permissions: permissions }, function (data) {
-        callback && callback();
-      }.bind(this));
-    }
-  }, {
-    key: "streamItems",
-    value: function streamItems(contentTypes, callback) {
-      if (!Array.isArray(contentTypes)) {
-        contentTypes = [contentTypes];
-      }
-      this.postMessage("stream-items", { content_types: contentTypes }, function (data) {
-        callback(data.items);
-      }.bind(this));
-    }
-  }, {
-    key: "streamContextItem",
-    value: function streamContextItem(callback) {
-      var _this2 = this;
-
-      this.postMessage("stream-context-item", null, function (data) {
-        var item = data.item;
-        /*
-          If this is a new context item than the context item the component was currently entertaining,
-          we want to immediately commit any pending saves, because if you send the new context item to the
-          component before it has commited its presave, it will end up first replacing the UI with new context item,
-          and when the debouncer executes to read the component UI, it will be reading the new UI for the previous item.
-        */
-        var isNewItem = !_this2.lastStreamedItem || _this2.lastStreamedItem.uuid !== item.uuid;
-        if (isNewItem && _this2.pendingSaveTimeout) {
-          clearTimeout(_this2.pendingSaveTimeout);
-          _this2._performSavingOfItems(_this2.pendingSaveParams);
-          _this2.pendingSaveTimeout = null;
-          _this2.pendingSaveParams = null;
-        }
-        _this2.lastStreamedItem = item;
-        callback(_this2.lastStreamedItem);
-      });
-    }
-  }, {
-    key: "selectItem",
-    value: function selectItem(item) {
-      this.postMessage("select-item", { item: this.jsonObjectForItem(item) });
-    }
-  }, {
-    key: "createItem",
-    value: function createItem(item, callback) {
-      this.postMessage("create-item", { item: this.jsonObjectForItem(item) }, function (data) {
-        var item = data.item;
-
-        // A previous version of the SN app had an issue where the item in the reply to create-item
-        // would be nested inside "items" and not "item". So handle both cases here.
-        if (!item && data.items && data.items.length > 0) {
-          item = data.items[0];
-        }
-
-        this.associateItem(item);
-        callback && callback(item);
-      }.bind(this));
-    }
-  }, {
-    key: "createItems",
-    value: function createItems(items, callback) {
-      var _this3 = this;
-
-      var mapped = items.map(function (item) {
-        return _this3.jsonObjectForItem(item);
-      });
-      this.postMessage("create-items", { items: mapped }, function (data) {
-        callback && callback(data.items);
-      }.bind(this));
-    }
-  }, {
-    key: "associateItem",
-    value: function associateItem(item) {
-      this.postMessage("associate-item", { item: this.jsonObjectForItem(item) });
-    }
-  }, {
-    key: "deassociateItem",
-    value: function deassociateItem(item) {
-      this.postMessage("deassociate-item", { item: this.jsonObjectForItem(item) });
-    }
-  }, {
-    key: "clearSelection",
-    value: function clearSelection() {
-      this.postMessage("clear-selection", { content_type: "Tag" });
-    }
-  }, {
-    key: "deleteItem",
-    value: function deleteItem(item, callback) {
-      this.deleteItems([item], callback);
-    }
-  }, {
-    key: "deleteItems",
-    value: function deleteItems(items, callback) {
-      var params = {
-        items: items.map(function (item) {
-          return this.jsonObjectForItem(item);
-        }.bind(this))
-      };
-
-      this.postMessage("delete-items", params, function (data) {
-        callback && callback(data);
-      });
-    }
-  }, {
-    key: "sendCustomEvent",
-    value: function sendCustomEvent(action, data, callback) {
-      this.postMessage(action, data, function (data) {
-        callback && callback(data);
-      }.bind(this));
-    }
-  }, {
-    key: "saveItem",
-    value: function saveItem(item, callback) {
-      var skipDebouncer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-
-      this.saveItems([item], callback, skipDebouncer);
-    }
-
-    /* Presave allows clients to perform any actions last second before the save actually occurs (like setting previews).
-       Saves debounce by default, so if a client needs to compute a property on an item before saving, it's best to
-       hook into the debounce cycle so that clients don't have to implement their own debouncing.
-     */
-
-  }, {
-    key: "saveItemWithPresave",
-    value: function saveItemWithPresave(item, presave, callback) {
-      this.saveItemsWithPresave([item], presave, callback);
-    }
-  }, {
-    key: "saveItemsWithPresave",
-    value: function saveItemsWithPresave(items, presave, callback) {
-      this.saveItems(items, callback, false, presave);
-    }
-  }, {
-    key: "_performSavingOfItems",
-    value: function _performSavingOfItems(_ref) {
-      var items = _ref.items,
-          presave = _ref.presave,
-          callback = _ref.callback;
-
-      // presave block allows client to gain the benefit of performing something in the debounce cycle.
-      presave && presave();
-
-      var mappedItems = [];
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var item = _step2.value;
-
-          mappedItems.push(this.jsonObjectForItem(item));
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2.return) {
-            _iterator2.return();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      this.postMessage("save-items", { items: mappedItems }, function (data) {
-        callback && callback();
-      });
-    }
-
-    /*
-    skipDebouncer allows saves to go through right away rather than waiting for timeout.
-    This should be used when saving items via other means besides keystrokes.
-    */
-
-  }, {
-    key: "saveItems",
-    value: function saveItems(items, callback) {
-      var _this4 = this;
-
-      var skipDebouncer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var presave = arguments[3];
-
-
-      // We need to make sure that when we clear a pending save timeout,
-      // we carry over those pending items into the new save.
-      if (!this.pendingSaveItems) {
-        this.pendingSaveItems = [];
-      }
-
-      if (this.coallesedSaving == true && !skipDebouncer) {
-        if (this.pendingSaveTimeout) {
-          clearTimeout(this.pendingSaveTimeout);
-        }
-
-        var incomingIds = items.map(function (item) {
-          return item.uuid;
-        });
-
-        // Replace any existing save items with incoming values
-        // Only keep items here who are not in incomingIds
-        var preexistingItems = this.pendingSaveItems.filter(function (item) {
-          return !incomingIds.includes(item.uuid);
-        });
-
-        // Add new items, now that we've made sure it's cleared of incoming items.
-        this.pendingSaveItems = preexistingItems.concat(items);
-
-        // We'll potentially need to commit early if stream-context-item message comes in
-        this.pendingSaveParams = {
-          items: this.pendingSaveItems,
-          presave: presave,
-          callback: callback
-        };
-
-        this.pendingSaveTimeout = setTimeout(function () {
-          _this4._performSavingOfItems(_this4.pendingSaveParams);
-          _this4.pendingSaveItems = [];
-          _this4.pendingSaveTimeout = null;
-          _this4.pendingSaveParams = null;
-        }, this.coallesedSavingDelay);
-      } else {
-        this._performSavingOfItems({ items: items, presave: presave, callback: callback });
-      }
-    }
-  }, {
-    key: "jsonObjectForItem",
-    value: function jsonObjectForItem(item) {
-      var copy = Object.assign({}, item);
-      copy.children = null;
-      copy.parent = null;
-      return copy;
-    }
-  }, {
-    key: "getItemAppDataValue",
-    value: function getItemAppDataValue(item, key) {
-      var AppDomain = "org.standardnotes.sn";
-      var data = item.content.appData && item.content.appData[AppDomain];
-      if (data) {
-        return data[key];
-      } else {
-        return null;
-      }
-    }
-
-    /* Themes */
-
-  }, {
-    key: "activateThemes",
-    value: function activateThemes(incomingUrls) {
-      if (this.loggingEnabled) {
-        console.log("Incoming themes", incomingUrls);
-      }
-      if (this.activeThemes.sort().toString() == incomingUrls.sort().toString()) {
-        // incoming are same as active, do nothing
-        return;
-      }
-
-      var themesToActivate = incomingUrls || [];
-      var themesToDeactivate = [];
-
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = this.activeThemes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var activeUrl = _step3.value;
-
-          if (!incomingUrls.includes(activeUrl)) {
-            // active not present in incoming, deactivate it
-            themesToDeactivate.push(activeUrl);
-          } else {
-            // already present in active themes, remove it from themesToActivate
-            themesToActivate = themesToActivate.filter(function (candidate) {
-              return candidate != activeUrl;
-            });
-          }
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3.return) {
-            _iterator3.return();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-
-      if (this.loggingEnabled) {
-        console.log("Deactivating themes:", themesToDeactivate);
-        console.log("Activating themes:", themesToActivate);
-      }
-
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
-
-      try {
-        for (var _iterator4 = themesToDeactivate[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var theme = _step4.value;
-
-          this.deactivateTheme(theme);
-        }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4.return) {
-            _iterator4.return();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
-        }
-      }
-
-      this.activeThemes = incomingUrls;
-
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
-
-      try {
-        for (var _iterator5 = themesToActivate[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var url = _step5.value;
-
-          if (!url) {
-            continue;
-          }
-
-          var link = document.createElement("link");
-          link.id = btoa(url);
-          link.href = url;
-          link.type = "text/css";
-          link.rel = "stylesheet";
-          link.media = "screen,print";
-          link.className = "custom-theme";
-          document.getElementsByTagName("head")[0].appendChild(link);
-        }
-      } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
-          }
-        } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
-          }
-        }
-      }
-    }
-  }, {
-    key: "themeElementForUrl",
-    value: function themeElementForUrl(url) {
-      var elements = Array.from(document.getElementsByClassName("custom-theme")).slice();
-      return elements.find(function (element) {
-        // We used to search here by `href`, but on desktop, with local file:// urls, that didn't work for some reason.
-        return element.id == btoa(url);
-      });
-    }
-  }, {
-    key: "deactivateTheme",
-    value: function deactivateTheme(url) {
-      var element = this.themeElementForUrl(url);
-      if (element) {
-        element.disabled = true;
-        element.parentNode.removeChild(element);
-      }
-    }
-
-    /* Theme caching is currently disabled. Might be enabled in the future if neccessary. */
-    /*
-    activateCachedThemes() {
-      let themes = this.getCachedThemeUrls();
-      let writeToCache = false;
-      if(this.loggingEnabled) { console.log("Activating cached themes", themes); }
-      this.activateThemes(themes, writeToCache);
-    }
-     cacheThemeUrls(urls) {
-      if(this.loggingEnabled) { console.log("Caching theme urls", urls); }
-      localStorage.setItem("cachedThemeUrls", JSON.stringify(urls));
-    }
-     decacheThemeUrls() {
-      localStorage.removeItem("cachedThemeUrls");
-    }
-     getCachedThemeUrls() {
-      let urls = localStorage.getItem("cachedThemeUrls");
-      if(urls) {
-        return JSON.parse(urls);
-      } else {
-        return [];
-      }
-    }
-    */
-
-    /* Utilities */
-
-  }, {
-    key: "generateUUID",
-    value: function generateUUID() {
-      var crypto = window.crypto || window.msCrypto;
-      if (crypto) {
-        var buf = new Uint32Array(4);
-        crypto.getRandomValues(buf);
-        var idx = -1;
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-          idx++;
-          var r = buf[idx >> 3] >> idx % 8 * 4 & 15;
-          var v = c == 'x' ? r : r & 0x3 | 0x8;
-          return v.toString(16);
-        });
-      } else {
-        var d = new Date().getTime();
-        if (window.performance && typeof window.performance.now === "function") {
-          d += performance.now(); //use high-precision timer if available
-        }
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-          var r = (d + Math.random() * 16) % 16 | 0;
-          d = Math.floor(d / 16);
-          return (c == 'x' ? r : r & 0x3 | 0x8).toString(16);
-        });
-        return uuid;
-      }
-    }
-  }]);
-
-  return ComponentManager;
-}();
-
-if (typeof module != "undefined" && typeof module.exports != "undefined") {
-  module.exports = ComponentManager;
-}
-
-if (window) {
-  window.ComponentManager = ComponentManager;
-}
-//# sourceMappingURL=dist.js.map
-;// CodeMirror, copyright (c) by Marijn Haverbeke and others
+;!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define("ComponentRelay",[],t):"object"==typeof exports?exports.ComponentRelay=t():e.ComponentRelay=t()}(self,(function(){return(()=>{"use strict";var e={175:(e,t,s)=>{let n,i,o;var a;s.d(t,{default:()=>w}),function(e){e.SetSize="set-size",e.StreamItems="stream-items",e.StreamContextItem="stream-context-item",e.SaveItems="save-items",e.SelectItem="select-item",e.AssociateItem="associate-item",e.DeassociateItem="deassociate-item",e.ClearSelection="clear-selection",e.CreateItem="create-item",e.CreateItems="create-items",e.DeleteItems="delete-items",e.SetComponentData="set-component-data",e.InstallLocalComponent="install-local-component",e.ToggleActivateComponent="toggle-activate-component",e.RequestPermissions="request-permissions",e.PresentConflictResolution="present-conflict-resolution",e.DuplicateItem="duplicate-item",e.ComponentRegistered="component-registered",e.ActivateThemes="themes",e.Reply="reply",e.SaveSuccess="save-success",e.SaveError="save-error"}(n||(n={})),function(e){e[e.Web=1]="Web",e[e.Desktop=2]="Desktop",e[e.Mobile=3]="Mobile"}(i||(i={})),function(e){e.Any="*",e.Item="SF|Item",e.RootKey="SN|RootKey|NoSync",e.ItemsKey="SN|ItemsKey",e.EncryptedStorage="SN|EncryptedStorage",e.Note="Note",e.Tag="Tag",e.SmartTag="SN|SmartTag",e.Component="SN|Component",e.Editor="SN|Editor",e.ActionsExtension="Extension",e.UserPrefs="SN|UserPreferences",e.Privileges="SN|Privileges",e.HistorySession="SN|HistorySession",e.Theme="SN|Theme",e.Mfa="SF|MFA",e.ServerExtension="SF|Extension",e.FilesafeCredentials="SN|FileSafe|Credentials",e.FilesafeFileMetadata="SN|FileSafe|FileMetadata",e.FilesafeIntegration="SN|FileSafe|Integration",e.ExtensionRepo="SN|ExtensionRepo"}(o||(o={}));var r=new Uint8Array(16);function m(){if(!a&&!(a="undefined"!=typeof crypto&&crypto.getRandomValues&&crypto.getRandomValues.bind(crypto)||"undefined"!=typeof msCrypto&&"function"==typeof msCrypto.getRandomValues&&msCrypto.getRandomValues.bind(msCrypto)))throw new Error("crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported");return a(r)}const c=/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i,l=function(e){return"string"==typeof e&&c.test(e)};for(var d=[],p=0;p<256;++p)d.push((p+256).toString(16).substr(1));const h=function(e,t,s){var n=(e=e||{}).random||(e.rng||m)();if(n[6]=15&n[6]|64,n[8]=63&n[8]|128,t){s=s||0;for(var i=0;i<16;++i)t[s+i]=n[i];return t}return function(e){var t=arguments.length>1&&void 0!==arguments[1]?arguments[1]:0,s=(d[e[t+0]]+d[e[t+1]]+d[e[t+2]]+d[e[t+3]]+"-"+d[e[t+4]]+d[e[t+5]]+"-"+d[e[t+6]]+d[e[t+7]]+"-"+d[e[t+8]]+d[e[t+9]]+"-"+d[e[t+10]]+d[e[t+11]]+d[e[t+12]]+d[e[t+13]]+d[e[t+14]]+d[e[t+15]]).toLowerCase();if(!l(s))throw TypeError("Stringified UUID is invalid");return s}(n)},g=e=>{var t;const s={[i.Web]:"web",[i.Desktop]:"desktop",[i.Mobile]:"mobile"};return null!==(t=s[e])&&void 0!==t?t:s[i.Web]},u=()=>{};class v{static get isSupported(){return!(!window.console&&!console)}static get info(){return v.isSupported&&this.enabled?console.log.bind(console):u}static get error(){return console.error.bind(console)}}var f,S,b;function y(e,t){var s=Object.keys(e);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(e);t&&(n=n.filter((function(t){return Object.getOwnPropertyDescriptor(e,t).enumerable}))),s.push.apply(s,n)}return s}function I(e){for(var t=1;t<arguments.length;t++){var s=null!=arguments[t]?arguments[t]:{};t%2?y(Object(s),!0).forEach((function(t){C(e,t,s[t])})):Object.getOwnPropertyDescriptors?Object.defineProperties(e,Object.getOwnPropertyDescriptors(s)):y(Object(s)).forEach((function(t){Object.defineProperty(e,t,Object.getOwnPropertyDescriptor(s,t))}))}return e}function C(e,t,s){return t in e?Object.defineProperty(e,t,{value:s,enumerable:!0,configurable:!0,writable:!0}):e[t]=s,e}(S="enabled")in(f=v)?Object.defineProperty(f,S,{value:false,enumerable:!0,configurable:!0,writable:!0}):f[S]=false,function(e){e.Component="component"}(b||(b={}));class w{constructor(e){if(C(this,"contentWindow",void 0),C(this,"initialPermissions",void 0),C(this,"onReadyCallback",void 0),C(this,"component",{activeThemes:[],acceptsThemes:!0}),C(this,"sentMessages",[]),C(this,"messageQueue",[]),C(this,"lastStreamedItem",void 0),C(this,"pendingSaveItems",void 0),C(this,"pendingSaveTimeout",void 0),C(this,"pendingSaveParams",void 0),C(this,"coallesedSaving",!1),C(this,"coallesedSavingDelay",250),C(this,"messageHandler",void 0),!e||!e.targetWindow)throw new Error("contentWindow must be a valid Window object.");this.contentWindow=e.targetWindow,this.processParameters(e),this.registerMessageHandler()}processParameters(e){var t;const{initialPermissions:s,options:n,onReady:i}=e;var o;s&&s.length>0&&(this.initialPermissions=s),(null==n?void 0:n.coallesedSaving)&&(this.coallesedSaving=n.coallesedSaving),(null==n?void 0:n.coallesedSavingDelay)&&(this.coallesedSavingDelay=n.coallesedSavingDelay),(null==n?void 0:n.acceptsThemes)&&(this.component.acceptsThemes=null===(o=null==n?void 0:n.acceptsThemes)||void 0===o||o),i&&(this.onReadyCallback=i),v.enabled=null!==(t=null==n?void 0:n.debug)&&void 0!==t&&t}deinit(){this.onReadyCallback=void 0,this.component={acceptsThemes:!0,activeThemes:[]},this.messageQueue=[],this.sentMessages=[],this.lastStreamedItem=void 0,this.pendingSaveItems=void 0,this.pendingSaveTimeout=void 0,this.pendingSaveParams=void 0,this.messageHandler&&(this.contentWindow.document.removeEventListener("message",this.messageHandler),this.contentWindow.removeEventListener("message",this.messageHandler))}registerMessageHandler(){this.messageHandler=e=>{if(v.info("Components API Message received:",e.data),document.referrer&&new URL(document.referrer).origin!==new URL(e.origin).origin)return;if(this.component.origin){if(e.origin!==this.component.origin)return}else this.component.origin=e.origin;const{data:t}=e,s=(e=>{if("string"!=typeof e)return!1;try{const t=JSON.parse(e),s=Object.prototype.toString.call(t);return"[object Object]"===s||"[object Array]"===s}catch(e){return!1}})(t)?JSON.parse(t):t;s?this.handleMessage(s):v.error("Invalid data received. Skipping...")},this.contentWindow.document.addEventListener("message",this.messageHandler,!1),this.contentWindow.addEventListener("message",this.messageHandler,!1),v.info("Waiting for messages...")}handleMessage(e){switch(e.action){case n.ComponentRegistered:this.component.sessionKey=e.sessionKey,e.componentData&&(this.component.data=e.componentData),this.onReady(e.data),v.info("Component successfully registered with payload:",e);break;case n.ActivateThemes:this.activateThemes(e.data.themes);break;default:{var t;if(!e.original)return;const s=null===(t=this.sentMessages)||void 0===t?void 0:t.filter((t=>{var s;return t.messageId===(null===(s=e.original)||void 0===s?void 0:s.messageId)}))[0];if(!s)return void v.error("This extension is attempting to communicate with Standard Notes, but an error is preventing it from doing so. Please restart this extension and try again.");s.callback&&s.callback(e.data);break}}}onReady(e){this.component.environment=e.environment,this.component.platform=e.platform,this.component.uuid=e.uuid,this.initialPermissions&&this.initialPermissions.length>0&&this.requestPermissions(this.initialPermissions);for(const e of this.messageQueue)this.postMessage(e.action,e.data,e.callback);this.messageQueue=[],v.info("Data passed to onReady:",e),this.activateThemes(e.activeThemeUrls||[]),this.onReadyCallback&&this.onReadyCallback()}getSelfComponentUUID(){return this.component.uuid}isRunningInDesktopApplication(){return this.component.environment===g(i.Desktop)}isRunningInMobileApplication(){return this.component.environment===g(i.Mobile)}getComponentDataValueForKey(e){if(this.component.data)return this.component.data[e]}setComponentDataValueForKey(e,t){if(!this.component.data)throw new Error("The component has not been initialized.");if(!e||e&&0===e.length)throw new Error("The key for the data value should be a valid string.");this.component.data=I(I({},this.component.data),{},{[e]:t}),this.postMessage(n.SetComponentData,{componentData:this.component.data})}clearComponentData(){this.component.data={},this.postMessage(n.SetComponentData,{componentData:this.component.data})}postMessage(e,t,s){if(!this.component.sessionKey||!this.component.origin)return void this.messageQueue.push({action:e,data:t,api:b.Component,callback:s});const n={action:e,data:t,messageId:this.generateUUID(),sessionKey:this.component.sessionKey,api:b.Component},i=JSON.parse(JSON.stringify(n));let o;i.callback=s,this.sentMessages.push(i),o=this.isRunningInMobileApplication()?JSON.stringify(n):n,v.info("Posting message:",o),this.contentWindow.parent.postMessage(o,this.component.origin)}requestPermissions(e,t){this.postMessage(n.RequestPermissions,{permissions:e},(()=>{t&&t()}))}activateThemes(){let e=arguments.length>0&&void 0!==arguments[0]?arguments[0]:[];if(!this.component.acceptsThemes)return;v.info("Incoming themes:",e);const{activeThemes:t}=this.component;if(t&&t.sort().toString()==e.sort().toString())return;let s=e;const n=[];for(const i of t)e.includes(i)?s=s.filter((e=>e!==i)):n.push(i);v.info("Deactivating themes:",n),v.info("Activating themes:",s);for(const e of n)this.deactivateTheme(e);this.component.activeThemes=e;for(const e of s){if(!e)continue;const t=this.contentWindow.document.createElement("link");t.id=btoa(e),t.href=e,t.type="text/css",t.rel="stylesheet",t.media="screen,print",t.className="custom-theme",this.contentWindow.document.getElementsByTagName("head")[0].appendChild(t)}}themeElementForUrl(e){return Array.from(this.contentWindow.document.getElementsByClassName("custom-theme")).slice().find((t=>t.id==btoa(e)))}deactivateTheme(e){const t=this.themeElementForUrl(e);t&&t.parentNode&&(t.setAttribute("disabled","true"),t.parentNode.removeChild(t))}generateUUID(){return h()}get platform(){return this.component.platform}get environment(){return this.component.environment}streamItems(e,t){this.postMessage(n.StreamItems,{content_types:e},(e=>{t(e.items)}))}streamContextItem(e){this.postMessage(n.StreamContextItem,{},(t=>{const{item:s}=t;(!this.lastStreamedItem||this.lastStreamedItem.uuid!==s.uuid)&&this.pendingSaveTimeout&&(clearTimeout(this.pendingSaveTimeout),this._performSavingOfItems(this.pendingSaveParams),this.pendingSaveTimeout=void 0,this.pendingSaveParams=void 0),this.lastStreamedItem=s,e(this.lastStreamedItem)}))}selectItem(e){this.postMessage(n.SelectItem,{item:this.jsonObjectForItem(e)})}clearSelection(){this.postMessage(n.ClearSelection,{content_type:o.Tag})}createItem(e,t){this.postMessage(n.CreateItem,{item:this.jsonObjectForItem(e)},(e=>{let{item:s}=e;!s&&e.items&&e.items.length>0&&(s=e.items[0]),this.associateItem(s),t&&t(s)}))}createItems(e,t){const s=e.map((e=>this.jsonObjectForItem(e)));this.postMessage(n.CreateItems,{items:s},(e=>{t&&t(e.items)}))}associateItem(e){this.postMessage(n.AssociateItem,{item:this.jsonObjectForItem(e)})}deassociateItem(e){this.postMessage(n.DeassociateItem,{item:this.jsonObjectForItem(e)})}deleteItem(e,t){this.deleteItems([e],t)}deleteItems(e,t){const s={items:e.map((e=>this.jsonObjectForItem(e)))};this.postMessage(n.DeleteItems,s,(e=>{t&&t(e)}))}sendCustomEvent(e,t,s){this.postMessage(e,t,(e=>{s&&s(e)}))}saveItem(e,t){let s=arguments.length>2&&void 0!==arguments[2]&&arguments[2];this.saveItems([e],t,s)}saveItemWithPresave(e,t,s){this.saveItemsWithPresave([e],t,s)}saveItemsWithPresave(e,t,s){this.saveItems(e,s,!1,t)}_performSavingOfItems(e){let{items:t,presave:s,callback:i}=e;s&&s();const o=[];for(const e of t)o.push(this.jsonObjectForItem(e));this.postMessage(n.SaveItems,{items:o},(()=>{i&&i()}))}saveItems(e,t){let s=arguments.length>2&&void 0!==arguments[2]&&arguments[2],n=arguments.length>3?arguments[3]:void 0;if(this.pendingSaveItems||(this.pendingSaveItems=[]),this.coallesedSaving&&!s){this.pendingSaveTimeout&&clearTimeout(this.pendingSaveTimeout);const s=e.map((e=>e.uuid)),i=this.pendingSaveItems.filter((e=>!s.includes(e.uuid)));this.pendingSaveItems=i.concat(e),this.pendingSaveParams={items:this.pendingSaveItems,presave:n,callback:t},this.pendingSaveTimeout=setTimeout((()=>{this._performSavingOfItems(this.pendingSaveParams),this.pendingSaveItems=[],this.pendingSaveTimeout=void 0,this.pendingSaveParams=null}),this.coallesedSavingDelay)}else this._performSavingOfItems({items:e,presave:n,callback:t})}setSize(e,t){this.postMessage(n.SetSize,{type:"container",width:e,height:t})}jsonObjectForItem(e){const t=Object.assign({},e);return t.children=null,t.parent=null,t}getItemAppDataValue(e,t){return e.getAppDomainValue(t)}}}},t={};function s(n){if(t[n])return t[n].exports;var i=t[n]={exports:{}};return e[n](i,i.exports,s),i.exports}return s.d=(e,t)=>{for(var n in t)s.o(t,n)&&!s.o(e,n)&&Object.defineProperty(e,n,{enumerable:!0,get:t[n]})},s.o=(e,t)=>Object.prototype.hasOwnProperty.call(e,t),s(175)})().default}));
+//# sourceMappingURL=dist.js.map;// CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
 (function(mod) {
@@ -15760,25 +15091,25 @@ if (window) {
 ;(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 "use strict";
 
-document.addEventListener("DOMContentLoaded", function (event) {
-
+document.addEventListener("DOMContentLoaded", function () {
   var modeByModeMode = CodeMirror.modeInfo.reduce(function (acc, m) {
     if (acc[m.mode]) {
       acc[m.mode].push(m);
     } else {
       acc[m.mode] = [m];
     }
+
     return acc;
   }, {});
-
   var modeModeAndMimeByName = CodeMirror.modeInfo.reduce(function (acc, m) {
-    acc[m.name] = { mode: m.mode, mime: m.mime };
+    acc[m.name] = {
+      mode: m.mode,
+      mime: m.mime
+    };
     return acc;
   }, {});
-
   var modes = Object.keys(modeModeAndMimeByName);
-
-  var componentManager;
+  var componentRelay;
   var workingNote, clientData;
   var lastValue, lastUUID;
   var editor, select;
@@ -15787,16 +15118,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
   var initialLoad = true;
 
   function loadComponentManager() {
-    var permissions = [{ name: "stream-context-item" }];
-    componentManager = new ComponentManager(permissions, function () {
-      // on ready
-      var platform = componentManager.platform;
-      if (platform) {
-        document.body.classList.add(platform);
+    componentRelay = new ComponentRelay({
+      targetWindow: window,
+      onReady: function onReady() {
+        // on ready
+        var platform = componentRelay.platform;
+
+        if (platform) {
+          document.body.classList.add(platform);
+        }
       }
     });
-
-    componentManager.streamContextItem(function (note) {
+    componentRelay.streamContextItem(function (note) {
       onReceivedNote(note);
     });
   }
@@ -15807,12 +15140,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
       // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
       // the right object, and it will save incorrectly.
       var note = workingNote;
-
-      componentManager.saveItemWithPresave(note, function () {
+      componentRelay.saveItemWithPresave(note, function () {
         lastValue = editor.getValue();
         note.content.text = lastValue;
         note.clientData = clientData;
-
         note.content.preview_plain = null;
         note.content.preview_html = null;
       });
@@ -15827,19 +15158,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
       lastUUID = note.uuid;
     }
 
-    workingNote = note;
-    // Only update UI on non-metadata updates.
+    workingNote = note; // Only update UI on non-metadata updates.
+
     if (note.isMetadataUpdate) {
       return;
     }
 
     clientData = note.clientData;
     var mode = clientData.mode;
+
     if (mode) {
       changeMode(mode);
     } else {
       // assign editor's default from component settings
-      var defaultLanguage = componentManager.componentDataValueForKey("language");
+      var defaultLanguage = componentRelay.getComponentDataValueForKey("language");
       changeMode(defaultLanguage);
     }
 
@@ -15864,36 +15196,32 @@ document.addEventListener("DOMContentLoaded", function (event) {
       lineWrapping: true
     });
     editor.setSize("100%", "100%");
-
     setTimeout(function () {
       changeMode(defaultMode);
     }, 1);
-
     createSelectElements();
-
     editor.on("change", function () {
       if (ignoreTextChange) {
         return;
       }
+
       save();
     });
   }
 
   function createSelectElements() {
     select = document.getElementById("select");
-    var index = 0;
-    for (var element in modes) {
-      var opt = document.createElement("option");
-      opt.value = index;
-      opt.innerHTML = modes[index];
-      select.appendChild(opt);
-      index++;
+
+    for (var index = 0; index < modes.length; index++) {
+      var option = document.createElement("option");
+      option.value = index;
+      option.innerHTML = modes[index];
+      select.appendChild(option);
     }
   }
 
   loadEditor();
   loadComponentManager();
-
   /*
     Editor Modes
   */
@@ -15902,24 +15230,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     editor.setOption("keyMap", keymap);
   };
 
-  window.onLanguageSelect = function (event) {
+  window.onLanguageSelect = function () {
     var language = modes[select.selectedIndex];
     changeMode(language);
     save();
   };
 
-  window.setDefaultLanguage = function (event) {
-    var language = modes[select.selectedIndex];
+  window.setDefaultLanguage = function () {
+    var language = modes[select.selectedIndex]; // assign default language for this editor when entering notes
 
-    // assign default language for this editor when entering notes
-    componentManager.setComponentDataValueForKey("language", language);
+    componentRelay.setComponentDataValueForKey("language", language); // show a confirmation message
 
-    // show a confirmation message
     var message = document.getElementById("default-label");
     var original = message.innerHTML;
     message.innerHTML = "Success";
     message.classList.add("success");
-
     setTimeout(function () {
       message.classList.remove("success");
       message.innerHTML = original;
@@ -15978,9 +15303,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
     if (mode) {
       editor.setOption("mode", mode.mime);
       CodeMirror.autoLoadMode(editor, mode.mode);
+
       if (clientData) {
         clientData.mode = mode.name;
       }
+
       document.getElementById("select").selectedIndex = modes.indexOf(mode.name);
     } else {
       console.error("Could not find a mode corresponding to " + inputMode);

@@ -1,46 +1,45 @@
-module.exports = function(grunt) {
-
+module.exports = function (grunt) {
   grunt.initConfig({
 
-  watch: {
-    js: {
-      files: ['src/**/*.js'],
-      tasks: ['concat:app', 'babel', 'browserify', 'concat:lib', 'concat:dist'],
-      options: {
-        spawn: false,
-      },
-    },
-    css: {
-      files: ['src/main.scss'],
-      tasks: ['sass', 'concat:css'],
-      options: {
-        spawn: false,
-      },
-    }
-  },
-
-  sass: {
-    dist: {
-      options: {
-       style: 'expanded',
-       sourcemap: 'none'
-     },
-      files: {
-        'dist/app.css': 'src/main.scss'
-      }
-    }
-  },
-
-   babel: {
+    watch: {
+      js: {
+        files: ['src/**/*.js'],
+        tasks: ['concat:app', 'babel', 'browserify', 'concat:lib', 'concat:dist'],
         options: {
-            sourceMap: true,
-            presets: ['es2015']
+          spawn: false,
         },
-        app: {
-            files: {
-                'dist/app.js': ['dist/app.js']
-            }
+      },
+      css: {
+        files: ['src/main.scss'],
+        tasks: ['sass', 'concat:css'],
+        options: {
+          spawn: false,
+        },
+      }
+    },
+
+    sass: {
+      dist: {
+        options: {
+          style: 'expanded',
+          sourcemap: 'none'
+        },
+        files: {
+          'dist/app.css': 'src/main.scss'
         }
+      }
+    },
+
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: ['@babel/preset-env']
+      },
+      app: {
+        files: {
+          'dist/app.js': ['dist/app.js']
+        }
+      }
     },
 
     browserify: {
@@ -65,7 +64,7 @@ module.exports = function(grunt) {
       lib: {
         src: [
           'node_modules/codemirror/lib/codemirror.js',
-          'node_modules/sn-components-api/dist/dist.js',
+          'node_modules/@standardnotes/component-relay/dist/dist.js',
           'vendor/*.js'
         ],
         dest: 'dist/lib.js',
@@ -88,7 +87,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: false, src: ['vendor/modes/**/*', 'vendor/vim.js'], dest: 'dist/', filter: 'isFile'}
+          { expand: false, src: ['vendor/modes/**/*', 'vendor/vim.js'], dest: 'dist/', filter: 'isFile' }
         ]
       }
     }

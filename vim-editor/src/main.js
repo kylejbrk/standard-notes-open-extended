@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function () {
 
   const modeByModeMode = CodeMirror.modeInfo.reduce(function (acc, m) {
     if (acc[m.mode]) {
@@ -10,43 +10,45 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }, {});
 
   const modeModeAndMimeByName = CodeMirror.modeInfo.reduce(function (acc, m) {
-    acc[m.name] = {mode: m.mode, mime: m.mime};
+    acc[m.name] = { mode: m.mode, mime: m.mime };
     return acc;
   }, {});
 
   const modes = Object.keys(modeModeAndMimeByName);
 
-  var componentManager;
-  var workingNote, clientData;
-  var lastValue, lastUUID;
-  var editor, select;
-  var defaultMode = "JavaScript";
-  var ignoreTextChange = false;
-  var initialLoad = true;
+  let componentRelay;
+  let workingNote, clientData;
+  let lastValue, lastUUID;
+  let editor, select;
+  const defaultMode = "JavaScript";
+  let ignoreTextChange = false;
+  let initialLoad = true;
 
   function loadComponentManager() {
-    var permissions = [{name: "stream-context-item"}]
-    componentManager = new ComponentManager(permissions, function(){
-      // on ready
-      var platform = componentManager.platform;
-      if(platform) {
-        document.body.classList.add(platform);
+    componentRelay = new ComponentRelay({
+      targetWindow: window,
+      onReady: () => {
+        // on ready
+        const platform = componentRelay.platform;
+        if (platform) {
+          document.body.classList.add(platform);
+        }
       }
     });
 
-    componentManager.streamContextItem((note) => {
+    componentRelay.streamContextItem((note) => {
       onReceivedNote(note);
     });
   }
 
   function save() {
-    if(workingNote) {
+    if (workingNote) {
       // Be sure to capture this object as a variable, as this.note may be reassigned in `streamContextItem`, so by the time
       // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
       // the right object, and it will save incorrectly.
       let note = workingNote;
 
-      componentManager.saveItemWithPresave(note, () => {
+      componentRelay.saveItemWithPresave(note, () => {
         lastValue = editor.getValue();
         note.content.text = lastValue;
         note.clientData = clientData;
@@ -58,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function onReceivedNote(note) {
-    if(note.uuid !== lastUUID) {
+    if (note.uuid !== lastUUID) {
       // Note changed, reset last values
       lastValue = null;
       initialLoad = true;
@@ -67,28 +69,29 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     workingNote = note;
     // Only update UI on non-metadata updates.
-    if(note.isMetadataUpdate) {
+    if (note.isMetadataUpdate) {
       return;
     }
 
     clientData = note.clientData;
-    var mode = clientData.mode;
-    if(mode) {
+    const mode = clientData.mode;
+
+    if (mode) {
       changeMode(mode);
     } else {
       // assign editor's default from component settings
-      let defaultLanguage = componentManager.componentDataValueForKey("language");
+      let defaultLanguage = componentRelay.getComponentDataValueForKey("language");
       changeMode(defaultLanguage);
     }
 
-    if(editor) {
-      if(note.content.text !== lastValue) {
+    if (editor) {
+      if (note.content.text !== lastValue) {
         ignoreTextChange = true;
         editor.getDoc().setValue(workingNote.content.text);
         ignoreTextChange = false;
       }
 
-      if(initialLoad) {
+      if (initialLoad) {
         initialLoad = false;
         editor.getDoc().clearHistory();
       }
@@ -109,51 +112,49 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     createSelectElements();
 
-    editor.on("change", function(){
-      if(ignoreTextChange) {return;}
+    editor.on("change", function () {
+      if (ignoreTextChange) {
+        return;
+      }
       save();
     });
   }
 
   function createSelectElements() {
     select = document.getElementById("select");
-    var index = 0;
-    for(var element in modes) {
-      var opt = document.createElement("option");
-      opt.value = index;
-      opt.innerHTML = modes[index];
-      select.appendChild(opt);
-      index++;
+    for (let index = 0; index < modes.length; index++) {
+      const option = document.createElement("option");
+      option.value = index;
+      option.innerHTML = modes[index];
+      select.appendChild(option);
     }
   }
 
   loadEditor();
   loadComponentManager();
 
-
   /*
     Editor Modes
   */
-
-  window.setKeyMap = function(keymap) {
+  window.setKeyMap = function (keymap) {
     editor.setOption("keyMap", keymap);
   }
 
-  window.onLanguageSelect = function(event) {
-    var language = modes[select.selectedIndex];
+  window.onLanguageSelect = function () {
+    const language = modes[select.selectedIndex];
     changeMode(language);
     save();
   }
 
-  window.setDefaultLanguage = function(event) {
-    let language = modes[select.selectedIndex];
+  window.setDefaultLanguage = function () {
+    const language = modes[select.selectedIndex];
 
     // assign default language for this editor when entering notes
-    componentManager.setComponentDataValueForKey("language", language);
+    componentRelay.setComponentDataValueForKey("language", language);
 
     // show a confirmation message
-    let message = document.getElementById("default-label");
-    let original = message.innerHTML;
+    const message = document.getElementById("default-label");
+    const original = message.innerHTML;
     message.innerHTML = "Success";
     message.classList.add("success");
 
@@ -206,14 +207,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
   }
 
   function changeMode(inputMode) {
-    if(!inputMode) { return; }
-    
+    if (!inputMode) { return; }
+
     const mode = inputModeToMode(inputMode);
 
-    if(mode) {
+    if (mode) {
       editor.setOption("mode", mode.mime);
       CodeMirror.autoLoadMode(editor, mode.mode);
-      if(clientData) {
+      if (clientData) {
         clientData.mode = mode.name;
       }
       document.getElementById("select").selectedIndex = modes.indexOf(mode.name);
