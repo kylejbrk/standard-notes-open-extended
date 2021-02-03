@@ -10,7 +10,7 @@ Use your browser to see the Code Editor in action.
 
 1. Clone the [code-editor](https://github.com/standardnotes/code-editor) repository from GitHub.
 
-2. Run `npm install` to install required dependencies.
+2. Run `yarn` to install required dependencies.
    
 3. Open `index.html` in your browser where the editor will be running.
 
@@ -20,13 +20,13 @@ See the editor in the desktop app and make changes to the code.
 
 1. Clone the [code-editor](https://github.com/standardnotes/code-editor) repository from GitHub.
 
-2. Run `npm install` to install required dependencies.
+2. Run `yarn` to install required dependencies.
    
 3. Ensure that either the Standard Notes desktop app is available for use or the web app is accessible. Use both locally or with an Extended account (or the extension will not load).
 
 4. Follow the instructions [here](https://docs.standardnotes.org/extensions/local-setup) to setup the extension locally.
 
-5. Begin development! Upon making any changes to the code, run `grunt` to build the files to the `dist` folder.
+5. Begin development! Upon making any changes to the code, run `yarn build` to build the files to the `dist` folder.
 
 ## Contributing
 

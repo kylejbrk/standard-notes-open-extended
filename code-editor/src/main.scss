@@ -54,21 +54,12 @@ body, html {
   font-size: calc(var(--sn-stylekit-font-size-editor) - 0.1rem);
 
   flex: 1 1 auto;
+  width: 100%;
   height: 100%;
   resize: none;
 
   padding: 15px;
   padding: 8px;
-
-  .CodeMirror-code .cm-comment {
-    background: var(--sn-stylekit-contrast-background-color);
-    color: var(--sn-stylekit-info-color);
-
-    &.CodeMirror-selectedtext {
-      color: var(--sn-stylekit-info-contrast-color) !important;
-      background: transparent;
-    }
-  }
 
   .cm-header {
     color: var(--sn-stylekit-editor-foreground-color);
@@ -80,15 +71,6 @@ body, html {
   }
 
   .cm-variable, .cm-variable-1, .cm-variable-2, .cm-variable-3, .cm-string-2 {
-    color: var(--sn-stylekit-info-color) !important;
-
-    &.CodeMirror-selectedtext {
-      color: var(--sn-stylekit-info-contrast-color) !important;
-      background: transparent;
-    }
-  }
-
-  .cm-link, .cm-string, .cm-keyword, .cm-builtin, .cm-number, .cm-attribute {
     color: var(--sn-stylekit-info-color) !important;
 
     &.CodeMirror-selectedtext {

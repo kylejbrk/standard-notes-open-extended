@@ -62,8 +62,8 @@
             "marketing_url": "https://standardnotes.org/extensions/code-editor",
             "name": "Code Editor",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/code.jpg",
-            "version": "1.3.5",
-            "download_url": "https://api.github.com/repos/standardnotes/code-editor/zipball/1.3.5",
+            "version": "1.3.6",
+            "download_url": "https://api.github.com/repos/standardnotes/code-editor/zipball/1.3.6",
             "url": "https://kylejbrk.github.io/standard-notes-open-extended/code-editor/index.html",
             "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/code-editor/index.json"
         },
@@ -211,8 +211,8 @@
             "marketing_url": "https://standardnotes.org/extensions/vim-editor",
             "name": "Vim Editor",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/vim.jpg",
-            "version": "1.3.4",
-            "download_url": "https://api.github.com/repos/sn-extensions/vim-editor/zipball/1.3.4",
+            "version": "1.3.5",
+            "download_url": "https://api.github.com/repos/sn-extensions/vim-editor/zipball/1.3.5",
             "url": "https://kylejbrk.github.io/standard-notes-open-extended/vim-editor/index.html",
             "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/vim-editor/index.json"
         },

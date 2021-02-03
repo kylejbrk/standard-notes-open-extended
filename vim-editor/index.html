@@ -3,29 +3,34 @@
   <head>
     <base target="_blank">
     <meta charset="UTF-8">
-    <script src="dist/dist.js"></script>
-    <link rel="stylesheet" media="all" href="dist/dist.css">
-
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1">
-
-    <script src="dist/vendor/vim.js"></script>
-
+    <link rel="stylesheet" href="vendor/codemirror/lib/codemirror.css">
+    <link rel="stylesheet" href="dist/main.css">
+    <link rel="stylesheet" href="dist/stylekit.css">
+    <script src="vendor/codemirror/lib/codemirror.js"></script>
+    <!-- Required for gfm mode -->
+    <script src="vendor/codemirror/addon/mode/overlay.js"></script>
+    <script src="vendor/codemirror/addon/mode/simple.js"></script>
+    <script src="vendor/codemirror/addon/mode/loadmode.js"></script>
+    <script src="vendor/codemirror/mode/meta.js"></script>
+    <!-- Vim key bindings -->
+    <script src="vendor/codemirror/keymap/vim.js"></script>
+    <script src="dist/lib/component-relay.js"></script>
     <script>
-      CodeMirror.modeURL = "dist/vendor/modes/%N/%N.js";
+      CodeMirror.modeURL = "vendor/codemirror/mode/%N/%N.js";
     </script>
-
   </head>
 
   <body class="sn-component" onload="setKeyMap('vim')">
     <div id="wrapper">
       <textarea id="code" name="code"></textarea>
     <div>
-
     <div id="select-wrapper">
       <span id="language-label">Language:</span>
       <select id="select" onchange="onLanguageSelect(event)"></select>
       <span id="default-label" onclick="setDefaultLanguage(event)">Set as Default</span>
       <span id="default-message" class="shown"></span>
     </div>
+    <script src="dist/main.js"></script>
   </body>
 </html>
