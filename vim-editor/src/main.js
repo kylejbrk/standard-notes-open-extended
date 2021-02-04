@@ -99,6 +99,10 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function loadEditor() {
+    // Handler for the save command that is mapped to the :w (write) key binding.
+    CodeMirror.commands.save = function() {
+      save();
+    };
     editor = CodeMirror.fromTextArea(document.getElementById("code"), {
       lineNumbers: true,
       styleSelectedText: true,
