@@ -1,5 +1,27 @@
 <div class='sn-component'>
 <div class='sk-panel static full-height'>
+<div class='sk-panel-content full-height' id='panel-content' ng-if='formData.loading'>
+<div class='sk-panel-row full-height justify-left'>
+<div class='sk-panel-column'>
+<div id='title-container'>
+<div id='title'>GitHub Push</div>
+</div>
+</div>
+<div class='vertical-rule'></div>
+<div class='sk-panel-column'>
+<div class='sk-panel-row'>
+<div class='title'>
+The extension failed to load.
+</div>
+</div>
+<div class='sk-panel-row'>
+<div class='title'>
+Please reload Standard Notes and try again.
+</div>
+</div>
+</div>
+</div>
+</div>
 <div class='sk-panel-content full-height' id='panel-content' ng-if='!formData.loading'>
 <div class='sk-panel-section no-bottom-pad full-height'>
 <div class='sk-panel-row full-height justify-left'>
@@ -9,37 +31,54 @@
 </div>
 </div>
 <div class='vertical-rule'></div>
-<div class='sk-panel-column'>
-<div class='token-form' ng-if='!token'>
-<input class='sk-input contrast' ng-keyup='$event.keyCode == 13 &amp;&amp; submitToken();' ng-model='formData.token' placeholder='Enter GitHub token'>
+<div class='sk-panel-column' ng-if='!token'>
+<div class='sk-panel-row'>
+<div class='token-form'>
+<input autocomplete='off' class='sk-input contrast' ng-keyup='$event.keyCode == 13 &amp;&amp; submitToken();' ng-model='formData.token' placeholder='Enter GitHub token' type='text'>
 </div>
 </div>
-<div class='sk-panel-column' id='generate-token-column' ng-if='!token'>
-<a class='sk-a sk-button no-border info' href='https://github.com/settings/tokens/new' target='_blank'>
-<div class='sk-label'>Generate Token</div>
-</a>
 </div>
 <div class='sk-panel-column' ng-if='token'>
-<div class='title'>{{formData.loadingRepos ? 'Loading Repositories' : 'Repository'}}</div>
+<div class='sk-panel-row'>
+<div class='title'>{{formData.loadingRepos ? 'Loading repositories...' : 'Repository:'}}</div>
+</div>
+<div class='sk-panel-row'>
 <select class='sk-input' ng-change='didSelectRepo()' ng-if='!formData.loadingRepos' ng-model='formData.selectedRepo'>
 <option ng-repeat='repo in repos' ng-selected='repo == formData.selectedRepo' ng-value='repo'>
-{{repo.name}}
+{{repo.full_name}}
 </option>
 </select>
 </div>
+</div>
 <div class='vertical-rule'></div>
-<div id='commit-info' ng-if='formData.selectedRepo'>
-<input class='sk-input contrast file-path' ng-model='formData.fileDirectory' placeholder='Dir'>
+<div class='sk-panel-column' ng-if='!token'>
+<div class='sk-panel-row'>
+<div class='title'>
+Click
+<a href='https://github.com/settings/tokens/new' target='_blank'>here</a>
+to generate a new token.
+</div>
+</div>
+<div class='sk-panel-row'>
+<div class='title'>
+Paste your personal access token and press Enter/Return.
+</div>
+</div>
+</div>
+<div class='sk-panel-column' id='commit-info' ng-if='formData.selectedRepo'>
+<div class='sk-panel-row'>
+<input class='sk-input contrast file-path' ng-model='formData.fileDirectory' placeholder='Directory'>
 <input class='sk-input contrast file-ext' ng-model='formData.fileExtension' placeholder='Ext'>
-<input class='sk-input contrast commit-message' ng-keyup='$event.keyCode == 13 &amp;&amp; pushChanges($event);' ng-model='formData.commitMessage' placeholder='Msg'>
-<div class='sk-button info no-border' ng-click='pushChanges($event)' style='margin-left: 15px;'>
-<div class='sk-label'>{{formData.pushStatus}}</div>
+<input class='sk-input contrast commit-message' ng-keyup='$event.keyCode == 13 &amp;&amp; pushChanges($event);' ng-model='formData.commitMessage' placeholder='Commit message'>
+<div class='sk-button no-border' ng-class='pushBtnClass' ng-click='pushChanges($event)'>
+<div class='sk-label'>{{pushStatus}}</div>
+</div>
 </div>
 </div>
 <div class='vertical-rule' ng-if='formData.selectedRepo'></div>
 <div class='sk-panel-column' ng-if='token'>
-<div class='sk-button danger no-border' ng-click='logout()'>
-<div class='sk-label'>Logout</div>
+<div class='sk-button danger no-border' ng-click='signOut()'>
+<div class='sk-label'>Sign out</div>
 </div>
 </div>
 </div>

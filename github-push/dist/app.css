@@ -1990,10 +1990,6 @@ a.sk-button {
   border: none;
 }
 
-#generate-token-column {
-  margin-left: 10px;
-}
-
 #commit-info {
   display: flex;
   flex-wrap: nowrap;
@@ -2002,19 +1998,47 @@ a.sk-button {
 }
 #commit-info input {
   margin: 0;
-}
-#commit-info input {
-  margin-right: 2px;
+  margin-right: 3px;
+  height: 35px;
 }
 #commit-info .file-path, #commit-info .commit-message {
-  width: 75px;
+  width: 200px;
 }
 #commit-info .file-ext {
-  width: 40px;
+  width: 60px;
+}
+#commit-info .sk-button {
+  margin-left: 10px;
 }
 
 input {
   width: 150px;
+}
+
+.token-form {
+  position: relative;
+}
+
+.token-form input {
+  margin: 0px;
+  padding-right: 60px !important;
+  width: 100%;
+  outline: none;
+  height: 30px;
+  border-radius: 5px;
+}
+
+.token-form div {
+  position: absolute;
+  top: 0;
+  border-radius: 5px;
+  right: 0px;
+  z-index: 2;
+  border: none;
+  top: 7px;
+  height: 30px;
+  cursor: pointer;
+  font-weight: 900;
 }
 
 /*# sourceMappingURL=app.css.map */

@@ -1,40 +1,63 @@
 .sn-component
   .sk-panel.static.full-height
+    .sk-panel-content#panel-content.full-height{"ng-if" => "formData.loading"}
+      .sk-panel-row.full-height.justify-left
+        .sk-panel-column
+          #title-container
+            #title GitHub Push
+        .vertical-rule
+        .sk-panel-column
+          .sk-panel-row
+            .title
+              The extension failed to load.
+          .sk-panel-row
+            .title
+              Please reload Standard Notes and try again.
+
     .sk-panel-content#panel-content.full-height{"ng-if" => "!formData.loading"}
       .sk-panel-section.no-bottom-pad.full-height
         .sk-panel-row.full-height.justify-left
-
           .sk-panel-column
             #title-container
               #title GitHub Push
 
           .vertical-rule
 
-          .sk-panel-column
-            .token-form{"ng-if" => "!token"}
-              %input.sk-input.contrast{"ng-model" => "formData.token", "placeholder" => "Enter GitHub token", "ng-keyup" => "$event.keyCode == 13 && submitToken();"}
-
-          .sk-panel-column#generate-token-column{"ng-if" => "!token"}
-            %a.sk-a.sk-button.no-border.info{"href" => "https://github.com/settings/tokens/new", "target" => "_blank"}
-              .sk-label Generate Token
+          .sk-panel-column{"ng-if" => "!token"}
+            .sk-panel-row
+              .token-form
+                %input.sk-input.contrast{"type" => "text", "ng-model" => "formData.token", "placeholder" => "Enter GitHub token", "ng-keyup" => "$event.keyCode == 13 && submitToken();", "autocomplete" => "off"}
 
           .sk-panel-column{"ng-if" => "token"}
-            .title {{formData.loadingRepos ? 'Loading Repositories' : 'Repository'}}
-            %select.sk-input{"ng-if" => "!formData.loadingRepos", "ng-model" => "formData.selectedRepo", "ng-change" => "didSelectRepo()"}
-              %option{"ng-repeat" => "repo in repos", "ng-selected" => "repo == formData.selectedRepo", "ng-value" => "repo"}
-                {{repo.name}}
+            .sk-panel-row
+              .title {{formData.loadingRepos ? 'Loading repositories...' : 'Repository:'}}
+            .sk-panel-row
+              %select.sk-input{"ng-if" => "!formData.loadingRepos", "ng-model" => "formData.selectedRepo", "ng-change" => "didSelectRepo()"}
+                %option{"ng-repeat" => "repo in repos", "ng-selected" => "repo == formData.selectedRepo", "ng-value" => "repo"}
+                  {{repo.full_name}}
 
           .vertical-rule
 
-          #commit-info{"ng-if" => "formData.selectedRepo"}
-            %input.sk-input.contrast.file-path{"placeholder" => "Dir", "ng-model" => "formData.fileDirectory"}
-            %input.sk-input.contrast.file-ext{"placeholder" => "Ext", "ng-model" => "formData.fileExtension"}
-            %input.sk-input.contrast.commit-message{"placeholder" => "Msg", "ng-model" => "formData.commitMessage", "ng-keyup" => "$event.keyCode == 13 && pushChanges($event);"}
-            .sk-button.info.no-border{"ng-click" => "pushChanges($event)", "style" => "margin-left: 15px;"}
-              .sk-label {{formData.pushStatus}}
+          .sk-panel-column{"ng-if" => "!token"}
+            .sk-panel-row
+              .title
+                Click
+                %a{"href" => "https://github.com/settings/tokens/new", "target" => "_blank"} here
+                to generate a new token.
+            .sk-panel-row
+              .title
+                Paste your personal access token and press Enter/Return.
+
+          .sk-panel-column#commit-info{"ng-if" => "formData.selectedRepo"}
+            .sk-panel-row
+              %input.sk-input.contrast.file-path{"placeholder" => "Directory", "ng-model" => "formData.fileDirectory"}
+              %input.sk-input.contrast.file-ext{"placeholder" => "Ext", "ng-model" => "formData.fileExtension"}
+              %input.sk-input.contrast.commit-message{"placeholder" => "Commit message", "ng-model" => "formData.commitMessage", "ng-keyup" => "$event.keyCode == 13 && pushChanges($event);"}
+              .sk-button.no-border{"ng-click" => "pushChanges($event)", "ng-class" => "pushBtnClass"}
+                .sk-label {{pushStatus}}
 
           .vertical-rule{"ng-if" => "formData.selectedRepo"}
 
           .sk-panel-column{"ng-if" => "token"}
-            .sk-button.danger.no-border{"ng-click" => "logout()"}
-              .sk-label Logout
+            .sk-button.danger.no-border{"ng-click" => "signOut()"}
+              .sk-label Sign out
