@@ -5,7 +5,7 @@ body, html {
   font-size: var(--sn-stylekit-base-font-size);
 }
 
-#wrapper {
+.wrapper {
   display: flex;
   flex-direction: column;
   position: relative;
@@ -13,34 +13,6 @@ body, html {
 
   // Fixes unnecessary horizontal scrolling on Windows
   overflow-x: hidden;
-}
-
-#select-wrapper {
-  width: 100%;
-  margin: 0;
-  padding-left: 16px;
-  border-top: 1px solid var(--sn-stylekit-border-color);
-  background-color: var(--sn-stylekit-background-color);
-  color: var(--sn-stylekit-foreground-color);
-}
-
-#language-label {
-  font-size: 12px;
-  color: var(--sn-stylekit-neutral-color);
-}
-
-#default-label {
-  font-size: 12px;
-  color: var(--sn-stylekit-neutral-color);
-  cursor: pointer;
-
-  &.success {
-    color: var(--sn-stylekit-info-color);
-  }
-}
-
-#select {
-  margin: 5px;
 }
 
 .CodeMirror {
@@ -57,9 +29,6 @@ body, html {
   width: 100%;
   height: 100%;
   resize: none;
-
-  padding: 15px;
-  padding: 8px;
 
   .cm-header {
     color: var(--sn-stylekit-editor-foreground-color);
@@ -103,6 +72,10 @@ body, html {
 
 .CodeMirror-cursor {
   border-color: var(--sn-stylekit-info-color) !important;
+}
+
+.CodeMirror-cursors {
+  z-index: 10 !important; // In Markdown mode, cursor is hidden behind code blocks
 }
 
 .CodeMirror-selected {

@@ -28,11 +28,13 @@ document.addEventListener("DOMContentLoaded", function () {
     componentRelay = new ComponentRelay({
       targetWindow: window,
       onReady: () => {
-        // on ready
         const platform = componentRelay.platform;
         if (platform) {
           document.body.classList.add(platform);
         }
+        const initialKeyMap = componentRelay.getComponentDataValueForKey("keyMap") ?? "default";
+        window.setKeyMap(initialKeyMap);
+        updateVimStatus(initialKeyMap, true);
       }
     });
 
@@ -99,7 +101,14 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function loadEditor() {
+    // Handler for the save command that is mapped to the :w (write) Vim key binding.
+    CodeMirror.commands.save = function() {
+      save();
+    };
     editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+      extraKeys: {
+        'Alt-F': 'findPersistent',
+      },
       lineNumbers: true,
       styleSelectedText: true,
       lineWrapping: true
@@ -121,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function createSelectElements() {
-    select = document.getElementById("select");
+    select = document.getElementById("language-select");
     for (let index = 0; index < modes.length; index++) {
       const option = document.createElement("option");
       option.value = index;
@@ -130,12 +139,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  loadEditor();
-  loadComponentRelay();
-
-  /*
-    Editor Modes
-  */
+  // Editor Modes
   window.setKeyMap = function (keymap) {
     editor.setOption("keyMap", keymap);
   }
@@ -217,9 +221,40 @@ document.addEventListener("DOMContentLoaded", function () {
       if (clientData) {
         clientData.mode = mode.name;
       }
-      document.getElementById("select").selectedIndex = modes.indexOf(mode.name);
+      document.getElementById("language-select").selectedIndex = modes.indexOf(mode.name);
     } else {
       console.error("Could not find a mode corresponding to " + inputMode);
     }
   }
+
+  function updateVimStatus(keyMap) {
+    const toggleButton = document.getElementById("toggle-vim-mode-button");
+
+    const newAction = keyMap === "vim" ? "Disable" : "Enable";
+    const buttonClass = keyMap === "vim" ? "danger" : "success";
+
+    toggleButton.innerHTML = `${newAction} Vim mode`;
+    toggleButton.classList.remove('danger');
+    toggleButton.classList.remove('success');
+    toggleButton.classList.add(buttonClass);
+  }
+
+  window.toggleVimMode = function() {
+    let newKeyMap;
+
+    const currentKeyMap = componentRelay.getComponentDataValueForKey("keyMap") ?? "default";
+    if (currentKeyMap === "default") {
+      newKeyMap = "vim";
+    } else {
+      newKeyMap = "default";
+    }
+
+    window.setKeyMap(newKeyMap);
+    componentRelay.setComponentDataValueForKey("keyMap", newKeyMap);
+
+    updateVimStatus(newKeyMap);
+  }
+
+  loadEditor();
+  loadComponentRelay();
 });
