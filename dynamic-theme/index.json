@@ -11,7 +11,7 @@
     "marketing_url": "https://standardnotes.org/extensions/dynamic",
     "name": "Dynamic",
     "version": "1.0.0",
-    "download_url": "https://api.github.com/repos/sn-extensions/dynamic-theme/zipball/1.0.0",
+    "download_url": "https://api.github.com/repos/standardnotes/dynamic-theme/zipball/1.0.0",
     "url": "https://kylejbrk.github.io/standard-notes-open-extended/dynamic-theme/dist/dist.css",
     "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/dynamic-theme/index.json"
 }
