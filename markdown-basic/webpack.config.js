@@ -1,10 +1,12 @@
-const webpack = require('webpack');
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const uglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
+  mode: 'production',
+  performance: {
+    hints: false,
+  },
   devtool: 'cheap-source-map',
   entry: [
     path.resolve(__dirname, 'app/main.js'),
@@ -13,52 +15,63 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     publicPath: '/',
-    filename: './dist.js'
+    filename: './dist.js',
   },
   module: {
-    loaders: [
-      { test: /\.css$/, include: path.resolve(__dirname, 'app'), loader: 'style-loader!css-loader' },
+    rules: [
+      {
+        test: /\.css$/,
+        include: path.resolve(__dirname, 'app'),
+        loader: 'style-loader!css-loader',
+      },
       {
         test: /\.scss$/,
         exclude: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            'css-loader',
-            { loader: 'sass-loader', query: { sourceMap: false } },
-          ],
-          publicPath: '../'
-        }),
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: {
+              publicPath: '../',
+            },
+          },
+          'css-loader',
+          {
+            loader: 'sass-loader',
+            query: {
+              sourceMap: false,
+            },
+          },
+        ],
       },
-      { test: /\.js[x]?$/, include: [
-        path.resolve(__dirname, 'app'),
-        path.resolve(__dirname, 'node_modules/sortablejs/Sortable.min.js'),
-        path.resolve(__dirname, 'node_modules/sn-components-api/dist/dist.js')
-      ], exclude: /node_modules/, loader: 'babel-loader' }
+      {
+        test: /\.js[x]?$/,
+        include: [
+          path.resolve(__dirname, 'app'),
+          path.resolve(__dirname, 'node_modules/@standardnotes/component-relay/dist/dist.js'),
+        ],
+        exclude: /node_modules/,
+        loader: 'babel-loader'
+      }
     ]
   },
   resolve: {
     extensions: ['.js', '.jsx', '.css', '.scss'],
     alias: {
-        highlightjs_css: path.join(__dirname, 'node_modules/highlight.js/styles/atom-one-light.css'),
-        stylekit: path.join(__dirname, 'node_modules/sn-stylekit/dist/stylekit.css')
-    }
+      highlightjs_css: path.join(__dirname, 'node_modules/highlight.js/styles/atom-one-light.css'),
+      stylekit: path.join(__dirname, 'node_modules/sn-stylekit/dist/stylekit.css'),
+    },
   },
   plugins: [
-    new ExtractTextPlugin({ filename: './dist.css', disable: false, allChunks: true}),
-    new uglifyJsPlugin({
-      include: /\.min\.js$/,
-      compress: {
-        warnings: false
-      }
+    new MiniCssExtractPlugin({
+      filename: './dist.css',
     }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: './app/index.html',
+          to: 'index.html',
+        },
+      ],
     }),
-    new CopyWebpackPlugin([
-      { from: './app/index.html', to: 'index.html' },
-    ])
-  ]
+  ],
 };

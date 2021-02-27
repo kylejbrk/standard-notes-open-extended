@@ -1,6 +1,9 @@
 {
-  "parser": "babel-eslint",
-  "extends": "airbnb",
+  "parser": "@babel/eslint-parser",
+  "extends": [
+    "@standardnotes/eslint-config-extensions",
+    "plugin:react/recommended"
+  ],
   "env": {
     "browser": true,
     "node": true
@@ -11,10 +14,6 @@
      "ecmaFeatures": {
        "jsx": true
      }
-  },
-  "globals": {
-    "window": true,
-    "document": true
   },
   "rules": {
     "arrow-parens": 0,
