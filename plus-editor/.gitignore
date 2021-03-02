@@ -7,7 +7,9 @@ dist/dist.css.map
 dist/dist.js.map
 dist/app.css
 dist/app.css.map
+dist/*.LICENSE.txt
 
 .DS_Store
 
 .sass-cache
+ext.json

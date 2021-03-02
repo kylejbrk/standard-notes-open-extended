@@ -1,9 +1,7 @@
-document.addEventListener("DOMContentLoaded", function (event) {
-
-  let componentManager;
+document.addEventListener('DOMContentLoaded', function () {
+  let componentRelay;
   let workingNote, clientData;
   let lastValue, lastUUID;
-  let editor;
   let ignoreTextChange = false;
   let newNoteLoad = true,
     didToggleFullScreen = false;
@@ -15,34 +13,40 @@ document.addEventListener("DOMContentLoaded", function (event) {
     'li', 'main', 'nav', 'ol', 'p', 'pre', 'section', 'table', 'ul',
   ].join(', ');
 
-  function loadComponentManager() {
-    const permissions = [{
-      name: "stream-context-item"
-    }];
-    componentManager = new ComponentManager(permissions, function () {
-      // on ready
-      const platform = componentManager.platform;
-      if (platform) {
-        document.body.classList.add(platform);
+  function loadComponentRelay() {
+    const initialPermissions = [
+      {
+        name: 'stream-context-item'
+      }
+    ];
+
+    componentRelay = new ComponentRelay({
+      initialPermissions,
+      targetWindow: window,
+      onReady: () => {
+        const platform = componentRelay.platform;
+        if (platform) {
+          document.body.classList.add(platform);
+        }
       }
     });
 
-    componentManager.streamContextItem((note) => {
+    componentRelay.streamContextItem((note) => {
       onReceivedNote(note);
     });
   }
 
   function strip(html) {
-    const tmp = document.implementation.createHTMLDocument("New").body;
+    const tmp = document.implementation.createHTMLDocument('New').body;
     tmp.innerHTML = html;
-    return tmp.textContent || tmp.innerText || "";
+    return tmp.textContent || tmp.innerText || '';
   }
 
   function truncateString(string, limit = 90) {
     if (string.length <= limit) {
       return string;
     } else {
-      return string.substring(0, limit) + "...";
+      return string.substring(0, limit) + '...';
     }
   }
 
@@ -55,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
       // save incorrectly.
       const note = workingNote;
 
-      componentManager.saveItemWithPresave(note, () => {
+      componentRelay.saveItemWithPresave(note, () => {
         lastValue = $('#summernote').summernote('code');
         note.clientData = clientData;
 
@@ -142,20 +146,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
       ],
       callbacks: {
         onInit: function () {},
-        onImageUpload: function (files) {
-          alert("Until we can encrypt image files, uploads are not currently "
-            + "supported. We recommend using the Image button in the toolbar "
-            + "and copying an image URL instead.");
+        onImageUpload: function () {
+          alert('Until we can encrypt image files, uploads are not currently '
+            + 'supported. We recommend using the Image button in the toolbar '
+            + 'and copying an image URL instead.');
         }
-      }
+      },
+      codeviewFilter: true
     });
 
     // summernote.change
-    $('#summernote').on('summernote.change', function (we, contents, $editable) {
-
+    $('#summernote').on('summernote.change', function () {
       // Add RTL support when block-level elements are detect onchange.
       document.querySelectorAll(blockString)
-      .forEach(element => element.setAttribute('dir', 'auto'));
+        .forEach(element => element.setAttribute('dir', 'auto'));
 
       if (!ignoreTextChange) {
         save();
@@ -164,16 +168,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     $('textarea.note-codable').on('input', () => {
       save();
-    })
+    });
   }
 
   loadEditor();
-  loadComponentManager();
+  loadComponentRelay();
 
   function textToHTML(text) {
-    return ((text || "") + "")
-    .replace(/\t/g, "    ")
-    .replace(/\r\n|\r|\n/g, "<br />");
+    return ((text || '') + '')
+      .replace(/\t/g, '    ')
+      .replace(/\r\n|\r|\n/g, '<br />');
   }
-
 });

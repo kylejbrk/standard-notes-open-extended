@@ -1,0 +1,14 @@
+{
+  "parser": "@babel/eslint-parser",
+  "extends": [
+    "@standardnotes/eslint-config-extensions"
+  ],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "globals": {
+    "$": true,
+    "ComponentRelay": true
+  }
+}

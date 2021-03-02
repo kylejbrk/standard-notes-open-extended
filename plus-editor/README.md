@@ -8,24 +8,10 @@ The Plus Editor is a Standard Notes derived editor that is perfect for crafting 
 
 Use your browser to see the Plus Editor in action.
 
-1. `npm i` for dependencies
-   
-2. `grunt` to build
-
-3. Open `index.html` in the browser.
-
-## Local Installation
-
-See the editor in the desktop app and make changes to the code.
-
-1. Use `git clone --recursive` to clone the [plus-editor](https://github.com/sn-extensions/plus-editor) repository from GitHub. Note the importance of `--recursive`, as there is a Summernote submodule that needs to be cloned as well.
-   * If the plus-editor repository has already been cloned, switch to the `vendor` folder and run `git submodule update --init --recursive`
-   
-2. `npm i` for dependencies
-   
-3. `grunt` to build
-
-4. https://docs.standardnotes.org/extensions/local-setup
+1. Clone this repository
+1. Run `yarn` to install dependencies
+1. Run `yarn start` to start local dev server
+1. Open `http://localhost:8001` in your browser
 
 ## Contributing
 
