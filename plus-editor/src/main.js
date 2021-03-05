@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     clientData = note.clientData;
-    let newText = note.content.text;
+    let newText = filterXSS(note.content.text);
 
     if (newText == lastValue) {
       return;

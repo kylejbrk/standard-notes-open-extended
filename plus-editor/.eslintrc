@@ -9,6 +9,7 @@
   },
   "globals": {
     "$": true,
-    "ComponentRelay": true
+    "ComponentRelay": true,
+    "filterXSS": true
   }
 }

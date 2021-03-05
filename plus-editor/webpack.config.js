@@ -44,7 +44,7 @@ module.exports = {
           'node_modules/bootstrap/dist/js/bootstrap.min.js',
           'node_modules/summernote/dist/summernote.min.js',
           'node_modules/@standardnotes/component-relay/dist/dist.js',
-          'vendor/modes/markdown/markdown.js'
+          'node_modules/xss/dist/xss.js'
         ],
         "vendor.css": [
           'node_modules/bootstrap/dist/css/bootstrap.min.css',
