@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
         lastValue = $('#summernote').summernote('code');
         note.clientData = clientData;
 
-        note.content.text = lastValue;
+        note.content.text = DOMPurify.sanitize(lastValue);
         note.content.preview_plain = truncateString(strip(lastValue));
         note.content.preview_html = null;
       });
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     clientData = note.clientData;
-    let newText = filterXSS(note.content.text);
+    let newText = DOMPurify.sanitize(note.content.text);
 
     if (newText == lastValue) {
       return;
@@ -137,7 +137,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ['para', ['ul', 'ol', 'paragraph']],
         ['height', ['height']],
         ['insert', ['table', 'link', 'hr', 'picture', 'video']],
-        ['misc', ['codeview', 'help']]
+        ['misc', ['custom-codeview', 'help']]
       ],
       fontNames: [
         'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
@@ -152,7 +152,34 @@ document.addEventListener('DOMContentLoaded', function () {
             + 'and copying an image URL instead.');
         }
       },
-      codeviewFilter: true
+      codeviewFilter: true,
+      buttons: {
+        'custom-codeview': function(context) {
+          const ui = $.summernote.ui;
+          const button = ui.button({
+            contents: '<i class="note-icon-code"/>',
+            tooltip: 'Code View',
+            codeviewButton: true,
+            click: function() {
+              /**
+               * Check if changing from Codeview to Editor.
+               * If so, we want to sanitize content before switching to the Editor.
+               */
+              const isCodeviewActive = $('#summernote').summernote('codeview.isActivated');
+
+              if (isCodeviewActive) {
+                const currentContent = $('#summernote').summernote('code');
+                const sanitizedContent = DOMPurify.sanitize(currentContent);
+                $('#summernote').summernote('code', sanitizedContent);
+              }
+  
+              context.invoke('codeview.toggle');
+            }
+          });
+        
+          return button.render();
+        }
+      }
     });
 
     // summernote.change
