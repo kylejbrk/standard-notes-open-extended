@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
         lastValue = $('#summernote').summernote('code');
         note.clientData = clientData;
 
-        note.content.text = DOMPurify.sanitize(lastValue);
+        note.content.text = lastValue;
         note.content.preview_plain = truncateString(strip(lastValue));
         note.content.preview_html = null;
       });
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     clientData = note.clientData;
-    let newText = DOMPurify.sanitize(note.content.text);
+    let newText = note.content.text;
 
     if (newText == lastValue) {
       return;
@@ -98,7 +98,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const isHtml = /<[a-z][\s\S]*>/i.test(newText);
 
       if (!didToggleFullScreen) {
-        $('#summernote').summernote('fullscreen.toggle');
+        summernote.summernote('fullscreen.toggle');
         didToggleFullScreen = true;
       }
 
@@ -106,18 +106,103 @@ document.addEventListener('DOMContentLoaded', function () {
         newText = textToHTML(newText);
       }
 
+      let renderNote = false;
+      const isUnsafeContent = checkIfUnsafeContent(newText);
+
+      if (isUnsafeContent) {
+        const currentNotePreferences = getCurrentNotePreferences();
+        if (!currentNotePreferences) {
+          showUnsafeContentAlert().then((result) => {
+            if (result) {
+              setNotePreferences('trustUnsafeContent', result);
+              renderNote = result;
+            }
+          });
+        } else {
+          renderNote = currentNotePreferences.trustUnsafeContent || false;
+        }
+      } else {
+        renderNote = true;
+      }
+
+      /**
+       * If the user decides not to continue rendering the note,
+       * clear the editor and disable it.
+       */
+      if (!renderNote) {
+        summernote.summernote('code', '');
+        summernote.summernote('disable');
+        return;
+      }
+
+      summernote.summernote('enable');
       summernote.summernote('code', newText);
 
       if (newNoteLoad) {
         // Clears history but keeps note contents. Note that this line will
         // trigger a summernote.change event, so be sure to do this inside a
         // `ignoreTextChange` block.
-        $('#summernote').summernote('commit');
+        summernote.summernote('commit');
         newNoteLoad = false;
       }
 
       ignoreTextChange = false;
     }
+  }
+
+  function getNotePreferences() {
+    return componentRelay.getComponentDataValueForKey('notes') || {};
+  }
+
+  function getCurrentNotePreferences() {
+    const notesPreferences = getNotePreferences();
+    return notesPreferences[lastUUID];
+  }
+
+  function setNotePreferences(key, value) {
+    const notesPreferences = getNotePreferences();
+    notesPreferences[lastUUID] = {
+      [key]: value
+    };
+    componentRelay.setComponentDataValueForKey('notes', notesPreferences);
+  }
+
+  /**
+   * Checks if the content contains at least one script tag.
+   */
+  function checkIfUnsafeContent(content) {
+    const doc = new DOMParser().parseFromString(`<body>${content}</body>`, 'text/html');
+    return Array.from(doc.body.childNodes).some(node => node.nodeName == 'SCRIPT');
+  }
+
+  function showUnsafeContentAlert() {
+    const text = 'We’ve detected that this note contains a script or code snippet which may be unsafe to execute. ' +
+                  'Scripts executed in the editor have the ability to impersonate as the editor to Standard Notes. ' +
+                  'Press Continue to mark this script as safe and proceed, or Cancel to avoid rendering this note.';
+
+    return new Promise((resolve) => {
+      const alert = new Stylekit.SKAlert({
+        title: null,
+        text,
+        buttons: [
+          {
+            text: 'Cancel',
+            style: 'neutral',
+            action: function() {
+              resolve(false);
+            },
+          },
+          {
+            text: 'Continue',
+            style: 'danger',
+            action: function() {
+              resolve(true);
+            },
+          },
+        ]
+      });
+      alert.present();
+    });
   }
 
   function loadEditor() {
@@ -137,7 +222,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ['para', ['ul', 'ol', 'paragraph']],
         ['height', ['height']],
         ['insert', ['table', 'link', 'hr', 'picture', 'video']],
-        ['misc', ['custom-codeview', 'help']]
+        ['misc', ['codeview', 'help']]
       ],
       fontNames: [
         'Arial', 'Arial Black', 'Comic Sans MS', 'Courier New',
@@ -150,34 +235,6 @@ document.addEventListener('DOMContentLoaded', function () {
           alert('Until we can encrypt image files, uploads are not currently '
             + 'supported. We recommend using the Image button in the toolbar '
             + 'and copying an image URL instead.');
-        }
-      },
-      codeviewFilter: true,
-      buttons: {
-        'custom-codeview': function(context) {
-          const ui = $.summernote.ui;
-          const button = ui.button({
-            contents: '<i class="note-icon-code"/>',
-            tooltip: 'Code View',
-            codeviewButton: true,
-            click: function() {
-              /**
-               * Check if changing from Codeview to Editor.
-               * If so, we want to sanitize content before switching to the Editor.
-               */
-              const isCodeviewActive = $('#summernote').summernote('codeview.isActivated');
-
-              if (isCodeviewActive) {
-                const currentContent = $('#summernote').summernote('code');
-                const sanitizedContent = DOMPurify.sanitize(currentContent);
-                $('#summernote').summernote('code', sanitizedContent);
-              }
-  
-              context.invoke('codeview.toggle');
-            }
-          });
-        
-          return button.render();
         }
       }
     });

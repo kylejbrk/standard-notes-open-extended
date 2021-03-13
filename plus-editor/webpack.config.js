@@ -44,11 +44,13 @@ module.exports = {
           'node_modules/bootstrap/dist/js/bootstrap.min.js',
           'node_modules/summernote/dist/summernote.min.js',
           'node_modules/@standardnotes/component-relay/dist/dist.js',
-          'node_modules/dompurify/dist/purify.min.js'
+          'node_modules/dompurify/dist/purify.min.js',
+          'node_modules/sn-stylekit/dist/stylekit.js'
         ],
         "vendor.css": [
           'node_modules/bootstrap/dist/css/bootstrap.min.css',
-          'node_modules/summernote/dist/summernote.min.css'
+          'node_modules/summernote/dist/summernote.min.css',
+          'node_modules/sn-stylekit/dist/stylekit.css'
         ]
       }
     }),
