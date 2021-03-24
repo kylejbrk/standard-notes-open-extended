@@ -5,8 +5,8 @@ import {
   bufToHex,
   hextoBuf,
   hexToBytes
-} from './utils';
-export { secretPattern, parseKeyUri } from './utils';
+} from '@Lib/utils';
+export { secretPattern, parseKeyUri } from '@Lib/utils';
 
 class Hotp {
   /**

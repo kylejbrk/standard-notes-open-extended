@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const ConfirmDialog = ({ title, message, onConfirm, onCancel }) => (
   <div className="auth-overlay">
@@ -26,5 +27,12 @@ const ConfirmDialog = ({ title, message, onConfirm, onCancel }) => (
     </div>
   </div>
 );
+
+ConfirmDialog.propTypes = {
+  title: PropTypes.string.isRequired,
+  message: PropTypes.string.isRequired,
+  onConfirm: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired
+};
 
 export default ConfirmDialog;

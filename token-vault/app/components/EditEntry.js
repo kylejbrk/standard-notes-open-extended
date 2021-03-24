@@ -1,6 +1,7 @@
 import React from 'react';
-import QRCodeReader from './QRCodeReader';
-import { secretPattern } from '../lib/otp';
+import PropTypes from 'prop-types';
+import QRCodeReader from '@Components/QRCodeReader';
+import { secretPattern } from '@Lib/otp';
 
 export default class EditEntry extends React.Component {
   static defaultProps = {
@@ -130,3 +131,10 @@ export default class EditEntry extends React.Component {
     );
   }
 }
+
+EditEntry.propTypes = {
+  id: PropTypes.number,
+  entry: PropTypes.object.isRequired,
+  onSave: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const animationName = token => `countdown${token}`;
 const animation = (token, offset) => `@keyframes ${animationName(token)} {
@@ -10,7 +11,7 @@ const animation = (token, offset) => `@keyframes ${animationName(token)} {
   }
 }`;
 
-class Countdown extends React.Component {
+export default class Countdown extends React.Component {
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
@@ -67,4 +68,8 @@ class Countdown extends React.Component {
   }
 }
 
-export default Countdown;
+Countdown.propTypes = {
+  token: PropTypes.string.isRequired,
+  left: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired
+};

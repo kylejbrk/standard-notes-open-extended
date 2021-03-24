@@ -1,6 +1,6 @@
 import React from 'react';
 import jsQR from 'jsqr';
-import { parseKeyUri } from '../lib/otp';
+import { parseKeyUri } from '@Lib/otp';
 
 export default class QRCodeReader extends React.Component {
   onImageSelected = evt => {

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class AuthMenu extends React.Component {
   constructor(props) {
@@ -13,17 +14,17 @@ export default class AuthMenu extends React.Component {
     this.setState({
       show: !this.state.show
     });
-  };
+  }
 
   onEdit = () => {
     this.onToggle();
     this.props.onEdit();
-  };
+  }
 
   onRemove = () => {
     this.onToggle();
     this.props.onRemove();
-  };
+  }
 
   render() {
     return (
@@ -31,7 +32,7 @@ export default class AuthMenu extends React.Component {
         <div className="sk-button" onClick={this.onToggle}>
           <div className="sk-label">•••</div>
         </div>
-        {this.state.show && [
+        {this.state.show && (
           <div className="auth-overlay" onClick={this.onToggle} />,
           <div className="sk-menu-panel">
             <div className="sk-menu-panel-row" onClick={this.onEdit}>
@@ -41,8 +42,13 @@ export default class AuthMenu extends React.Component {
               <div className="sk-label">Remove</div>
             </div>
           </div>
-        ]}
+        )}
       </div>
     );
   }
 }
+
+AuthMenu.propTypes = {
+  onEdit: PropTypes.func.isRequired,
+  onRemove: PropTypes.func.isRequired
+};

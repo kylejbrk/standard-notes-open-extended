@@ -1,9 +1,9 @@
 import React from 'react';
 import update from 'immutability-helper';
-import EditEntry from './EditEntry';
-import ViewEntries from './ViewEntries';
-import ConfirmDialog from './ConfirmDialog';
-import DataErrorAlert from './DataErrorAlert';
+import EditEntry from '@Components/EditEntry';
+import ViewEntries from '@Components/ViewEntries';
+import ConfirmDialog from '@Components/ConfirmDialog';
+import DataErrorAlert from '@Components/DataErrorAlert';
 import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
 
 const initialState = {
@@ -53,6 +53,7 @@ export default class Home extends React.Component {
         try {
           entries = JSON.parse(text);
         } finally {
+          // eslint-disable-next-line no-unsafe-finally
           return {
             html: `<div><strong>${entries.length}</strong> TokenVault Entries </div>`,
             plain: `${entries.length} TokenVault Entries`,

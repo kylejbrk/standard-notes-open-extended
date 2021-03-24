@@ -1,7 +1,7 @@
-import "regenerator-runtime/runtime";
+import 'regenerator-runtime/runtime';
 
 import React from 'react';
-import Home from './components/Home';
+import Home from '@Components/Home';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -9,10 +9,6 @@ export default class App extends React.Component {
   }
 
   render() {
-    return (
-      <div>
-        <Home />
-      </div>
-    );
+    return <Home />;
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const animationName = token => `countdown${token}`;
 
@@ -41,7 +42,7 @@ const opaReverseAnimation = (
   }
 }`;
 
-class CountdownPie extends React.Component {
+export default class CountdownPie extends React.Component {
   componentWillUnmount() {
     clearTimeout(this.timer);
   }
@@ -148,4 +149,8 @@ class CountdownPie extends React.Component {
   }
 }
 
-export default CountdownPie;
+CountdownPie.propTypes = {
+  token: PropTypes.string.isRequired,
+  left: PropTypes.number.isRequired,
+  total: PropTypes.number.isRequired
+};
