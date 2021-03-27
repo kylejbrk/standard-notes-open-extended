@@ -1,7 +1,7 @@
-import Task from "../models/Task";
-import ComponentManager from 'sn-components-api';
+import Task from '@Models/Task';
+import ComponentRelay from '@standardnotes/component-relay';
 
-let TaskDelimitter = "\n";
+const TaskDelimitter = '\n';
 
 export default class TasksManager {
 
@@ -13,21 +13,24 @@ export default class TasksManager {
   }
 
   initiateBridge() {
-    var permissions = [
+    const permissions = [
       {
-        name: "stream-context-item"
+        name: 'stream-context-item'
       }
-    ]
+    ];
 
-    this.componentManager = new ComponentManager(permissions, () => {
-      // on ready
-      this.onReady && this.onReady();
+    this.componentRelay = new ComponentRelay({
+      targetWindow: window,
+      permissions,
+      onReady: () => {
+        this.onReady && this.onReady();
+      }
     });
 
-    this.componentManager.streamContextItem((note) => {
+    this.componentRelay.streamContextItem((note) => {
       this.note = note;
 
-      if(note.isMetadataUpdate) {
+      if (note.isMetadataUpdate) {
         return;
       }
 
@@ -39,11 +42,11 @@ export default class TasksManager {
   }
 
   getPlatform() {
-    return this.componentManager.platform;
+    return this.componentRelay.platform;
   }
 
   isMobile() {
-    return this.componentManager && this.componentManager.environment == "mobile";
+    return this.componentRelay && this.componentRelay.isRunningInMobileApplication();
   }
 
   setOnReady(onReady) {
@@ -55,10 +58,9 @@ export default class TasksManager {
   }
 
   parseRawTasksString(string) {
-    if(!string) {string = ''}
-    var allTasks = string.split(TaskDelimitter);
-    var openTasks = [], completedTasks = [];
-    return allTasks.filter((s) => {return s.replace(/ /g, '').length > 0}).map((rawString) => {
+    if (!string) {string = '';}
+    const allTasks = string.split(TaskDelimitter);
+    return allTasks.filter((s) => {return s.replace(/ /g, '').length > 0;}).map((rawString) => {
       return this.createTask(rawString);
     });
   }
@@ -72,7 +74,7 @@ export default class TasksManager {
   }
 
   getTasks() {
-    if(!this.tasks) {
+    if (!this.tasks) {
       this.reloadData();
     }
     return this.tasks;
@@ -93,7 +95,7 @@ export default class TasksManager {
   }
 
   completedTasks() {
-    return this.tasks.filter((task) => {return task.completed == true})
+    return this.tasks.filter((task) => task.completed == true);
   }
 
   openTasks(tasks) {
@@ -105,25 +107,27 @@ export default class TasksManager {
   }
 
   removeTasks(tasks) {
-    this.tasks = this.tasks.filter((task) => {
-      return !tasks.includes(task);
-    })
+    this.tasks = this.tasks.filter((task) => !tasks.includes(task));
   }
 
   // Splits into completed and non completed piles, and organizes them into an ordered array
   splitTasks() {
-    var tasks = this.getTasks();
-    var openTasks = [], completedTasks = [];
-    tasks.forEach((task, index) => {
-      if(task.completed) {
+    let tasks = this.getTasks();
+    const openTasks = [], completedTasks = [];
+    tasks.forEach((task) => {
+      if (task.completed) {
         completedTasks.push(task);
       } else {
         openTasks.push(task);
       }
-    })
+    });
 
     this.tasks = openTasks.concat(completedTasks);
-    this.categorizedTasks = {unsavedTask: this.unsavedTask, openTasks: openTasks, completedTasks: completedTasks};
+    this.categorizedTasks = {
+      unsavedTask: this.unsavedTask,
+      openTasks,
+      completedTasks
+    };
 
     return this.categorizedTasks;
   }
@@ -134,8 +138,8 @@ export default class TasksManager {
   }
 
   changeTaskPosition(task, taskOccupyingTargetLocation) {
-    let from = this.tasks.indexOf(task);
-    let to = this.tasks.indexOf(taskOccupyingTargetLocation);
+    const from = this.tasks.indexOf(task);
+    const to = this.tasks.indexOf(taskOccupyingTargetLocation);
 
     this.tasks = this.tasks.move(from, to);
   }
@@ -156,62 +160,52 @@ export default class TasksManager {
   }
 
   buildHtmlPreview() {
-    var openTasks = this.categorizedTasks.openTasks;
-    var completedTasks = this.categorizedTasks.completedTasks;
-    var totalLength = openTasks.length + completedTasks.length;
+    const { openTasks, completedTasks } = this.categorizedTasks;
+    const totalLength = openTasks.length + completedTasks.length;
 
-    var taskPreviewLimit = 3;
-    var tasksToPreview = Math.min(openTasks.length, taskPreviewLimit);
+    const taskPreviewLimit = 3;
+    const tasksToPreview = Math.min(openTasks.length, taskPreviewLimit);
 
-    var html = "<div>";
+    let html = '<div>';
     html += `<div style="margin-top: 8px;"><strong>${completedTasks.length}/${totalLength} tasks completed</strong></div>`;
     html += `<progress max="100" style="margin-top: 10px; width: 100%;" value="${(completedTasks.length/totalLength) * 100}"></progress>`;
 
-    if(tasksToPreview > 0) {
-      html += "<ul style='padding-left: 19px; margin-top: 10px;'>";
-      for(var i = 0; i < tasksToPreview; i++) {
-        var task = openTasks[i];
-        html += `<li style='margin-bottom: 6px;'>${task.content}</li>`
+    if (tasksToPreview > 0) {
+      html += '<ul style=\'padding-left: 19px; margin-top: 10px;\'>';
+      for (let i = 0; i < tasksToPreview; i++) {
+        const task = openTasks[i];
+        html += `<li style='margin-bottom: 6px;'>${task.content}</li>`;
       }
-      html += "</ul>";
+      html += '</ul>';
 
-      if(openTasks.length > tasksToPreview) {
-        var diff = openTasks.length - tasksToPreview;
-        var noun = diff == 1 ? "task" : "tasks";
-        html += `<div><strong>And ${diff} other open ${noun}.</strong></div>`
+      if (openTasks.length > tasksToPreview) {
+        const diff = openTasks.length - tasksToPreview;
+        const noun = diff == 1 ? 'task' : 'tasks';
+        html += `<div><strong>And ${diff} other open ${noun}.</strong></div>`;
       }
     }
 
-    html += "</div>"
+    html += '</div>';
 
     return html;
   }
 
   buildPlainPreview() {
-    var openTasks = this.categorizedTasks.openTasks;
-    var completedTasks = this.categorizedTasks.completedTasks;
-    var totalLength = openTasks.length + completedTasks.length;
+    const { openTasks, completedTasks } = this.categorizedTasks;
+    const totalLength = openTasks.length + completedTasks.length;
 
-    var taskPreviewLimit = 1;
-    var tasksToPreview = Math.min(openTasks.length, taskPreviewLimit);
-
-    var plain = "";
-    plain += `${completedTasks.length}/${totalLength} tasks completed.`;
-
-    return plain;
+    return `${completedTasks.length}/${totalLength} tasks completed.`;
   }
 
   save() {
-    this.dataString = this.tasks.map((task) => {
-      return task.rawString
-    }).join(TaskDelimitter);
+    this.dataString = this.tasks.map((task) => task.rawString).join(TaskDelimitter);
 
-    if(this.note) {
+    if (this.note) {
       // Be sure to capture this object as a variable, as this.note may be reassigned in `streamContextItem`, so by the time
       // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
       // the right object, and it will save incorrectly.
       let note = this.note;
-      this.componentManager.saveItemWithPresave(note, () => {
+      this.componentRelay.saveItemWithPresave(note, () => {
         // required to build dynamic previews
         this.splitTasks();
         note.content.text = this.dataString;
@@ -225,18 +219,18 @@ export default class TasksManager {
 }
 
 Array.prototype.move = function (old_index, new_index) {
-    while (old_index < 0) {
-        old_index += this.length;
+  while (old_index < 0) {
+    old_index += this.length;
+  }
+  while (new_index < 0) {
+    new_index += this.length;
+  }
+  if (new_index >= this.length) {
+    let k = new_index - this.length;
+    while ((k--) + 1) {
+      this.push(undefined);
     }
-    while (new_index < 0) {
-        new_index += this.length;
-    }
-    if (new_index >= this.length) {
-        var k = new_index - this.length;
-        while ((k--) + 1) {
-            this.push(undefined);
-        }
-    }
-    this.splice(new_index, 0, this.splice(old_index, 1)[0]);
-    return this; // for testing purposes
+  }
+  this.splice(new_index, 0, this.splice(old_index, 1)[0]);
+  return this; // for testing purposes
 };

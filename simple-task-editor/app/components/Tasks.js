@@ -1,28 +1,27 @@
 import React from 'react';
-import TasksManager from '../lib/tasksManager';
-import TaskRow from './TaskRow';
-import Task from '../models/Task';
-import CreateTask from './CreateTask';
+import TasksManager from '@Lib/tasksManager';
+import TaskRow from '@Components/TaskRow';
+import CreateTask from '@Components/CreateTask';
 import Sortable from 'sortablejs';
 
 export default class Tasks extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {unsavedTask: '', openTasks: [], completedTasks: []};
-    TasksManager.get().setDataChangeHandler((tasks) => {
+    this.state = { unsavedTask: '', openTasks: [], completedTasks: [] };
+    TasksManager.get().setDataChangeHandler(() => {
       // We need TasksManager.get().isMobile() to be defined, and this handler is called once on bridge ready.
       this.initiateSorting();
       this.updateTasks();
-    })
+    });
 
     TasksManager.get().setOnReady(() => {
       let platform = TasksManager.get().getPlatform();
       // add platform class to main <html> element
-      var root = document.documentElement;
+      const root = document.documentElement;
       root.className += platform;
-      this.setState({ready: true})
-    })
+      this.setState({ ready: true });
+    });
   }
 
   componentDidMount() {
@@ -31,7 +30,7 @@ export default class Tasks extends React.Component {
   }
 
   initiateSorting() {
-    if(this.didInitiateSorting) {
+    if (this.didInitiateSorting) {
       return;
     }
     this.didInitiateSorting = true;
@@ -63,7 +62,7 @@ export default class Tasks extends React.Component {
 
   toggleTaskStatus = (task) => {
     task.toggleStatus();
-    if(!task.completed) {
+    if (!task.completed) {
       TasksManager.get().moveTaskToTop(task);
     }
 
@@ -73,7 +72,7 @@ export default class Tasks extends React.Component {
     }, 300);
   }
 
-  handleTaskTextChange = (task) => {
+  handleTaskTextChange = () => {
     TasksManager.get().save();
   }
 
@@ -83,7 +82,7 @@ export default class Tasks extends React.Component {
   }
 
   taskAtIndex(list, relativeIndex) {
-    if(list == 0) {
+    if (list == 0) {
       return this.state.openTasks[relativeIndex];
     } else {
       return this.state.completedTasks[relativeIndex];
@@ -91,18 +90,17 @@ export default class Tasks extends React.Component {
   }
 
   taskCompletedDragging = (evt) => {
-    let isSourceOpen =  evt.from.id == 'open-tasks';
-    let isSourceCompleted =  evt.from.id == 'completed-tasks';
-    let isDestinationCompleted = evt.to.id == 'completed-tasks';
-    let isDestinationOpen = !isDestinationCompleted;
-    let fromIndex = evt.oldIndex;
-    let toIndex = evt.newIndex;
+    const isSourceOpen =  evt.from.id == 'open-tasks';
+    const isDestinationCompleted = evt.to.id == 'completed-tasks';
+    const isDestinationOpen = !isDestinationCompleted;
+    const fromIndex = evt.oldIndex;
+    const toIndex = evt.newIndex;
 
-    var fromTask = this.taskAtIndex(isSourceOpen ? 0 : 1, fromIndex);
-    var toTask = this.taskAtIndex(isDestinationOpen ? 0 : 1, toIndex);
+    const fromTask = this.taskAtIndex(isSourceOpen ? 0 : 1, fromIndex);
+    const toTask = this.taskAtIndex(isDestinationOpen ? 0 : 1, toIndex);
 
     TasksManager.get().changeTaskPosition(fromTask, toTask);
-    if(isDestinationCompleted) {
+    if (isDestinationCompleted) {
       fromTask.markCompleted();
     } else {
       fromTask.markOpen();
@@ -126,20 +124,20 @@ export default class Tasks extends React.Component {
   }
 
   onReopenCompleted = () => {
-    if(confirm("Are you sure you want to reopen completed tasks?")) {
+    if (confirm('Are you sure you want to reopen completed tasks?')) {
       TasksManager.get().reopenCompleted();
       this.updateTasks();
     }
   }
 
   onDeleteCompleted = () => {
-    if(confirm("Are you sure you want to delete completed tasks?")) {
+    if (confirm('Are you sure you want to delete completed tasks?')) {
       TasksManager.get().deleteCompleted();
       this.updateTasks();
     }
   }
 
-  taskRowForTask(task, index) {
+  taskRowForTask(task) {
     return (
       <TaskRow
         task={task}
@@ -148,11 +146,11 @@ export default class Tasks extends React.Component {
         deleteTask={this.deleteTask}
         key={TasksManager.get().keyForTask(task)}
       />
-    )
+    );
   }
 
   render() {
-    let {unsavedTask, openTasks, completedTasks} = this.state;
+    const { unsavedTask, openTasks, completedTasks } = this.state;
 
     return (
       <div>
@@ -189,7 +187,6 @@ export default class Tasks extends React.Component {
         </div>
 
       </div>
-    )
+    );
   }
-
 }

@@ -1,6 +1,5 @@
 import React from 'react';
-import Tasks from './components/Tasks';
-import TasksManager from './lib/tasksManager';
+import Tasks from '@Components/Tasks';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -9,7 +8,7 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div className="sn-component windows-web">
+      <div className="sn-component">
         <Tasks />
       </div>
     );

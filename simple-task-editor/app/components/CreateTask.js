@@ -1,11 +1,12 @@
 import React from 'react';
-import TasksManager from '../lib/tasksManager';
+import PropTypes from 'prop-types';
+import TasksManager from '@Lib/tasksManager';
 
 export default class CreateTask extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {rawString: (this.props.unsavedTask || '')};
+    this.state = { rawString: (this.props.unsavedTask || '') };
   }
 
   shouldComponentUpdate(nextProps) {
@@ -13,11 +14,11 @@ export default class CreateTask extends React.Component {
   }
 
   componentDidUpdate(props) {
-    this.setState({ rawString: props.unsavedTask })
+    this.setState({ rawString: props.unsavedTask });
   }
 
   componentDidMount() {
-    if(!TasksManager.get().isMobile()) {
+    if (!TasksManager.get().isMobile()) {
       this.input.focus();
     }
   }
@@ -43,14 +44,20 @@ export default class CreateTask extends React.Component {
     return (
       <input
         className='create-task-input'
-        ref={(ref) => {this.input = ref}}
+        ref={(ref) => {this.input = ref;}}
         type='text'
         dir='auto'
         value={this.props.unsavedTask}
         onChange={this.onTextChange}
         onKeyPress={this.handleKeyPress}
       />
-    )
+    );
   }
 
 }
+
+CreateTask.propTypes = {
+  unsavedTask: PropTypes.string,
+  onUpdate: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired
+};

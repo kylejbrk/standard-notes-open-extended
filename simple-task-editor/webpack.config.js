@@ -1,59 +1,62 @@
-const webpack = require('webpack');
 const path = require('path');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  devtool: 'cheap-source-map',
-  entry: [
-    path.resolve(__dirname, 'app/main.js'),
-    path.resolve(__dirname, 'app/stylesheets/main.scss'),
-  ],
-  optimization: {
-    minimize: true
-  },
+  context: __dirname,
+  entry: path.resolve(__dirname, 'app/main.js'),
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
-    filename: './dist.js'
+    filename: 'dist.js'
   },
   module: {
     rules: [
-      { test: /\.css$/, include: path.resolve(__dirname, 'app'), loader: 'style-loader!css-loader' },
       {
-        test: /\.scss$/,
+        test: /\.s[ac]ss$/i,
         exclude: /node_modules/,
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: [
-            'css-loader',
-            { loader: 'sass-loader', query: { sourceMap: false } },
-          ],
-          publicPath: '../'
-        }),
+        use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                includePaths: [
+                  path.resolve(__dirname, 'app/stylesheets/main.scss')
+                ],
+              },
+            },
+          },
+        ],
       },
-      { test: /\.js[x]?$/, include: [
-        path.resolve(__dirname, 'app'),
-        path.resolve(__dirname, 'node_modules/sortablejs/Sortable.min.js'),
-        path.resolve(__dirname, 'node_modules/sn-components-api/dist/dist.js'),
-      ], exclude: /node_modules/, loader: 'babel-loader' }
+      {
+        test: /\.js[x]?$/,
+        include: [
+          path.resolve(__dirname, 'app'),
+          path.resolve(__dirname, 'node_modules/@standardnotes/component-relay/dist/dist.js')
+        ],
+        exclude: /node_modules/,
+        use: ['babel-loader']
+      }
     ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.css', '.scss'],
+    extensions: ['.js', '.jsx'],
     alias: {
-        stylekit: path.join(__dirname, 'node_modules/sn-stylekit/dist/stylekit.css')
+      stylekit: path.resolve(__dirname, 'node_modules/sn-stylekit/dist/stylekit.css'),
+      '@Components': path.resolve(__dirname, 'app/components'),
+      '@Lib': path.resolve(__dirname, 'app/lib'),
+      '@Models': path.resolve(__dirname, 'app/models')
     }
   },
   plugins: [
-    new ExtractTextPlugin({ filename: './dist.css', disable: false, allChunks: true}),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
+    new MiniCssExtractPlugin({
+      filename: "dist.css"
     }),
-    new CopyWebpackPlugin([
-      { from: './app/index.html', to: 'index.html' },
-    ])
+    new HtmlWebpackPlugin({
+      title: "Simple Task Editor",
+      template: 'editor.index.ejs',
+      filename: 'index.html'
+    })
   ]
 };
