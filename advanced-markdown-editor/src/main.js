@@ -1,20 +1,21 @@
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener('DOMContentLoaded', function() {
 
-  var workingNote;
+  let workingNote;
 
-  var componentManager = new ComponentManager(null, () => {
-    // on ready
-    document.body.classList.add(componentManager.platform);
-    document.body.classList.add(componentManager.environment);
+  let componentRelay = new ComponentRelay({
+    targetWindow: window,
+    onReady: () => {
+      document.body.classList.add(componentRelay.platform);
+      document.body.classList.add(componentRelay.environment);
+    }
   });
 
-  var ignoreTextChange = false;
-  var initialLoad = true;
-  var lastValue, lastUUID, clientData;
+  let ignoreTextChange = false;
+  let initialLoad = true;
+  let lastValue, lastUUID, clientData;
 
-  componentManager.streamContextItem((note) => {
-
-    if(note.uuid !== lastUUID) {
+  componentRelay.streamContextItem((note) => {
+    if (note.uuid !== lastUUID) {
       // Note changed, reset last values
       lastValue = null;
       initialLoad = true;
@@ -24,45 +25,45 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
     workingNote = note;
 
-     // Only update UI on non-metadata updates.
-    if(note.isMetadataUpdate || !window.easymde) {
+    // Only update UI on non-metadata updates.
+    if (note.isMetadataUpdate || !window.easymde) {
       return;
     }
 
-    if(note.content.text !== lastValue) {
+    if (note.content.text !== lastValue) {
       ignoreTextChange = true;
       window.easymde.value(note.content.text);
       ignoreTextChange = false;
     }
 
-    if(initialLoad) {
+    if (initialLoad) {
       initialLoad = false;
       window.easymde.codemirror.getDoc().clearHistory();
-      var mode = clientData && clientData.mode;
+      const mode = clientData && clientData.mode;
 
       // Set initial editor mode
-      if(mode === 'preview') {
-        if(!window.easymde.isPreviewActive()) {
+      if (mode === 'preview') {
+        if (!window.easymde.isPreviewActive()) {
           window.easymde.togglePreview();
         }
-      } else if(mode === 'split') {
-        if(!window.easymde.isSideBySideActive()) {
+      } else if (mode === 'split') {
+        if (!window.easymde.isSideBySideActive()) {
           window.easymde.toggleSideBySide();
         }
       // falback config
-      } else if(window.easymde.isPreviewActive()) {
+      } else if (window.easymde.isPreviewActive()) {
         window.easymde.togglePreview();
       }
     }
   });
 
   window.easymde = new EasyMDE({
-    element: document.getElementById("editor"),
+    element: document.getElementById('editor'),
     autoDownloadFontAwesome: false,
     spellChecker: false,
     status: false,
     shortcuts: {
-      toggleSideBySide: "Cmd-Alt-P"
+      toggleSideBySide: 'Cmd-Alt-P'
     },
     // Syntax highlighting is disabled until we figure out performance issue: https://github.com/sn-extensions/advanced-markdown-editor/pull/20#issuecomment-513811633
     // renderingConfig: {
@@ -70,95 +71,97 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // },
     toolbar:[
       {
-        className: "fa fa-eye",
+        className: 'fa fa-eye',
         default: true,
-        name: "preview",
+        name: 'preview',
         noDisable: true,
-        title: "Toggle Preview",
+        title: 'Toggle Preview',
         action: function() {
           window.easymde.togglePreview();
           saveMetadata();
         }
       },
       {
-        className: "fa fa-columns",
+        className: 'fa fa-columns',
         default: true,
-        name: "side-by-side",
+        name: 'side-by-side',
         noDisable: true,
         noMobile: true,
-        title: "Toggle Side by Side",
+        title: 'Toggle Side by Side',
         action: function() {
           window.easymde.toggleSideBySide();
           saveMetadata();
         }
       },
-      "|",
-      "heading", "bold", "italic", "strikethrough",
-      "|", "quote", "code",
-      "|", "unordered-list", "ordered-list",
-      "|", "clean-block",
-      "|", "link", "image",
-      "|", "table"
+      '|',
+      'heading', 'bold', 'italic', 'strikethrough',
+      '|', 'quote', 'code',
+      '|', 'unordered-list', 'ordered-list',
+      '|', 'clean-block',
+      '|', 'link', 'image',
+      '|', 'table'
     ]
   });
 
   function saveMetadata() {
     function getEditorMode() {
-      var editor = window.easymde;
+      const editor = window.easymde;
 
-      if(editor) {
+      if (editor) {
         if (editor.isPreviewActive()) return 'preview';
         if (editor.isSideBySideActive()) return 'split';
       }
       return 'edit';
     }
 
-    var note = workingNote;
+    const note = workingNote;
 
-    componentManager.saveItemWithPresave(note, () => {
+    componentRelay.saveItemWithPresave(note, () => {
       note.clientData = { mode: getEditorMode() };
     });
   }
 
-   // Some sort of issue on Mobile RN where this causes an exception (".className is not defined")
-   try {
-     window.easymde.toggleFullScreen();
-   } catch (e) {}
+  // Some sort of issue on Mobile RN where this causes an exception (".className is not defined")
+  try {
+    window.easymde.toggleFullScreen();
+  } catch (e) {
+    console.log('Error:', e);
+  }
 
-   /*
+  /*
     Can be set to Infinity to make sure the whole document is always rendered, and thus the browser's text search works on it. This will have bad effects on performance of big documents.
     Really bad performance on Safari. Unusable.
     */
-  window.easymde.codemirror.setOption("viewportMargin", 100);
+  window.easymde.codemirror.setOption('viewportMargin', 100);
 
-  window.easymde.codemirror.on("change", function() {
+  window.easymde.codemirror.on('change', function() {
 
     function strip(html) {
-      var tmp = document.implementation.createHTMLDocument("New").body;
+      const tmp = document.implementation.createHTMLDocument('New').body;
       tmp.innerHTML = html;
-      return tmp.textContent || tmp.innerText || "";
+      return tmp.textContent || tmp.innerText || '';
     }
 
     function truncateString(string, limit = 90) {
-      if(string.length <= limit) {
+      if (string.length <= limit) {
         return string;
       } else {
-        return string.substring(0, limit) + "...";
+        return string.substring(0, limit) + '...';
       }
     }
 
-    if(!ignoreTextChange) {
-      if(workingNote) {
+    if (!ignoreTextChange) {
+      if (workingNote) {
         // Be sure to capture this object as a variable, as this.note may be reassigned in `streamContextItem`, so by the time
         // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
         // the right object, and it will save incorrectly.
-        let note = workingNote;
+        const note = workingNote;
 
-        componentManager.saveItemWithPresave(note, () => {
+        componentRelay.saveItemWithPresave(note, () => {
           lastValue = window.easymde.value();
 
-          var html = window.easymde.options.previewRender(window.easymde.value());
-          var strippedHtml = truncateString(strip(html));
+          let html = window.easymde.options.previewRender(window.easymde.value());
+          let strippedHtml = truncateString(strip(html));
 
           note.content.preview_plain = strippedHtml;
           note.content.preview_html = null;

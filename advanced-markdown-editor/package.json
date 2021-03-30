@@ -1,28 +1,42 @@
 {
   "name": "sn-advanced-markdown-editor",
-  "version": "1.3.9",
-  "description": "",
+  "version": "1.3.10",
+  "description": "A Standard Notes derived editor that offers full support for Markdown editing.",
   "main": "dist/dist.js",
-  "author": "",
+  "author": "Standard Notes <hello@standardnotes.org>",
+  "license": "AGPL-3.0",
   "sn": {
-    "main": "index.html"
+    "main": "dist/index.html"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack serve --config webpack.dev.js --progress --hot",
+    "build": "webpack --config webpack.prod.js",
+    "lint": "eslint src --ext .js",
+    "lint:fix": "yarn lint --fix"
   },
   "dependencies": {},
   "devDependencies": {
-    "@babel/core": "^7.10.2",
-    "@babel/preset-env": "^7.10.2",
-    "babel-cli": "^6.26.0",
-    "easymde": "^2.10.1",
-    "grunt": "^1.3.0",
-    "grunt-babel": "^8.0.0",
-    "grunt-browserify": "^5.3.0",
-    "grunt-contrib-concat": "^1.0.1",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-sass": "^1.0.0",
-    "grunt-contrib-watch": "^1.1.0",
-    "grunt-newer": "^1.3.0",
+    "@babel/cli": "^7.13.10",
+    "@babel/core": "^7.13.13",
+    "@babel/preset-env": "^7.13.12",
+    "@standardnotes/component-relay": "2.0.3",
+    "@standardnotes/eslint-config-extensions": "^1.0.2",
+    "copy-webpack-plugin": "^8.1.0",
+    "css-loader": "^5.2.0",
+    "easymde": "^2.14.0",
+    "eslint": "^7.23.0",
+    "file-loader": "^6.2.0",
+    "font-awesome": "^4.7.0",
     "highlightjs": "^9.16.2",
-    "sn-components-api": "1.2.8",
-    "sn-stylekit": "2.0.22"
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.4.0",
+    "sass": "^1.32.8",
+    "sass-loader": "^11.0.1",
+    "sn-stylekit": "3.0.1",
+    "webpack": "^5.28.0",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3"
   }
 }

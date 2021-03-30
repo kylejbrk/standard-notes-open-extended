@@ -10,3 +10,4 @@ dist/app.css.map
 
 .DS_Store
 .sass-cache
+ext.json
