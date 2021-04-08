@@ -1,5 +1,5 @@
 import React from 'react';
-import Editor from './components/Editor';
+import Editor from '@Components/Editor';
 
 export default class App extends React.Component {
   constructor(props) {

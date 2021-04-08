@@ -1,75 +1,82 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const MergeIntoSingleFilePlugin = require('webpack-merge-and-include-globally');
 
 module.exports = {
-  mode: 'production',
-  performance: {
-    hints: false,
-  },
-  devServer: {
-    contentBase: path.join(__dirname, 'dist'),
-    hot: false,
-    inline: false,
-    // disableHostCheck: true,
-    allowedHosts: [
-      '10.0.2.2',
-    ],
-  },
-  devtool: 'cheap-source-map',
+  context: __dirname,
   entry: [
     path.resolve(__dirname, 'app/main.js'),
     path.resolve(__dirname, 'app/stylesheets/main.scss'),
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
-    filename: './app.min.js',
+    filename: 'dist.js'
   },
   module: {
     rules: [
-      { 
-        test: /\.css$/,
-        include: path.resolve(__dirname, 'app'),
-        loader: 'style-loader!css-loader'
-      },
       {
-        test: /\.scss$/,
+        test: /\.s[ac]ss$/i,
         exclude: /node_modules/,
         use: [
+          MiniCssExtractPlugin.loader,
+          "css-loader",
           {
-            loader: MiniCssExtractPlugin.loader, 
+            loader: "sass-loader",
             options: {
-              publicPath: '../',
+              sassOptions: {
+                includePaths: [
+                  path.resolve(__dirname, 'app/stylesheets/main.scss')
+                ],
+              },
             },
           },
-          'css-loader',
-          'sass-loader',
         ],
       },
       {
         test: /\.js[x]?$/,
         include: [
           path.resolve(__dirname, 'app'),
-        ], 
+        ],
         exclude: /node_modules/,
-        loader: 'babel-loader'
-      },
-    ],
+        use: ['babel-loader']
+      }
+    ]
   },
   resolve: {
-    extensions: ['.js', '.jsx', '.css', '.scss'],
+    extensions: ['.js', '.jsx'],
     alias: {
       stylekit: path.join(__dirname, 'node_modules/sn-stylekit/dist/stylekit.css'),
-    },
+      '@Components': path.resolve(__dirname, 'app/components'),
+    }
   },
   plugins: [
-    new MiniCssExtractPlugin({ filename: './app.css'}),
+    new MiniCssExtractPlugin({
+      filename: "dist.css"
+    }),
+    new HtmlWebpackPlugin({
+      title: "Bold Editor",
+      template: 'editor.index.ejs',
+      filename: 'index.html'
+    }),
     new CopyWebpackPlugin({
       patterns: [
-        { from: './app/index.html', to: 'index.html' },
         { from: './node_modules/sn-editor-kit/dist/filesafe-js/EncryptionWorker.js', to: 'filesafe-js/EncryptionWorker.js' },
       ],
     }),
-  ],
+    new MergeIntoSingleFilePlugin({
+      files: {
+        "vendor.js": [
+          'redactor/src/redactor.js',
+          'redactor/plugins/**/*.min.js',
+        ],
+        "vendor.css": [
+          'node_modules/filesafe-embed/dist/dist.css',
+          'redactor/src/redactor.min.css',
+          'redactor/plugins/inlinestyle/inlinestyle.min.css'
+        ]
+      }
+  }),
+  ]
 };

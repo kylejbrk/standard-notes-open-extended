@@ -198,6 +198,10 @@ li * {
     font-family: inherit !important;
 }
 
+hr {
+    background-color: var(--sn-stylekit-shadow-color) !important;
+}
+
 .redactor-source-view .redactor-toolbar,
 .redactor-source.redactor-source-open {
     background-color: var(--sn-stylekit-contrast-background-color) !important;
