@@ -13,6 +13,7 @@
             this.app = app;
             this.lang = app.lang;
             this.block = app.block;
+            this.editor = app.editor;
             this.toolbar = app.toolbar;
             this.selection = app.selection;
         },
@@ -32,7 +33,7 @@
 		{
     		var block = this.selection.getBlock();
     		if (block && block.tagName === 'LI') {
-        		var list = $R.dom(block).parents('ul, ol', '.redactor-in').last();
+        		var list = $R.dom(block).parents('ul, ol', this.editor.getElement()).last();
         		this.block.add({ attr: { dir: type }}, false, list);
     		}
             else {

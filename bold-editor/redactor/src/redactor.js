@@ -1,19 +1,22 @@
 /*
     Redactor
-    Version 3.4.2
-    Updated: July 17, 2020
+    Version 3.4.11
+    Updated: April 7, 2021
 
     http://imperavi.com/redactor/
 
-    Copyright (c) 2009-2020, Imperavi Ltd.
+    Copyright (c) 2009-2021, Imperavi Ltd.
     License: http://imperavi.com/redactor/license/
 */
+if (typeof CodeMirror === 'undefined') { var CodeMirror = undefined; }
+if (typeof jQuery === 'undefined') { var jQuery = undefined; }
 (function() {
 var Ajax = {};
 
 Ajax.settings = {};
 Ajax.post = function(options) { return new AjaxRequest('post', options); };
 Ajax.get = function(options) { return new AjaxRequest('get', options); };
+Ajax.request = function(method, options) { return new AjaxRequest(method, options); };
 
 var AjaxRequest = function(method, options)
 {
@@ -54,7 +57,7 @@ AjaxRequest.prototype = {
     },
     prepareData: function()
     {
-        if (this.p.method === 'POST' && !this.isFormData()) this.p.headers['Content-Type'] = 'application/x-www-form-urlencoded';
+        if (['POST', 'PUT'].indexOf(this.p.method) !== -1 && !this.isFormData()) this.p.headers['Content-Type'] = 'application/x-www-form-urlencoded';
         if (typeof this.p.data === 'object' && !this.isFormData()) this.p.data = this.toParams(this.p.data);
         if (this.p.method === 'GET') this.p.url = (this.p.data) ? this.p.url + '?' + this.p.data : this.p.url;
     },
@@ -72,7 +75,7 @@ AjaxRequest.prototype = {
     },
     isComplete: function()
     {
-        return !(this.xhr.status < 200 || this.xhr.status >= 300 && this.xhr.status !== 304);
+        return !(this.xhr.status < 200 || (this.xhr.status >= 300 && this.xhr.status !== 304));
     },
     send: function()
     {
@@ -134,7 +137,7 @@ var Dom = function(selector, context)
 
 Dom.ready = function(fn)
 {
-    if (document.readyState != 'loading') fn();
+    if (document.readyState !== 'loading') fn();
     else document.addEventListener('DOMContentLoaded', fn);
 };
 
@@ -454,7 +457,7 @@ Dom.prototype = {
     {
         if (name === undefined)
         {
-            var reDataAttr = /^data\-(.+)$/;
+            var reDataAttr = /^data-(.+)$/;
             var attrs = this.get().attributes;
 
             var data = {};
@@ -697,7 +700,9 @@ Dom.prototype = {
             }
 
             var result = docFrag.childNodes[0];
-            node.parentNode.replaceChild(docFrag, node);
+            if (node.parentNode) {
+                node.parentNode.replaceChild(docFrag, node);
+            }
 
             return result;
 
@@ -1332,7 +1337,7 @@ var $R = function(selector, options)
 
 // Globals
 $R.app = [];
-$R.version = '3.4.2';
+$R.version = '3.4.11';
 $R.options = {};
 $R.modules = {};
 $R.services = {};
@@ -1607,6 +1612,7 @@ $R.opts = {
     autosave: false, // false or url
     autosaveName: false,
     autosaveData: false,
+    autosaveMethod: 'post',
 
     // toolbar
     toolbar: true,
@@ -1647,6 +1653,7 @@ $R.opts = {
     imageFloatMargin: '10px',
     imageFigure: true,
     imageObserve: true,
+    imageSrcData: false,
 
     // file
     fileUpload: false,
@@ -1714,6 +1721,7 @@ $R.opts = {
     autoparseLinks: true,
     autoparseImages: true,
     autoparseVideo: true,
+    autoparseHttps: false,
 
     // shortcodes
     shortcodes: {
@@ -1765,10 +1773,12 @@ $R.opts = {
     inlineTags: ['a', 'span', 'strong', 'strike', 'b', 'u', 'em', 'i', 'code', 'del', 'ins', 'samp', 'kbd', 'sup', 'sub', 'mark', 'var', 'cite', 'small', 'abbr'],
     blockTags: ['pre', 'ul', 'ol', 'li', 'p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6',  'dl', 'dt', 'dd', 'div', 'table', 'tbody', 'thead', 'tfoot', 'tr', 'th', 'td', 'blockquote', 'output', 'figcaption', 'figure', 'address', 'section', 'header', 'footer', 'aside', 'article', 'iframe'],
     regex: {
-        youtube: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w\-\s])([\w\-]{11})(?=[^\w\-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/gi,
-        vimeo: /(http|https)?:\/\/(?:www.|player.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:\/[a-zA-Z0-9_-]+)?/gi,
+        youtube: /https?:\/\/(?:[0-9A-Z-]+\.)?(?:youtu\.be\/|youtube\.com\S*[^\w-\s])([\w-]{11})(?=[^\w-]|$)(?![?=&+%\w.-]*(?:['"][^<>]*>|<\/a>))[?=&+%\w.-]*/gi,
+        vimeo: /(http|https)?:\/\/(?:www.|player.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+)(?:\/[a-zA-Z0-9_-]+)?/gi,
         imageurl: /((https?|www)[^\s]+\.)(jpe?g|png|gif)(\?[^\s-]+)?/gi,
-        url: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)/gi
+        url: /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z\u00F0-\u02AF0-9()!@:%_+.~#?&//=]*)/gi,
+        aurl1: /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim,
+        aurl2: /(^|[^\/])(www\.[\S]+(\b|$))/gim
     },
     input: true,
     zindex: false,
@@ -2248,11 +2258,12 @@ App.prototype = {
     callMessageHandler: function(instance, name, args)
     {
         var arr = name.split('.');
+        var value;
         if (arr.length === 1)
         {
             if (typeof instance['on' + name] === 'function')
             {
-                instance['on' + name].apply(instance, args);
+                value = instance['on' + name].apply(instance, args);
             }
         }
         else
@@ -2262,20 +2273,28 @@ App.prototype = {
             var func = this.utils.checkProperty(instance, arr);
             if (typeof func === 'function')
             {
-                func.apply(instance, args);
+                value = func.apply(instance, args);
             }
         }
+
+        return value;
     },
     broadcast: function(name)
     {
         var args = [].slice.call(arguments, 1);
+        var returned;
         for (var moduleName in this.instances)
         {
-            this.callMessageHandler(this.instances[moduleName], name, args);
+            var value = this.callMessageHandler(this.instances[moduleName], name, args);
+            if (typeof value !== 'undefined') {
+                returned = value;
+            }
         }
 
         // callback
-        return this.callback.trigger(name, args);
+        var cval = this.callback.trigger(name, args);
+
+        return (typeof returned !== 'undefined') ? returned : cval;
     },
 
     // callback
@@ -2838,6 +2857,7 @@ $R.add('service', 'callback', {
                 for (var i = 0; i < obj[key].length; i++)
                 {
                     value = obj[key][i].apply(this.app, args);
+
                 }
             }
         }
@@ -3501,10 +3521,6 @@ var containsNode = function containsNode(node) {
     return document.getSelection().containsNode(node, true);
 };
 
-if (!('containsNode' in Selection.prototype)) {
-    containsNode = containsNodePolyfill;
-}
-
 var containsNodePolyfill = function polyfill(node) {
     var selection = document.getSelection();
     var start = selection.anchorNode.parentNode;
@@ -3527,6 +3543,9 @@ var containsNodePolyfill = function polyfill(node) {
     return false;
 };
 
+if (!('containsNode' in Selection.prototype)) {
+    containsNode = containsNodePolyfill;
+}
 
 $R.add('service', 'selection', {
     init: function(app)
@@ -3540,9 +3559,8 @@ $R.add('service', 'selection', {
         if (sel)
         {
             var node = sel.anchorNode;
-            var data = this.inspector.parse(node);
 
-            return (data.isInEditor() || data.isEditor());
+            return ($R.dom(node).closest('.redactor-in-' + this.uuid).length !== 0 || node === this.editor.getElement().get());
         }
 
         return false;
@@ -3783,8 +3801,7 @@ $R.add('service', 'selection', {
         }
         else if (sel && this.is())
         {
-            var data = this.inspector.parse(sel.anchorNode);
-            node = (!data.isEditor()) ? sel.anchorNode : false;
+            node = (sel.anchorNode !== this.editor.getElement().get()) ? sel.anchorNode : false;
         }
 
         return node;
@@ -3796,9 +3813,7 @@ $R.add('service', 'selection', {
         if (current)
         {
             var parent = current.parentNode;
-            var data = this.inspector.parse(parent);
-
-            node = (!data.isEditor()) ? parent : false;
+            node = (parent !== this.editor.getElement().get()) ? parent : false;
         }
 
         return node;
@@ -3888,15 +3903,15 @@ $R.add('service', 'selection', {
     {
         if (this.isAll()) return [];
 
-        var inlines = this.getInlines({ all: true });
-        var textNodes = this.getNodes({ textnodes: true, inline: false });
-        var selected = this.getText().replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        var inlines = this.getInlines({ all: true, inside: true });
+        //var textNodes = this.getNodes({ textnodes: true, inline: false });
+        var selected = this.getText().replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
         var finalNodes = [];
 
-        if (textNodes.length !== 0)
-        {
-            return finalNodes;
-        }
+        //if (textNodes.length !== 0)
+        // {
+        //     return finalNodes;
+        // }
 
         if (selected === '')
         {
@@ -4194,19 +4209,19 @@ $R.add('service', 'selection', {
             nodes = this.utils.getChildNodes($editor);
         }
         // single node
-        else if (node == endNode)
+        else if (node === endNode)
         {
             nodes = [node];
         }
         else
         {
-            while (node && node != endNode)
+            while (node && node !== endNode)
             {
                 nodes.push(node = this._getNextNode(node));
             }
 
             node = range.startContainer;
-            while (node && node != range.commonAncestorContainer)
+            while (node && node !== range.commonAncestorContainer)
             {
                 nodes.unshift(node);
                 node = node.parentNode;
@@ -4337,15 +4352,13 @@ $R.add('service', 'selection', {
 
         return filteredNodes;
     },
-    _isTextSelected: function(node, selected)
-    {
-        var text = this.utils.removeInvisibleChars(node.textContent);
+    _isTextSelected: function(node, selected) {
+        var text = (node.nodeType !== 9) ? this.utils.removeInvisibleChars(node.textContent) : '';
 
         return (
             selected === text
             || text.search(selected) !== -1
-            || selected.search(new RegExp('^' + this.utils.escapeRegExp(text))) !== -1
-            || selected.search(new RegExp(this.utils.escapeRegExp(text) + '$')) !== -1
+            || selected.search(new RegExp('^' + this.utils.escapeRegExp(text) + '$')) !== -1
         );
     },
     _isInlineNode: function(node)
@@ -4761,18 +4774,21 @@ $R.add('service', 'toolbar', {
         {
             observer = this.buttonsObservers[name];
             button = this.getButton(name);
-            if (!button.isDisabled()) {
-                this.app.broadcast('button.' + observer + '.observe', button);
-            }
+            this.app.broadcast('button.' + observer + '.observe', button);
         }
 
         // inline buttons
         var buttons = this.opts.activeButtons;
         var inlines = this.selection.getInlinesAllSelected();
         var current = this.selection.getInline();
-        if (this.selection.isCollapsed() && current)
+        var currents = this.selection.getInlineAll();
+
+        if (this.selection.isCollapsed())
         {
-            inlines.push(current);
+            if (current) inlines.push(current);
+            if (currents.length !== 0) {
+                inlines = inlines.concat(currents);
+            }
         }
 
         var tags = this._inlinesToTags(inlines);
@@ -4874,7 +4890,27 @@ $R.add('service', 'toolbar', {
             if (position === 'first') this.$toolbar.prepend($button);
             else if (position === 'after') $el.after($button);
             else if (position === 'before') $el.before($button);
-            else this.$toolbar.append($button);
+            else {
+                var index = this.opts.buttons.indexOf(name);
+                if (start !== true && index !== -1) {
+                    if (index === 0) {
+                        this.$toolbar.prepend($button);
+                    }
+                    else {
+                        var $btns = this._findButtons();
+                        var $btn = $btns.eq(index-1);
+                        if ($btn.length > 0) {
+                            $btn.after($button);
+                        }
+                        else {
+                            this.$toolbar.append($button);
+                        }
+                    }
+                }
+                else {
+                    this.$toolbar.append($button);
+                }
+            }
         }
 
         return $button;
@@ -5375,12 +5411,12 @@ $R.add('class', 'toolbar.dropdown', {
         var position = 'absolute';
         var topOffset = 2;
 
-        if (isFixed) {
-            pos.top = (isTarget) ? this.$btn.offset().top : this.$btn.position().top;
-            position = 'fixed';
-            topOffset = topOffset + this.opts.toolbarFixedTopOffset;
-        }
 
+        if (isFixed) {
+            //pos.top = (isTarget) ? this.$btn.offset().top : this.$btn.position().top;
+            //position = 'fixed';
+            //topOffset = topOffset + this.opts.toolbarFixedTopOffset;
+        }
 
         var leftOffset = 0;
         var left = (pos.left + leftOffset);
@@ -5622,18 +5658,30 @@ $R.add('service', 'cleaner', {
 
         // sanitize
         var $wrapper = this.utils.buildWrapper(html);
-        $wrapper.find('img, svg, details').removeAttr('onload onerror ontoggle');
+        $wrapper.find('a, b, i, strong, em, img, svg, details, audio').removeAttr('onload onerror ontoggle onwheel onmouseover oncopy');
+        $wrapper.find('a, iframe, embed').each(function(node) {
+            var $node = $R.dom(node);
+            var href = $node.attr('href');
+            var src = $node.attr('src');
+            if (href && href.trim().search(/^data|javascript:/i) !== -1) $node.attr('href', '');
+            if (src && src.trim().search(/^data|javascript:/i) !== -1) $node.attr('src', '');
+        });
+
         var imageattrs = ['alt', 'title', 'src', 'class', 'width', 'height', 'srcset', 'style', 'usemap'];
         $wrapper.find('img').each(function(node) {
             if (node.attributes.length > 0) {
                 var attrs = node.attributes;
                 for (var i = attrs.length - 1; i >= 0; i--) {
-                    if (attrs[i].name.search(/^data\-/) === -1 && imageattrs.indexOf(attrs[i].name) === -1) {
+                    var removeAttrs = (attrs[i].name.search(/^data-/) === -1 && imageattrs.indexOf(attrs[i].name) === -1);
+                    var removeDataSrc = (attrs[i].name === 'src' && attrs[i].value.search(/^data|javascript:/i) !== -1);
+                    if (this.opts.imageSrcData) removeDataSrc = false;
+
+                    if (removeAttrs || removeDataSrc) {
                         node.removeAttribute(attrs[i].name);
                     }
                 }
             }
-        });
+        }.bind(this));
 
         // get wrapper html
         html = this.utils.getWrapperHtml($wrapper);
@@ -5732,12 +5780,15 @@ $R.add('service', 'cleaner', {
         // store components
         html = this.storeComponents(html);
 
+        // remove comments
+        html = html.replace(/<!--[\s\S]*?-->/g, '');
+
         // remove tags
         var deniedTags = this.deniedTags.concat(['iframe']);
         html = this.removeTags(html, deniedTags);
 
         // remove doctype tag
-        html = html.replace(new RegExp("<\!doctype([\\s\\S]+?)>", 'gi'), '');
+        html = html.replace(new RegExp("<!doctype([\\s\\S]+?)>", 'gi'), '');
 
         // remove style tag
         html = html.replace(new RegExp("<style([\\s\\S]+?)</style>", 'gi'), '');
@@ -5748,7 +5799,7 @@ $R.add('service', 'cleaner', {
         // gdocs & word
         var isMsWord = this._isHtmlMsWord(html);
 
-        html = this._cleanGDocs(html);
+        html = (isMsWord) ? html : this._cleanGDocs(html);
         html = (isMsWord) ? this._cleanMsWord(html) : html;
 
         // do not clean
@@ -5818,7 +5869,7 @@ $R.add('service', 'cleaner', {
         {
             var attrs = node.attributes;
             for (var i = attrs.length - 1; i >= 0; i--) {
-                if (node.attributes[0].name !== 'class') {
+                if (node.attributes[i].name !== 'class' && node.attributes[i].name !== 'dir') {
                     node.removeAttribute(attrs[i].name);
                 }
             }
@@ -6015,6 +6066,8 @@ $R.add('service', 'cleaner', {
     },
     replaceBlocksToBr: function(html)
     {
+        html = html.replace(/<div[^>]*><\/div>/gi, '');
+        html = html.replace(/<td[^>]*><\/td>/gi, '');
         html = html.replace(/<\/div>|<\/li>|<\/td>|<\/p>|<\/H[1-6]>/gi, '<br>');
 
         return html;
@@ -6141,8 +6194,13 @@ $R.add('service', 'cleaner', {
     },
 
     encodeCode: function(html) {
+
+        html = this.encodeAttrSings(html);
+
         // replace all tags
-        html = html.replace(/<(.*?)>/gi, 'xtagstartz$1xtagendz');
+        html = html.replace(/>([^<]+)>/gi, '>$1&gt;');
+        html = html.replace(/<([^<]+)>/gi, 'xtagstartz$1xtagendz');
+        html = html.replace(/</gi, '&lt;');
 
         // revert pre / code
         html = html.replace(/xtagstartzpre(.*?)xtagendz/g, '<pre$1>');
@@ -6154,8 +6212,9 @@ $R.add('service', 'cleaner', {
         html = this._encodeCode(html);
 
         // revert all tags
-        html = html.replace(/xtagstartz(.*?)xtagendz/g, '<$1>');
+        html = html.replace(/xtagstartz([\w\W]*?)xtagendz/g, '<$1>');
         html = html.replace(/xtagstartz\/(.*?)xtagendz/g, '</$1>');
+        html = this.decodeAttrSings(html);
 
         return html;
     },
@@ -6185,6 +6244,23 @@ $R.add('service', 'cleaner', {
         return html;
     },
 
+    encodeAttrSings: function(html) {
+        var matches = html.match(/="(.*?)"/g);
+        if (matches !== null) {
+            for (var i = 0; i < matches.length; i++) {
+                if (matches[i].search(/^"</) !== -1 || matches[i].search(/>"$/) !== -1) {
+                    continue;
+                }
+
+
+                var str = matches[i].replace('>', 'xmoresignz');
+                str = str.replace('<', 'xlesssignz');
+                html = html.replace(matches[i], str);
+            }
+        }
+
+        return html;
+    },
     encodeEntities: function(str)
     {
         str = this.decodeEntities(str);
@@ -6197,6 +6273,12 @@ $R.add('service', 'cleaner', {
         html = html.replace('<?php', '&lt;?php');
         html = html.replace('<?', '&lt;?');
         html = html.replace('?>', '?&gt;');
+
+        return html;
+    },
+    decodeAttrSings: function(html) {
+        html = html.replace(/xmoresignz/gi, '>');
+        html = html.replace(/xlesssignz/gi, '<');
 
         return html;
     },
@@ -6694,11 +6776,12 @@ $R.add('class', 'cleaner.figure', {
         $wrapper.find('[data-redactor-tag]').each(function(node) {
             var $node = $R.dom(node);
             $node.removeAttr('data-redactor-tag');
-
-            if (this.utils.isEmptyHtml($node.html())) {
-                $node.unwrap();
+            if (node.attributes.length !== 0) {
+                if (node.lastChild && node.lastChild.tagName === 'BR') $R.dom(node.lastChild).remove();
+                return;
             }
-            else if (node.lastChild && node.lastChild.tagName === 'BR') {
+
+            if (node.lastChild && node.lastChild.tagName === 'BR') {
                 $node.unwrap();
             }
             else {
@@ -6775,7 +6858,7 @@ $R.add('class', 'cleaner.figure', {
                 }
                 else
                 {
-                    $node.unwrap();
+                    this.utils.replaceToTag($node, 'p');
                 }
             }
         }
@@ -6868,6 +6951,10 @@ $R.add('class', 'cleaner.paragraphize', {
         html = html.trim();
         html = this._trimLinks(html);
 
+        // trim new line in inline
+        var inlines = this.opts.inlineTags.join('|');
+        html = html.replace(new RegExp('<(' + inlines + ')(.*?[^>]?)>\n</(' + inlines + ')>', 'gi'), '<$1$2></$3>');
+
         // replace new lines
         html = html.replace(/xparagraphmarkerz(?:\r\n|\r|\n)$/g, '');
         html = html.replace(/xparagraphmarkerz$/g, '');
@@ -6892,6 +6979,7 @@ $R.add('class', 'cleaner.paragraphize', {
         }
 
         html = str.replace(/\n$/, '');
+
 
         // clean
         html = html.replace(new RegExp('<' + tag + '>\\s+#####', 'gi'), '#####');
@@ -7070,7 +7158,7 @@ $R.add('service', 'offset', {
         var nodeStack = [node], foundStart = false, stop = false;
         while (!stop && (node = nodeStack.pop()))
         {
-            if (node.nodeType == 3)
+            if (node.nodeType === 3)
             {
                 var nextCharIndex = charIndex + node.length;
 
@@ -7212,8 +7300,9 @@ $R.add('class', 'inspector.parser', {
         this.inspector = inspector;
 
         // local
+        var $editor = this.editor.getElement();
         this.el = el;
-        this.$el = $R.dom(this.el, '.redactor-in-' + this.uuid);
+        this.$el = $R.dom(this.el, $editor);
         this.node = this.$el.get();
 
         // comment node
@@ -7222,7 +7311,7 @@ $R.add('class', 'inspector.parser', {
             this.node = false;
         }
 
-        this.$component = this.$el.closest('.redactor-component', '.redactor-in');
+        this.$component = this.$el.closest('.redactor-component', $editor);
     },
     // is
     isEditor: function()
@@ -7512,19 +7601,22 @@ $R.add('class', 'inspector.parser', {
     },
     _getClosestUpNode: function(selector)
     {
-        var $el = this.$el.parents(selector, '.redactor-in-' + this.uuid).last();
+        var $editor = this.editor.getElement();
+        var $el = this.$el.parents(selector, $editor).last();
 
         return ($el.length !== 0) ? $el.get() : false;
     },
     _getClosestNode: function(selector)
     {
-        var $el = this.$el.closest(selector, '.redactor-in-' + this.uuid);
+        var $editor = this.editor.getElement();
+        var $el = this.$el.closest(selector, $editor);
 
         return ($el.length !== 0) ? $el.get() : false;
     },
     _getClosestElement: function(selector)
     {
-        var $el = this.$el.closest(selector, '.redactor-in-' + this.uuid);
+        var $editor = this.editor.getElement();
+        var $el = this.$el.closest(selector, $editor);
 
         return ($el.length !== 0) ? $el : false;
     }
@@ -8045,6 +8137,12 @@ $R.add('service', 'insertion', {
         var isInsertedText = this.inspector.isText(parsedInput.html);
         var fragment, except;
 
+        // multiple selection
+        //var blocks = this.selection.getBlocks();
+        //if (blocks && blocks.length > 1) {
+        //    parsedInput.html = (clean !== false) ? this.cleaner.paragraphize(parsedInput.html) : parsedInput.html;
+        //}
+
         // empty editor
         if (this.editor.isEmpty())
         {
@@ -8097,12 +8195,17 @@ $R.add('service', 'insertion', {
         // breakline div
         else if (this.opts.breakline && block && block.tagName === 'DIV') {
 
+            if (this._isPlainHtml(parsedInput.html)) {
+                return this.insertNode(parsedInput.nodes, 'end');
+            }
+
             parsedInput.html = (clean !== false) ? this.cleaner.paragraphize(parsedInput.html) : parsedInput.html;
+
 
             fragment = this.utils.createFragment(parsedInput.html);
 
             var range = this.selection.getRange();
-            if (range && this.selection.isCollapsed()) {
+            if (range && !this.selection.isCollapsed()) {
                 range.deleteContents();
             }
 
@@ -8134,8 +8237,12 @@ $R.add('service', 'insertion', {
         // uncollapsed
         else if (!isCollapsed && !isFigure)
         {
-            parsedInput.html = (clean !== false) ? this.cleaner.paragraphize(parsedInput.html) : parsedInput.html;
+            if (this._isPlainHtml(parsedInput.html))
+            {
+                return this.insertNode(parsedInput.nodes, 'end');
+            }
 
+            parsedInput.html = (clean !== false) ? this.cleaner.paragraphize(parsedInput.html) : parsedInput.html;
             fragment = this.utils.createFragment(parsedInput.html);
 
             return this.insertNode(fragment, 'end');
@@ -8468,8 +8575,8 @@ $R.add('service', 'block', {
     },
 
     // funcs
-    add: function(args, tags) {
-        return this._apply('add', args, tags);
+    add: function(args, tags, el) {
+        return this._apply('add', args, tags, true, el);
     },
     set: function(args, tags) {
         return this._apply('set', args, tags);
@@ -8488,10 +8595,10 @@ $R.add('service', 'block', {
     clearStyle: function(tags) {
         return this._clear(tags, 'style');
     },
-    clearClass: function() {
+    clearClass: function(tags) {
         return this._clear(tags, 'class');
     },
-    clearAttr: function() {
+    clearAttr: function(tags) {
         return this._clear(tags, 'attr');
     },
 
@@ -9255,7 +9362,7 @@ $R.add('service', 'inline', {
     },
     _convertToStrike: function(inlines)
     {
-        var selected = this.selection.getText().replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&");
+        var selected = this.selection.getText().replace(/[-[\]/{}()*+?.\\^$|]/g, "\\$&");
 
         for (var i = 0; i < inlines.length; i++)
         {
@@ -9266,6 +9373,7 @@ $R.add('service', 'inline', {
 
             if (tag === this.tag)
             {
+
                 if (this.tag === 'span' && this._isTextSelected(inline, selected))
                 {
                     $inline.addClass('redactor-convertable-apply');
@@ -9276,12 +9384,24 @@ $R.add('service', 'inline', {
                 }
                 else if (this.tag === 'span')
                 {
-                    $inline.addClass('redactor-unconvertable-apply');
+                    if (this.args && this.args.style) {
+                        for (var key in this.args.style) {
+                            $inline.css(key, '');
+                        }
+                    }
+
+                    if (this.utils.removeEmptyAttr($inline.get(), 'style')) {
+                        $inline.addClass('redactor-convertable-apply');
+                    }
+                    else {
+                        $inline.addClass('redactor-unconvertable-apply');
+                    }
                 }
                 else if (!hasSameArgs)
                 {
                     $inline.addClass('redactor-convertable-apply');
                 }
+
             }
         }
     },
@@ -9303,7 +9423,7 @@ $R.add('service', 'inline', {
         {
              nodes.push(node);
 
-        }.bind(this));
+        });
 
         // span convertable
         $editor.find('.redactor-convertable-apply').each(function(node)
@@ -9414,7 +9534,6 @@ $R.add('service', 'inline', {
 
         return (selected === text || selected.search(new RegExp('^' + this.utils.escapeRegExp(text) + '$')) !== -1);
     },
-
     getInlines: function(tags)
     {
         return (tags) ? this.selection.getInlines({ tags: tags, all: true }) : this.selection.getInlines({ all: true });
@@ -9537,14 +9656,15 @@ $R.add('service', 'autoparser', {
             var iframeEnd = '" frameborder="0" allowfullscreen></iframe>';
 
             var str, re;
+            var https = (this.opts.autoparseHttps) ? 'https:' : '';
             if (html.match(this.opts.regex.youtube))
             {
-                str = '//www.youtube.com/embed/$1';
+                str = https + '//www.youtube.com/embed/$1';
                 re = this.opts.regex.youtube;
             }
             else if (html.match(this.opts.regex.vimeo))
             {
-                str = '//player.vimeo.com/video/$2';
+                str = https + '//player.vimeo.com/video/$2';
                 re = this.opts.regex.vimeo;
             }
 
@@ -9706,51 +9826,36 @@ $R.add('service', 'autoparser', {
             }
         }
     },
-    _formatLinks: function(content, enter)
-    {
-        var matches = content.match(this.opts.regex.url);
-        var obj = {};
-        for (var i = 0; i < matches.length; i++)
-        {
-            if (enter && matches[i].search(/\.$/) !== -1)
-            {
-                matches[i] = matches[i].replace(/\.$/, '');
-            }
+    _formatLinks: function(content) {
+        var target = (this.opts.pasteLinkTarget !== false) ? ' target="' + this.opts.pasteLinkTarget + '"' : '';
+        var protocol = 'http';
+        var classstr = ' class="redactor-autoparser-object"';
+        var self = this;
 
-            var href = matches[i], text = href;
-            var linkProtocol = (href.match(/(https?|ftp):\/\//i) !== null) ? '' : 'http://';
-            var regexB = (["/", "&", "="].indexOf(href.slice(-1)) !== -1) ? "" : "\\b";
-            var target = (this.opts.pasteLinkTarget !== false) ? ' target="' + this.opts.pasteLinkTarget + '"' : '';
+        content = content.replace(this.opts.regex.aurl1, function(url) {
+            return '<a href="' + url + '"' + target + classstr + '>' + self._subLinkText(url) + '</a>';
+        });
 
-            text = (text.length > this.opts.linkSize) ? text.substring(0, this.opts.linkSize) + '...' : text;
-            text = (text.search('%') === -1) ? decodeURIComponent(text) : text;
-
-            // escaping url
-            var regexp = '(' + href.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + regexB + ')';
-            var classstr = ' class="redactor-autoparser-object"';
-
-            obj[regexp] = '<a href="' + linkProtocol + href.trim() + '"' + target + classstr + '>' + text.trim() + '</a>';
-        }
-
-        // replace
-        for (var key in obj)
-        {
-            content = content.replace(new RegExp(key, 'g'), obj[key]);
-        }
+        content = content.replace(this.opts.regex.aurl2, function(match, before, url) {
+            return before + '<a href="' + protocol + '://' + url + '"' + target + classstr + '>' + self._subLinkText(url) + '</a>';
+        });
 
         return content;
     },
-    _restoreReplaced: function(stored, html)
-    {
-        for (var i = 0; i < stored.length; i++)
-        {
+    _subLinkText: function(text) {
+        text = (text.length > this.opts.linkSize) ? text.substring(0, this.opts.linkSize) + '...' : text;
+        text = (text.search('%') === -1) ? decodeURIComponent(text) : text;
+
+        return text;
+    },
+    _restoreReplaced: function(stored, html) {
+        for (var i = 0; i < stored.length; i++) {
             html = html.replace('#####replaceparse' + i + '#####', stored[i]);
         }
 
         return html;
     },
-    _convertToRegExp: function(str)
-    {
+    _convertToRegExp: function(str) {
         return new RegExp(String(str).replace(/^\//, '').replace(/\/ig$/, '').replace(/\/gi$/, '') + '$', 'gi');
     }
 });
@@ -10939,7 +11044,7 @@ $R.add('class', 'editor.events', {
         var $container = this.container.getElement();
         var $target = $R.dom(e.target);
         var targets = ['.redactor-in-' + this.uuid,  '.redactor-toolbar', '.redactor-dropdown',
-        '.redactor-context-toolbar', '#redactor-modal', '#redactor-image-resizer'];
+        '.redactor-context-toolbar', '.redactor-modal-box', '#redactor-image-resizer'];
 
         this.app.broadcast('originalblur', e);
         if (this.app.stopBlur) return;
@@ -11311,7 +11416,6 @@ $R.add('module', 'source', {
         // started content
         var startContent = this.cleaner.input(sourceContent, true, true);
         var syncContent = this.cleaner.output(startContent);
-
 
         // set content
         $editor.html(startContent);
@@ -12072,6 +12176,7 @@ $R.add('module', 'toolbar', {
         this.opts = app.opts;
         this.utils = app.utils;
         this.toolbar = app.toolbar;
+        this.detector = app.detector;
 
         // local
         this.buttons = [];
@@ -12169,7 +12274,8 @@ $R.add('module', 'toolbar', {
             this.toolbarModule.stop();
         }
 
-        // stop dropdowns
+        // stop dropdowns & tooltips
+        $R.dom('.re-button-tooltip-' + this.uuid).remove();
         $R.dom('.redactor-dropdown-' + this.uuid).remove();
     },
 
@@ -12238,11 +12344,16 @@ $R.add('module', 'toolbar', {
     },
     _buildHiddenButtons: function()
     {
-        if (this.opts.buttonsHide.length !== 0)
-        {
+        if (this.opts.buttonsHide.length !== 0) {
             var buttons = this.opts.buttonsHide;
-            for (var i = 0; i < buttons.length; i++)
-            {
+            for (var i = 0; i < buttons.length; i++) {
+                this.utils.removeFromArrayByValue(this.buttons, buttons[i]);
+            }
+        }
+
+        if (this.detector.isMobile() && this.opts.buttonsHideOnMobile.length !== 0) {
+            var buttons = this.opts.buttonsHideOnMobile;
+            for (var i = 0; i < buttons.length; i++) {
                 this.utils.removeFromArrayByValue(this.buttons, buttons[i]);
             }
         }
@@ -12279,7 +12390,7 @@ $R.add('module', 'toolbar', {
             var name = this.buttons[i];
             if ($R.buttons[name])
             {
-                this.toolbar.addButton(name, $R.buttons[name], false, false, true);
+                this.toolbar.addButton(name, $R.extend(true, {}, $R.buttons[name]), false, false, true);
             }
         }
     }
@@ -13105,7 +13216,7 @@ $R.add('module', 'link', {
     _insertSingle: function(links, data)
     {
         var inline = this.selection.getInline();
-        if (links.length === 1 && (links[0].textContext === this.selection.getText()) || (inline && inline.tagName === 'A'))
+        if (links.length === 1 && ((links[0].textContext === this.selection.getText()) || (inline && inline.tagName === 'A')))
         {
             var $link = $R.create('link.component', this.app, links[0]);
 
@@ -13401,7 +13512,7 @@ $R.add('class', 'link.component', {
     },
     _cleanUrl: function(url)
     {
-        url = url.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        url = url.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 
         return url.trim().replace(/[^\W\w\D\d+&\'@#/%?=~_|!:,.;\(\)]/gi, '');
     },
@@ -13572,7 +13683,7 @@ $R.add('module', 'modal', {
         this.$modal.getBody().find('input[type=text],input[type=url],input[type=email]').on('keydown.redactor.modal', this._handleEnter.bind(this));
 
         // fix bootstrap modal focus
-        if (window.jQuery) jQuery(document).off('focusin.modal');
+        if (window.jQuery) window.jQuery(document).off('focusin.modal');
 
         this._broadcast('opened');
     },
@@ -14074,7 +14185,7 @@ $R.add('module', 'autosave', {
         data[name] = this.source.getCode();
         data = this.utils.extendData(data, this.opts.autosaveData);
 
-        $R.ajax.post({
+        $R.ajax.request(this.opts.autosaveMethod, {
             url: this.opts.autosave,
             data: data,
             success: function(response)
@@ -14197,7 +14308,7 @@ $R.add('module', 'input', {
             return;
         }
         // tab or cmd + ]
-        else if (key === this.keycodes.TAB || e.metaKey && key === 221)
+        else if (key === this.keycodes.TAB || (e.metaKey && key === 221))
         {
             return $R.create('input.tab', this.app, e, key);
         }
@@ -14706,6 +14817,7 @@ $R.add('class', 'input.delete', {
             }
         }
 
+
         // next
         block = this._getBlock();
         var next = this.utils.findSiblings(block, 'next');
@@ -14715,8 +14827,15 @@ $R.add('class', 'input.delete', {
         var dataNext = this.inspector.parse(next);
         var isNextBlock = (next.tagName === 'P' || next.tagName === 'DIV');
 
-        // figure/code or table
-        if (isEnd && dataNext.isComponentEditable())
+        // table
+        if (isEnd && dataNext.isComponentType('table'))
+        {
+            e.preventDefault();
+            this.caret.setStart(next);
+            return;
+        }
+        // figure/code
+        else if (isEnd && dataNext.isComponentEditable())
         {
             e.preventDefault();
             this.component.remove(next, false);
@@ -14833,11 +14952,18 @@ $R.add('class', 'input.delete', {
         var dataPrev = this.inspector.parse(prev);
         var isPrevBlock = (prev.tagName === 'P' || prev.tagName === 'DIV');
 
-        // figure/code or table
-        if (isStart && dataPrev.isComponentEditable())
+        // figure/code
+        if (isStart && dataPrev.isComponentType('code'))
         {
             e.preventDefault();
             this.component.remove(prev, false);
+            return;
+        }
+        // table
+        else if (isStart && dataPrev.isComponentType('table'))
+        {
+            e.preventDefault();
+            this.caret.setEnd(prev);
             return;
         }
         // component
@@ -14847,6 +14973,7 @@ $R.add('class', 'input.delete', {
 
             // select component
             this.caret.setStart(prev);
+
 
             // remove current if empty
             if (this.utils.isEmptyHtml(block.innerHTML))
@@ -14915,6 +15042,7 @@ $R.add('class', 'input.delete', {
 
             return;
         }
+
     },
     _replaceBlock: function()
     {
@@ -14969,7 +15097,7 @@ $R.add('class', 'input.delete', {
         setTimeout(function()
         {
             var $tags = $editor.find('*[style]');
-            $tags.not('img, figure, iframe, [data-redactor-style-cache], [data-redactor-span]').removeAttr('style');
+            $tags.not('img, figure, figcaption, iframe, [data-redactor-style-cache], [data-redactor-span]').removeAttr('style');
 
         }, 0);
     },
@@ -15033,6 +15161,8 @@ $R.add('class', 'input.enter', {
         this.utils = app.utils;
         this.caret = app.caret;
         this.editor = app.editor;
+        this.keycodes = app.keycodes;
+        this.detector = app.detector;
         this.insertion = app.insertion;
         this.selection = app.selection;
         this.inspector = app.inspector;
@@ -15058,7 +15188,9 @@ $R.add('class', 'input.enter', {
         }
 
         // shift enter
-        if (e.ctrlKey || e.shiftKey) return this._insertBreak(e);
+        if (e.ctrlKey || e.shiftKey) {
+            return this._insertBreak(e);
+        }
 
         // enter & exit
         if (this._isExit(e)) return;
@@ -15077,9 +15209,16 @@ $R.add('class', 'input.enter', {
         e.preventDefault();
 
         var current = this.selection.getCurrent();
+        var block = this.selection.getBlock();
         var data = this.inspector.parse(current);
 
-        if ((data.isComponent() && !data.isComponentEditable()) || data.isCode()) return;
+        if (data.isHeading() && this.caret.isStart(block)) {
+            var $block = $R.dom(block);
+            var $newBlock = $block.clone().html('');
+            $block.before($newBlock);
+            this.caret.setStart($block);
+        }
+        else if ((data.isComponent() && !data.isComponentEditable()) || data.isCode()) return;
         else if (data.isPre()) this.insertion.insertNewline();
         else this.insertion.insertBreakLine();
     },
@@ -15241,9 +15380,11 @@ $R.add('class', 'input.enter', {
         // div / p
         else
         {
-            setTimeout(this._replaceBlock.bind(this), 1);
+            var delay = (!this.detector.isDesktop()) ? 1 : 50;
+            setTimeout(this._replaceBlock.bind(this), delay);
             return;
         }
+
     },
     _traverseDl: function(current)
     {
@@ -15284,7 +15425,6 @@ $R.add('class', 'input.enter', {
         if (this.opts.markup === 'p' && block && this._isNeedToReplaceBlock(block))
         {
             var markup = document.createElement(this.opts.markup);
-
             $block.replaceWith(markup);
             this.caret.setStart(markup);
         }
@@ -15308,6 +15448,9 @@ $R.add('class', 'input.enter', {
             }
         }
 
+        // remove id
+        $block.removeAttr('id');
+
         if (block && this._isNeedToCleanBlockStyle(block) && this.opts.cleanOnEnter)
         {
             $block.removeAttr('class style');
@@ -15315,8 +15458,8 @@ $R.add('class', 'input.enter', {
 
         if (this.opts.breakline && block && block.tagName === 'DIV')
         {
-            $block.append(document.createElement('br'));
-            $block.attr('data-redactor-tag', 'br');
+            //$block.append(document.createElement('br'));
+            //$block.attr('data-redactor-tag', 'br');
         }
     },
     _clearBlock: function($block, block)
@@ -16406,7 +16549,7 @@ $R.add('module', 'image', {
         var data = this.inspector.parse(current);
         var $img = $R.dom(current).closest('img');
 
-        if (!data.isFigcaption() && data.isComponentType('image') || $img.length !== 0)
+        if ((!data.isFigcaption() && data.isComponentType('image')) || $img.length !== 0)
         {
             var node = ($img.length !== 0) ? $img.get() : data.getComponent();
             var buttons = {
@@ -16958,13 +17101,14 @@ $R.add('class', 'image.component', {
 
             switch (align)
             {
+
                 case 'left':
                     imageFloat = 'left';
-                    imageMargin = '0 ' + this.opts.imageFloatMargin + ' ' + this.opts.imageFloatMargin + ' 0';
+                    imageMargin = this.opts.imageFloatMargin;
                 break;
                 case 'right':
                     imageFloat = 'right';
-                    imageMargin = '0 0 ' + this.opts.imageFloatMargin + ' ' + this.opts.imageFloatMargin;
+                    imageMargin = this.opts.imageFloatMargin;
                 break;
                 case 'center':
                     textAlign = 'center';
@@ -16972,7 +17116,7 @@ $R.add('class', 'image.component', {
                 break;
             }
 
-            $el.css({ 'float': imageFloat, width: width + 'px', maxWidth: width + 'px', 'margin': imageMargin, 'text-align': textAlign });
+            $el.css({ 'float': imageFloat, width: width + 'px', maxWidth: width + 'px', 'margin-left': imageMargin, 'margin-right': imageMargin, 'text-align': textAlign });
             $el.attr('rel', $el.attr('style'));
 
             if (align === 'none') {
@@ -17729,7 +17873,7 @@ $R.add('module', 'buffer', {
         var key = e.which;
         var ctrl = e.ctrlKey || e.metaKey;
 
-        return (ctrl && (key === 90 && e.shiftKey || key === 89 && !e.shiftKey) && !e.altKey);
+        return (ctrl && ((key === 90 && e.shiftKey) || (key === 89 && !e.shiftKey)) && !e.altKey);
     },
     _setUndo: function()
     {
@@ -17808,6 +17952,7 @@ $R.add('module', 'list', {
         this.opts = app.opts;
         this.utils = app.utils;
         this.block = app.block;
+        this.editor = app.editor;
         this.toolbar = app.toolbar;
         this.inspector = app.inspector;
         this.selection = app.selection;
@@ -17835,7 +17980,7 @@ $R.add('module', 'list', {
     {
         var nodes = this._getBlocks();
         var block = this.selection.getBlock();
-        var $list = $R.dom(block).parents('ul, ol',  '.redactor-in-' + this.uuid).last();
+        var $list = $R.dom(block).parents('ul, ol',  this.editor.getElement()).last();
         if (nodes.length === 0 && $list.length !== 0)
         {
             nodes = [$list.get()];
@@ -18050,6 +18195,11 @@ $R.add('module', 'list', {
                 else
                 {
                     $item = this._createListItem(items[i]);
+                    var last = $item.get().lastChild;
+                    if (last && last.tagName === 'BR') {
+                        $R.dom(last).remove();
+                    }
+
                     this.utils.normalizeTextNodes($item);
                     $list.append($item);
                 }
@@ -18483,6 +18633,7 @@ $R.add('class', 'widget.component', {
     }
 });
 
+    var Redactor = $R;
     window.Redactor = window.$R = $R;
 
     // Data attribute load
