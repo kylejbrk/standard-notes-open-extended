@@ -14,6 +14,6 @@
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
     "version": "1.2.1",
     "download_url": "https://api.github.com/repos/standardnotes/solarized-dark-theme/zipball/1.2.1",
-    "url": "https://kylejbrk.github.io/standard-notes-open-extended/solarized-dark-theme/dist/dist.css",
-    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/solarized-dark-theme/index.json"
+    "url": "solarized-dark-theme/dist/dist.css",
+    "latest_url": "solarized-dark-theme/index.json"
 }

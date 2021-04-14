@@ -10,6 +10,6 @@
     "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
     "version": "1.0.6",
     "download_url": "https://api.github.com/repos/standardnotes/token-vault/zipball/1.0.6",
-    "url": "https://kylejbrk.github.io/standard-notes-open-extended/token-vault/dist/index.html",
-    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/token-vault/index.json"
+    "url": "token-vault/dist/index.html",
+    "latest_url": "token-vault/index.json"
 }
