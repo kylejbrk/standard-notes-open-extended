@@ -10,4 +10,4 @@ index:
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/editors/adv-markdown.jpg
 meta:
   github: sn-extensions/advanced-markdown-editor
-  main: index.html
+  main: dist/index.html
