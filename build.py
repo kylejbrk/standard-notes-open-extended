@@ -2,8 +2,9 @@ import requests
 import json
 import yaml
 import os
+from bs4 import BeautifulSoup
 from urllib.parse import urljoin
-from io import BytesIO
+from io import BytesIO, UnsupportedOperation
 from zipfile import ZipFile
 
 def main():
@@ -13,7 +14,11 @@ def main():
     os.makedirs(public_dir, exist_ok=True)
 
     github_session = create_session(os.environ['GITHUB_TOKEN'])
-    domain = create_domain(os.environ['GITHUB_REPOSITORY'])
+
+    if 'CUSTOM_DOMAIN' in os.environ:
+        domain = os.environ['CUSTOM_DOMAIN']
+    else:
+        domain = create_domain(os.environ['GITHUB_REPOSITORY'])
 
     packages = []
     for file in os.listdir(ext_dir):
