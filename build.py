@@ -2,7 +2,6 @@ import requests
 import json
 import yaml
 import os
-from bs4 import BeautifulSoup
 from urllib.parse import urljoin
 from io import BytesIO, UnsupportedOperation
 from zipfile import ZipFile
