@@ -7,6 +7,6 @@
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/autocomplete.jpg",
     "version": "1.3.2",
     "download_url": "https://api.github.com/repos/standardnotes/quick-tags/zipball/1.3.2",
-    "url": "autocomplete-tags/index.html",
-    "latest_url": "autocomplete-tags/index.json"
+    "url": "https://kyleburke.net/standard-notes-open-extended/autocomplete-tags/index.html",
+    "latest_url": "https://kyleburke.net/standard-notes-open-extended/autocomplete-tags/index.json"
 }

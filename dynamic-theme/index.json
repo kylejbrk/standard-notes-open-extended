@@ -12,6 +12,6 @@
     "name": "Dynamic",
     "version": "1.0.0",
     "download_url": "https://api.github.com/repos/standardnotes/dynamic-theme/zipball/1.0.0",
-    "url": "dynamic-theme/dist/dist.css",
-    "latest_url": "dynamic-theme/index.json"
+    "url": "https://kyleburke.net/standard-notes-open-extended/dynamic-theme/dist/dist.css",
+    "latest_url": "https://kyleburke.net/standard-notes-open-extended/dynamic-theme/index.json"
 }

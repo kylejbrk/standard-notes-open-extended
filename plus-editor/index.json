@@ -9,6 +9,6 @@
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/plus-editor.jpg",
     "version": "1.4.8",
     "download_url": "https://api.github.com/repos/standardnotes/plus-editor/zipball/1.4.8",
-    "url": "plus-editor/dist/index.html",
-    "latest_url": "plus-editor/index.json"
+    "url": "https://kyleburke.net/standard-notes-open-extended/plus-editor/dist/index.html",
+    "latest_url": "https://kyleburke.net/standard-notes-open-extended/plus-editor/index.json"
 }

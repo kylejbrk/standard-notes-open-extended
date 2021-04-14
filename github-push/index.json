@@ -8,6 +8,6 @@
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/github-push.jpg",
     "version": "1.2.4",
     "download_url": "https://api.github.com/repos/standardnotes/github-push/zipball/1.2.4",
-    "url": "github-push/index.html",
-    "latest_url": "github-push/index.json"
+    "url": "https://kyleburke.net/standard-notes-open-extended/github-push/index.html",
+    "latest_url": "https://kyleburke.net/standard-notes-open-extended/github-push/index.json"
 }
