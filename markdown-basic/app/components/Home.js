@@ -73,7 +73,9 @@ export default class Home extends React.Component {
   configureMarkdown() {
     const markdownitOptions = {
       // automatically render raw links as anchors.
-      linkify: true
+      linkify: true,
+      // Convert '\n' in paragraphs into <br>
+      breaks: true
     };
 
     this.markdown = MarkdownIt(markdownitOptions)
