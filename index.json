@@ -168,8 +168,8 @@
             "marketing_url": "https://standardnotes.org/extensions/simple-markdown-editor",
             "name": "Simple Markdown Editor",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/simple-markdown.jpg",
-            "version": "1.3.8",
-            "download_url": "https://api.github.com/repos/standardnotes/markdown-basic/zipball/1.3.8",
+            "version": "1.3.9",
+            "download_url": "https://api.github.com/repos/standardnotes/markdown-basic/zipball/1.3.9",
             "url": "https://kyleburke.net/standard-notes-open-extended/markdown-basic/dist/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/markdown-basic/index.json"
         },
