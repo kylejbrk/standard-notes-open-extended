@@ -12,7 +12,7 @@ module.exports = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'dist.js'
+    filename: 'dist.min.js'
   },
   module: {
     rules: [
