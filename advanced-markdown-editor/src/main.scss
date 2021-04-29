@@ -28,7 +28,7 @@ body, html {
   border-bottom: 0;
   background-color: transparent;
   border: none;
-  font-size: var(--sn-stylekit-font-size-editor);
+  font-size: var(--sn-stylekit-font-size-editor) !important;
   // For momentum scrolling on mobile
   -webkit-overflow-scrolling: touch;
 }
