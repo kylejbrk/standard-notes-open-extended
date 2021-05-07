@@ -7,7 +7,6 @@ module.exports = {
   entry: path.resolve(__dirname, 'app/main.js'),
   output: {
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/',
     filename: 'dist.js'
   },
   externals: {
@@ -57,7 +56,8 @@ module.exports = {
       filename: "dist.css"
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, 'app/index.html'),
+      title: "TokenVault",
+      template: 'editor.index.ejs',
       filename: 'index.html'
     })
   ]
