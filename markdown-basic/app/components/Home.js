@@ -57,17 +57,19 @@ export default class Home extends React.Component {
   setModeFromModeValue(value) {
     for (let mode of this.modes) {
       if (mode.mode == value) {
-        this.setState({ mode: mode });
+        this.setState({ mode });
         return;
       }
     }
   }
 
   changeMode(mode) {
-    this.setState({ mode: mode });
-    if (this.note) {
-      this.componentRelay.setComponentDataValueForKey('mode', mode.mode);
+    this.setState({ mode });
+    if (!this.note) {
+      return;
     }
+    this.note.clientData = { mode: mode.mode };
+    this.componentRelay.saveItem(this.note);
   }
 
   configureMarkdown() {
@@ -114,17 +116,18 @@ export default class Home extends React.Component {
       initialPermissions,
       targetWindow: window,
       onReady: () => {
-        const savedMode = this.componentRelay.getComponentDataValueForKey('mode');
-        if (savedMode) {
-          this.setModeFromModeValue(savedMode);
-        }
-
-        this.setState({ platform: this.componentRelay.platform });
+        const { platform } = this.componentRelay;
+        this.setState({ platform });
       }
     });
 
     this.componentRelay.streamContextItem((note) => {
       this.note = note;
+
+      if (note.clientData) {
+        const mode = note.clientData.mode ?? EditMode;
+        this.setModeFromModeValue(mode);
+      }
 
       // Only update UI on non-metadata updates.
       if (note.isMetadataUpdate) {
