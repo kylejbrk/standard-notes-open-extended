@@ -3,9 +3,11 @@ class HomeCtrl {
 
     let smartTagContentType = "SN|SmartTag";
 
-    let componentManager = new window.ComponentManager([], () => {
-      // on ready
-      $rootScope.platform = componentManager.platform;
+    let componentRelay = new ComponentRelay({
+      targetWindow: window,
+      onReady: () => {
+        $rootScope.platform = componentRelay.platform;
+      }
     });
 
     let delimiter = ".";
@@ -129,7 +131,7 @@ class HomeCtrl {
       adjustChildren(source);
       $scope.resolveRawTags($scope.masterTag);
 
-      componentManager.saveItems(needsSave);
+      componentRelay.saveItems(needsSave);
     }
 
     $scope.createTag = function(tag) {
@@ -158,7 +160,7 @@ class HomeCtrl {
             }
           }
         }
-        componentManager.createItem(smartTag, (createdTag) => {
+        componentRelay.createItem(smartTag, (createdTag) => {
           // We don't want to select the tag right away because it hasn't been added yet.
           // If you do $scope.selectTag(createdTag), an issue occurs where selecting another tag
           // after that will not dehighlight this one.
@@ -174,7 +176,7 @@ class HomeCtrl {
         }
         tag.content.title = title;
         tag.dummy = false;
-        componentManager.createItem(tag, (createdTag) => {
+        componentRelay.createItem(tag, (createdTag) => {
           $scope.selectOnLoad = createdTag;
         });
       }
@@ -198,7 +200,7 @@ class HomeCtrl {
       if(tag.master || tag.smartMaster) {
         clearMultipleTagsSelection();
         $scope.multipleTags = [];
-        componentManager.clearSelection();
+        componentRelay.clearSelection();
       } else {
         if(!$scope.multipleTags) { $scope.multipleTags = []; }
         if(!isSmartTag) {
@@ -206,11 +208,11 @@ class HomeCtrl {
         }
         if(multiSelect && $scope.multipleTags.length > 1) {
           var smartTag = $scope.createEphemeralSmartTagForMultiTags();
-          componentManager.selectItem(smartTag);
+          componentRelay.selectItem(smartTag);
         } else {
           clearMultipleTagsSelection();
           $scope.multipleTags = isSmartTag ? [] : [tag];
-          componentManager.selectItem(tag);
+          componentRelay.selectItem(tag);
         }
       }
 
@@ -251,19 +253,19 @@ class HomeCtrl {
     $scope.toggleCollapse = function(tag) {
       tag.clientData.collapsed = !tag.clientData.collapsed;
       if(!tag.master) {
-        componentManager.saveItem(tag);
+        componentRelay.saveItem(tag);
       }
     }
 
     $scope.saveTags = function(tags) {
-      componentManager.saveItems(tags);
+      componentRelay.saveItems(tags);
     }
 
     $scope.setSelectedForTag = function(tag, selected) {
       tag.selected = selected;
     }
 
-    componentManager.streamItems(["Tag", smartTagContentType], (newTags) => {
+    componentRelay.streamItems(["Tag", smartTagContentType], (newTags) => {
       $timeout(() => {
         var allTags = $scope.masterTag ? $scope.masterTag.rawTags : [];
         var smartTags = $scope.smartMasterTag ? $scope.smartMasterTag.rawTags : SNSmartTag.systemSmartTags();
@@ -364,7 +366,7 @@ class HomeCtrl {
 
       addChildren(tag);
 
-      componentManager.deleteItems(deleteChain);
+      componentRelay.deleteItems(deleteChain);
     }
   }
 }

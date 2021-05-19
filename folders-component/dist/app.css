@@ -38,7 +38,7 @@ blockquote, q {
 
 blockquote:before, blockquote:after,
 q:before, q:after {
-  content: '';
+  content: "";
   content: none;
 }
 
@@ -131,7 +131,7 @@ body {
   color: var(--sn-stylekit-contrast-foreground-color);
 }
 .tag-tree .self.selected:before {
-  content: '';
+  content: "";
   min-height: 25px;
   position: absolute;
   left: 0;
@@ -145,7 +145,7 @@ body {
   /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to right, var(--sn-stylekit-secondary-contrast-background-color) 0%, var(--sn-stylekit-contrast-background-color) 100%);
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bed4db', endColorstr='#cecbd8',GradientType=1 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#bed4db", endColorstr="#cecbd8",GradientType=1 );
   /* IE6-9 */
 }
 .tag-tree .self.over {
@@ -171,7 +171,7 @@ body {
   color: var(--sn-stylekit-contrast-foreground-color);
 }
 .tag-tree .self:hover:not(.selected):before {
-  content: '';
+  content: "";
   min-height: 25px;
   position: absolute;
   left: 0;
@@ -185,7 +185,7 @@ body {
   /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(to right, var(--sn-stylekit-secondary-contrast-background-color) 0%, var(--sn-stylekit-contrast-background-color) 100%);
   /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#bed4db', endColorstr='#cecbd8',GradientType=1 );
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr="#bed4db", endColorstr="#cecbd8",GradientType=1 );
   /* IE6-9 */
 }
 .tag-tree .self .new-tag-form {

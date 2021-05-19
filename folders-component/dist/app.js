@@ -7,704 +7,6 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 function _classCallCheck2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
-
-function _defineProperties(target, props) {
-  for (var i = 0; i < props.length; i++) {
-    var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
-  }
-}
-
-function _createClass(Constructor, protoProps, staticProps) {
-  if (protoProps) _defineProperties(Constructor.prototype, protoProps);if (staticProps) _defineProperties(Constructor, staticProps);return Constructor;
-}
-
-var ComponentManager =
-/*#__PURE__*/
-function () {
-  function ComponentManager(permissions, onReady) {
-    _classCallCheck(this, ComponentManager);
-
-    this.sentMessages = [];
-    this.messageQueue = [];
-    this.loggingEnabled = false;
-    this.acceptsThemes = true;
-    this.activeThemes = [];
-    this.initialPermissions = permissions;
-    this.onReadyCallback = onReady;
-    this.coallesedSaving = true;
-    this.coallesedSavingDelay = 250;
-    this.registerMessageHandler();
-  }
-
-  _createClass(ComponentManager, [{
-    key: "registerMessageHandler",
-    value: function registerMessageHandler() {
-      var _this = this;
-
-      var messageHandler = function messageHandler(event) {
-        if (_this.loggingEnabled) {
-          console.log("Components API Message received:", event.data);
-        } // We don't have access to window.parent.origin due to cross-domain restrictions.
-        // Check referrer if available, otherwise defer to checking for first-run value.
-        // Craft URL objects so that example.com === example.com/
-
-
-        if (document.referrer) {
-          var referrer = new URL(document.referrer).origin;
-          var eventOrigin = new URL(event.origin).origin;
-
-          if (referrer !== eventOrigin) {
-            return;
-          }
-        } // The first message will be the most reliable one, so we won't change it after any subsequent events,
-        // in case you receive an event from another window.
-
-
-        if (!_this.origin) {
-          _this.origin = event.origin;
-        } else if (event.origin !== _this.origin) {
-          // If event origin doesn't match first-run value, return.
-          return;
-        } // Mobile environment sends data as JSON string
-
-
-        var data = event.data;
-        var parsedData = typeof data === "string" ? JSON.parse(data) : data;
-
-        _this.handleMessage(parsedData);
-      };
-      /*
-        Mobile (React Native) uses `document`, web/desktop uses `window`.addEventListener
-        for postMessage API to work properly.
-         Update May 2019:
-        As part of transitioning React Native webview into the community package,
-        we'll now only need to use window.addEventListener.
-         However, we want to maintain backward compatibility for Mobile < v3.0.5, so we'll keep document.addEventListener
-         Also, even with the new version of react-native-webview, Android may still require document.addEventListener (while iOS still only requires window.addEventListener)
-        https://github.com/react-native-community/react-native-webview/issues/323#issuecomment-467767933
-       */
-
-      document.addEventListener("message", function (event) {
-        messageHandler(event);
-      }, false);
-      window.addEventListener("message", function (event) {
-        messageHandler(event);
-      }, false);
-    }
-  }, {
-    key: "handleMessage",
-    value: function handleMessage(payload) {
-      if (payload.action === "component-registered") {
-        this.sessionKey = payload.sessionKey;
-        this.componentData = payload.componentData;
-        this.onReady(payload.data);
-
-        if (this.loggingEnabled) {
-          console.log("Component successfully registered with payload:", payload);
-        }
-      } else if (payload.action === "themes") {
-        if (this.acceptsThemes) {
-          this.activateThemes(payload.data.themes);
-        }
-      } else if (payload.original) {
-        // get callback from queue
-        var originalMessage = this.sentMessages.filter(function (message) {
-          return message.messageId === payload.original.messageId;
-        })[0];
-
-        if (!originalMessage) {
-          // Connection must have been reset. Alert the user.
-          alert("This extension is attempting to communicate with Standard Notes, but an error is preventing it from doing so. Please restart this extension and try again.");
-        }
-
-        if (originalMessage.callback) {
-          originalMessage.callback(payload.data);
-        }
-      }
-    }
-  }, {
-    key: "onReady",
-    value: function onReady(data) {
-      this.environment = data.environment;
-      this.platform = data.platform;
-      this.uuid = data.uuid;
-      this.isMobile = this.environment == "mobile";
-
-      if (this.initialPermissions && this.initialPermissions.length > 0) {
-        this.requestPermissions(this.initialPermissions);
-      }
-
-      var _iteratorNormalCompletion = true;
-      var _didIteratorError = false;
-      var _iteratorError = undefined;
-
-      try {
-        for (var _iterator = this.messageQueue[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          var message = _step.value;
-          this.postMessage(message.action, message.data, message.callback);
-        }
-      } catch (err) {
-        _didIteratorError = true;
-        _iteratorError = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
-            _iterator["return"]();
-          }
-        } finally {
-          if (_didIteratorError) {
-            throw _iteratorError;
-          }
-        }
-      }
-
-      this.messageQueue = [];
-
-      if (this.loggingEnabled) {
-        console.log("onReadyData", data);
-      }
-
-      this.activateThemes(data.activeThemeUrls || []);
-
-      if (this.onReadyCallback) {
-        this.onReadyCallback();
-      }
-    }
-  }, {
-    key: "getSelfComponentUUID",
-    value: function getSelfComponentUUID() {
-      return this.uuid;
-    }
-  }, {
-    key: "isRunningInDesktopApplication",
-    value: function isRunningInDesktopApplication() {
-      return this.environment === "desktop";
-    }
-  }, {
-    key: "setComponentDataValueForKey",
-    value: function setComponentDataValueForKey(key, value) {
-      this.componentData[key] = value;
-      this.postMessage("set-component-data", {
-        componentData: this.componentData
-      }, function (data) {});
-    }
-  }, {
-    key: "clearComponentData",
-    value: function clearComponentData() {
-      this.componentData = {};
-      this.postMessage("set-component-data", {
-        componentData: this.componentData
-      }, function (data) {});
-    }
-  }, {
-    key: "componentDataValueForKey",
-    value: function componentDataValueForKey(key) {
-      return this.componentData[key];
-    }
-  }, {
-    key: "postMessage",
-    value: function postMessage(action, data, callback) {
-      if (!this.sessionKey) {
-        this.messageQueue.push({
-          action: action,
-          data: data,
-          callback: callback
-        });
-        return;
-      }
-
-      var message = {
-        action: action,
-        data: data,
-        messageId: this.generateUUID(),
-        sessionKey: this.sessionKey,
-        api: "component"
-      };
-      var sentMessage = JSON.parse(JSON.stringify(message));
-      sentMessage.callback = callback;
-      this.sentMessages.push(sentMessage); // Mobile (React Native) requires a string for the postMessage API.
-
-      if (this.isMobile) {
-        message = JSON.stringify(message);
-      }
-
-      if (this.loggingEnabled) {
-        console.log("Posting message:", message);
-      }
-
-      window.parent.postMessage(message, this.origin);
-    }
-  }, {
-    key: "setSize",
-    value: function setSize(type, width, height) {
-      this.postMessage("set-size", {
-        type: type,
-        width: width,
-        height: height
-      }, function (data) {});
-    }
-  }, {
-    key: "requestPermissions",
-    value: function requestPermissions(permissions, callback) {
-      this.postMessage("request-permissions", {
-        permissions: permissions
-      }, function (data) {
-        callback && callback();
-      }.bind(this));
-    }
-  }, {
-    key: "streamItems",
-    value: function streamItems(contentTypes, callback) {
-      if (!Array.isArray(contentTypes)) {
-        contentTypes = [contentTypes];
-      }
-
-      this.postMessage("stream-items", {
-        content_types: contentTypes
-      }, function (data) {
-        callback(data.items);
-      }.bind(this));
-    }
-  }, {
-    key: "streamContextItem",
-    value: function streamContextItem(callback) {
-      var _this2 = this;
-
-      this.postMessage("stream-context-item", null, function (data) {
-        var item = data.item;
-        /*
-          If this is a new context item than the context item the component was currently entertaining,
-          we want to immediately commit any pending saves, because if you send the new context item to the
-          component before it has commited its presave, it will end up first replacing the UI with new context item,
-          and when the debouncer executes to read the component UI, it will be reading the new UI for the previous item.
-        */
-
-        var isNewItem = !_this2.lastStreamedItem || _this2.lastStreamedItem.uuid !== item.uuid;
-
-        if (isNewItem && _this2.pendingSaveTimeout) {
-          clearTimeout(_this2.pendingSaveTimeout);
-
-          _this2._performSavingOfItems(_this2.pendingSaveParams);
-
-          _this2.pendingSaveTimeout = null;
-          _this2.pendingSaveParams = null;
-        }
-
-        _this2.lastStreamedItem = item;
-        callback(_this2.lastStreamedItem);
-      });
-    }
-  }, {
-    key: "selectItem",
-    value: function selectItem(item) {
-      this.postMessage("select-item", {
-        item: this.jsonObjectForItem(item)
-      });
-    }
-  }, {
-    key: "createItem",
-    value: function createItem(item, callback) {
-      this.postMessage("create-item", {
-        item: this.jsonObjectForItem(item)
-      }, function (data) {
-        var item = data.item; // A previous version of the SN app had an issue where the item in the reply to create-item
-        // would be nested inside "items" and not "item". So handle both cases here.
-
-        if (!item && data.items && data.items.length > 0) {
-          item = data.items[0];
-        }
-
-        this.associateItem(item);
-        callback && callback(item);
-      }.bind(this));
-    }
-  }, {
-    key: "createItems",
-    value: function createItems(items, callback) {
-      var _this3 = this;
-
-      var mapped = items.map(function (item) {
-        return _this3.jsonObjectForItem(item);
-      });
-      this.postMessage("create-items", {
-        items: mapped
-      }, function (data) {
-        callback && callback(data.items);
-      }.bind(this));
-    }
-  }, {
-    key: "associateItem",
-    value: function associateItem(item) {
-      this.postMessage("associate-item", {
-        item: this.jsonObjectForItem(item)
-      });
-    }
-  }, {
-    key: "deassociateItem",
-    value: function deassociateItem(item) {
-      this.postMessage("deassociate-item", {
-        item: this.jsonObjectForItem(item)
-      });
-    }
-  }, {
-    key: "clearSelection",
-    value: function clearSelection() {
-      this.postMessage("clear-selection", {
-        content_type: "Tag"
-      });
-    }
-  }, {
-    key: "deleteItem",
-    value: function deleteItem(item, callback) {
-      this.deleteItems([item], callback);
-    }
-  }, {
-    key: "deleteItems",
-    value: function deleteItems(items, callback) {
-      var params = {
-        items: items.map(function (item) {
-          return this.jsonObjectForItem(item);
-        }.bind(this))
-      };
-      this.postMessage("delete-items", params, function (data) {
-        callback && callback(data);
-      });
-    }
-  }, {
-    key: "sendCustomEvent",
-    value: function sendCustomEvent(action, data, callback) {
-      this.postMessage(action, data, function (data) {
-        callback && callback(data);
-      }.bind(this));
-    }
-  }, {
-    key: "saveItem",
-    value: function saveItem(item, callback) {
-      var skipDebouncer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      this.saveItems([item], callback, skipDebouncer);
-    }
-    /* Presave allows clients to perform any actions last second before the save actually occurs (like setting previews).
-       Saves debounce by default, so if a client needs to compute a property on an item before saving, it's best to
-       hook into the debounce cycle so that clients don't have to implement their own debouncing.
-     */
-
-  }, {
-    key: "saveItemWithPresave",
-    value: function saveItemWithPresave(item, presave, callback) {
-      this.saveItemsWithPresave([item], presave, callback);
-    }
-  }, {
-    key: "saveItemsWithPresave",
-    value: function saveItemsWithPresave(items, presave, callback) {
-      this.saveItems(items, callback, false, presave);
-    }
-  }, {
-    key: "_performSavingOfItems",
-    value: function _performSavingOfItems(_ref) {
-      var items = _ref.items,
-          presave = _ref.presave,
-          callback = _ref.callback;
-      // presave block allows client to gain the benefit of performing something in the debounce cycle.
-      presave && presave();
-      var mappedItems = [];
-      var _iteratorNormalCompletion2 = true;
-      var _didIteratorError2 = false;
-      var _iteratorError2 = undefined;
-
-      try {
-        for (var _iterator2 = items[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-          var item = _step2.value;
-          mappedItems.push(this.jsonObjectForItem(item));
-        }
-      } catch (err) {
-        _didIteratorError2 = true;
-        _iteratorError2 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-            _iterator2["return"]();
-          }
-        } finally {
-          if (_didIteratorError2) {
-            throw _iteratorError2;
-          }
-        }
-      }
-
-      this.postMessage("save-items", {
-        items: mappedItems
-      }, function (data) {
-        callback && callback();
-      });
-    }
-    /*
-    skipDebouncer allows saves to go through right away rather than waiting for timeout.
-    This should be used when saving items via other means besides keystrokes.
-    */
-
-  }, {
-    key: "saveItems",
-    value: function saveItems(items, callback) {
-      var _this4 = this;
-
-      var skipDebouncer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
-      var presave = arguments.length > 3 ? arguments[3] : undefined;
-
-      // We need to make sure that when we clear a pending save timeout,
-      // we carry over those pending items into the new save.
-      if (!this.pendingSaveItems) {
-        this.pendingSaveItems = [];
-      }
-
-      if (this.coallesedSaving == true && !skipDebouncer) {
-        if (this.pendingSaveTimeout) {
-          clearTimeout(this.pendingSaveTimeout);
-        }
-
-        var incomingIds = items.map(function (item) {
-          return item.uuid;
-        }); // Replace any existing save items with incoming values
-        // Only keep items here who are not in incomingIds
-
-        var preexistingItems = this.pendingSaveItems.filter(function (item) {
-          return !incomingIds.includes(item.uuid);
-        }); // Add new items, now that we've made sure it's cleared of incoming items.
-
-        this.pendingSaveItems = preexistingItems.concat(items); // We'll potentially need to commit early if stream-context-item message comes in
-
-        this.pendingSaveParams = {
-          items: this.pendingSaveItems,
-          presave: presave,
-          callback: callback
-        };
-        this.pendingSaveTimeout = setTimeout(function () {
-          _this4._performSavingOfItems(_this4.pendingSaveParams);
-
-          _this4.pendingSaveItems = [];
-          _this4.pendingSaveTimeout = null;
-          _this4.pendingSaveParams = null;
-        }, this.coallesedSavingDelay);
-      } else {
-        this._performSavingOfItems({
-          items: items,
-          presave: presave,
-          callback: callback
-        });
-      }
-    }
-  }, {
-    key: "jsonObjectForItem",
-    value: function jsonObjectForItem(item) {
-      var copy = Object.assign({}, item);
-      copy.children = null;
-      copy.parent = null;
-      return copy;
-    }
-  }, {
-    key: "getItemAppDataValue",
-    value: function getItemAppDataValue(item, key) {
-      var AppDomain = "org.standardnotes.sn";
-      var data = item.content.appData && item.content.appData[AppDomain];
-
-      if (data) {
-        return data[key];
-      } else {
-        return null;
-      }
-    }
-    /* Themes */
-
-  }, {
-    key: "activateThemes",
-    value: function activateThemes(incomingUrls) {
-      if (this.loggingEnabled) {
-        console.log("Incoming themes", incomingUrls);
-      }
-
-      if (this.activeThemes.sort().toString() == incomingUrls.sort().toString()) {
-        // incoming are same as active, do nothing
-        return;
-      }
-
-      var themesToActivate = incomingUrls || [];
-      var themesToDeactivate = [];
-      var _iteratorNormalCompletion3 = true;
-      var _didIteratorError3 = false;
-      var _iteratorError3 = undefined;
-
-      try {
-        for (var _iterator3 = this.activeThemes[Symbol.iterator](), _step3; !(_iteratorNormalCompletion3 = (_step3 = _iterator3.next()).done); _iteratorNormalCompletion3 = true) {
-          var activeUrl = _step3.value;
-
-          if (!incomingUrls.includes(activeUrl)) {
-            // active not present in incoming, deactivate it
-            themesToDeactivate.push(activeUrl);
-          } else {
-            // already present in active themes, remove it from themesToActivate
-            themesToActivate = themesToActivate.filter(function (candidate) {
-              return candidate != activeUrl;
-            });
-          }
-        }
-      } catch (err) {
-        _didIteratorError3 = true;
-        _iteratorError3 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion3 && _iterator3["return"] != null) {
-            _iterator3["return"]();
-          }
-        } finally {
-          if (_didIteratorError3) {
-            throw _iteratorError3;
-          }
-        }
-      }
-
-      if (this.loggingEnabled) {
-        console.log("Deactivating themes:", themesToDeactivate);
-        console.log("Activating themes:", themesToActivate);
-      }
-
-      for (var _i = 0, _themesToDeactivate = themesToDeactivate; _i < _themesToDeactivate.length; _i++) {
-        var theme = _themesToDeactivate[_i];
-        this.deactivateTheme(theme);
-      }
-
-      this.activeThemes = incomingUrls;
-      var _iteratorNormalCompletion4 = true;
-      var _didIteratorError4 = false;
-      var _iteratorError4 = undefined;
-
-      try {
-        for (var _iterator4 = themesToActivate[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
-          var url = _step4.value;
-
-          if (!url) {
-            continue;
-          }
-
-          var link = document.createElement("link");
-          link.id = btoa(url);
-          link.href = url;
-          link.type = "text/css";
-          link.rel = "stylesheet";
-          link.media = "screen,print";
-          link.className = "custom-theme";
-          document.getElementsByTagName("head")[0].appendChild(link);
-        }
-      } catch (err) {
-        _didIteratorError4 = true;
-        _iteratorError4 = err;
-      } finally {
-        try {
-          if (!_iteratorNormalCompletion4 && _iterator4["return"] != null) {
-            _iterator4["return"]();
-          }
-        } finally {
-          if (_didIteratorError4) {
-            throw _iteratorError4;
-          }
-        }
-      }
-    }
-  }, {
-    key: "themeElementForUrl",
-    value: function themeElementForUrl(url) {
-      var elements = Array.from(document.getElementsByClassName("custom-theme")).slice();
-      return elements.find(function (element) {
-        // We used to search here by `href`, but on desktop, with local file:// urls, that didn't work for some reason.
-        return element.id == btoa(url);
-      });
-    }
-  }, {
-    key: "deactivateTheme",
-    value: function deactivateTheme(url) {
-      var element = this.themeElementForUrl(url);
-
-      if (element) {
-        element.disabled = true;
-        element.parentNode.removeChild(element);
-      }
-    }
-    /* Theme caching is currently disabled. Might be enabled in the future if neccessary. */
-
-    /*
-    activateCachedThemes() {
-      let themes = this.getCachedThemeUrls();
-      let writeToCache = false;
-      if(this.loggingEnabled) { console.log("Activating cached themes", themes); }
-      this.activateThemes(themes, writeToCache);
-    }
-     cacheThemeUrls(urls) {
-      if(this.loggingEnabled) { console.log("Caching theme urls", urls); }
-      localStorage.setItem("cachedThemeUrls", JSON.stringify(urls));
-    }
-     decacheThemeUrls() {
-      localStorage.removeItem("cachedThemeUrls");
-    }
-     getCachedThemeUrls() {
-      let urls = localStorage.getItem("cachedThemeUrls");
-      if(urls) {
-        return JSON.parse(urls);
-      } else {
-        return [];
-      }
-    }
-    */
-
-    /* Utilities */
-
-  }, {
-    key: "generateUUID",
-    value: function generateUUID() {
-      var crypto = window.crypto || window.msCrypto;
-
-      if (crypto) {
-        var buf = new Uint32Array(4);
-        crypto.getRandomValues(buf);
-        var idx = -1;
-        return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-          idx++;
-          var r = buf[idx >> 3] >> idx % 8 * 4 & 15;
-          var v = c == 'x' ? r : r & 0x3 | 0x8;
-          return v.toString(16);
-        });
-      } else {
-        var d = new Date().getTime();
-
-        if (window.performance && typeof window.performance.now === "function") {
-          d += performance.now(); //use high-precision timer if available
-        }
-
-        var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
-          var r = (d + Math.random() * 16) % 16 | 0;
-          d = Math.floor(d / 16);
-          return (c == 'x' ? r : r & 0x3 | 0x8).toString(16);
-        });
-        return uuid;
-      }
-    }
-  }]);
-
-  return ComponentManager;
-}();
-
-if (typeof module != "undefined" && typeof module.exports != "undefined") {
-  module.exports = ComponentManager;
-}
-
-if (window) {
-  window.ComponentManager = ComponentManager;
-}
-
-;"use strict";
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
@@ -1729,9 +1031,11 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
 
   var smartTagContentType = "SN|SmartTag";
 
-  var componentManager = new window.ComponentManager([], function () {
-    // on ready
-    $rootScope.platform = componentManager.platform;
+  var componentRelay = new ComponentRelay({
+    targetWindow: window,
+    onReady: function onReady() {
+      $rootScope.platform = componentRelay.platform;
+    }
   });
 
   var delimiter = ".";
@@ -1747,29 +1051,29 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
     var resolved = masterTag.rawTags.slice();
 
     var findResolvedTag = function findResolvedTag(title) {
-      var _iteratorNormalCompletion5 = true;
-      var _didIteratorError5 = false;
-      var _iteratorError5 = undefined;
+      var _iteratorNormalCompletion4 = true;
+      var _didIteratorError4 = false;
+      var _iteratorError4 = undefined;
 
       try {
-        for (var _iterator5 = masterTag.rawTags[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
-          var tag = _step5.value;
+        for (var _iterator4 = masterTag.rawTags[Symbol.iterator](), _step4; !(_iteratorNormalCompletion4 = (_step4 = _iterator4.next()).done); _iteratorNormalCompletion4 = true) {
+          var tag = _step4.value;
 
           if (tag.content.title === title) {
             return tag;
           }
         }
       } catch (err) {
-        _didIteratorError5 = true;
-        _iteratorError5 = err;
+        _didIteratorError4 = true;
+        _iteratorError4 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion5 && _iterator5.return) {
-            _iterator5.return();
+          if (!_iteratorNormalCompletion4 && _iterator4.return) {
+            _iterator4.return();
           }
         } finally {
-          if (_didIteratorError5) {
-            throw _iteratorError5;
+          if (_didIteratorError4) {
+            throw _iteratorError4;
           }
         }
       }
@@ -1777,13 +1081,13 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
       return null;
     };
 
-    var _iteratorNormalCompletion6 = true;
-    var _didIteratorError6 = false;
-    var _iteratorError6 = undefined;
+    var _iteratorNormalCompletion5 = true;
+    var _didIteratorError5 = false;
+    var _iteratorError5 = undefined;
 
     try {
-      for (var _iterator6 = masterTag.rawTags[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
-        var tag = _step6.value;
+      for (var _iterator5 = masterTag.rawTags[Symbol.iterator](), _step5; !(_iteratorNormalCompletion5 = (_step5 = _iterator5.next()).done); _iteratorNormalCompletion5 = true) {
+        var tag = _step5.value;
 
         var pendingDummy = tag.children && tag.children.find(function (c) {
           return c.dummy;
@@ -1796,29 +1100,29 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
         }
       }
     } catch (err) {
-      _didIteratorError6 = true;
-      _iteratorError6 = err;
+      _didIteratorError5 = true;
+      _iteratorError5 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion6 && _iterator6.return) {
-          _iterator6.return();
+        if (!_iteratorNormalCompletion5 && _iterator5.return) {
+          _iterator5.return();
         }
       } finally {
-        if (_didIteratorError6) {
-          throw _iteratorError6;
+        if (_didIteratorError5) {
+          throw _iteratorError5;
         }
       }
     }
 
     ;
 
-    var _iteratorNormalCompletion7 = true;
-    var _didIteratorError7 = false;
-    var _iteratorError7 = undefined;
+    var _iteratorNormalCompletion6 = true;
+    var _didIteratorError6 = false;
+    var _iteratorError6 = undefined;
 
     try {
-      for (var _iterator7 = masterTag.rawTags[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
-        var tag = _step7.value;
+      for (var _iterator6 = masterTag.rawTags[Symbol.iterator](), _step6; !(_iteratorNormalCompletion6 = (_step6 = _iterator6.next()).done); _iteratorNormalCompletion6 = true) {
+        var tag = _step6.value;
 
         var name = tag.content.title;
         var comps = name.split(delimiter);
@@ -1873,16 +1177,16 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
         }
       }
     } catch (err) {
-      _didIteratorError7 = true;
-      _iteratorError7 = err;
+      _didIteratorError6 = true;
+      _iteratorError6 = err;
     } finally {
       try {
-        if (!_iteratorNormalCompletion7 && _iterator7.return) {
-          _iterator7.return();
+        if (!_iteratorNormalCompletion6 && _iterator6.return) {
+          _iterator6.return();
         }
       } finally {
-        if (_didIteratorError7) {
-          throw _iteratorError7;
+        if (_didIteratorError6) {
+          throw _iteratorError6;
         }
       }
     }
@@ -1912,13 +1216,13 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
     var needsSave = [source];
 
     var adjustChildren = function adjustChildren(source) {
-      var _iteratorNormalCompletion8 = true;
-      var _didIteratorError8 = false;
-      var _iteratorError8 = undefined;
+      var _iteratorNormalCompletion7 = true;
+      var _didIteratorError7 = false;
+      var _iteratorError7 = undefined;
 
       try {
-        for (var _iterator8 = source.children[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
-          var child = _step8.value;
+        for (var _iterator7 = source.children[Symbol.iterator](), _step7; !(_iteratorNormalCompletion7 = (_step7 = _iterator7.next()).done); _iteratorNormalCompletion7 = true) {
+          var child = _step7.value;
 
           var newTitle = source.content.title + delimiter + child.content.title.split(delimiter).slice(-1)[0];
           child.content.title = newTitle;
@@ -1926,16 +1230,16 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
           adjustChildren(child);
         }
       } catch (err) {
-        _didIteratorError8 = true;
-        _iteratorError8 = err;
+        _didIteratorError7 = true;
+        _iteratorError7 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion8 && _iterator8.return) {
-            _iterator8.return();
+          if (!_iteratorNormalCompletion7 && _iterator7.return) {
+            _iterator7.return();
           }
         } finally {
-          if (_didIteratorError8) {
-            throw _iteratorError8;
+          if (_didIteratorError7) {
+            throw _iteratorError7;
           }
         }
       }
@@ -1951,7 +1255,7 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
     adjustChildren(source);
     $scope.resolveRawTags($scope.masterTag);
 
-    componentManager.saveItems(needsSave);
+    componentRelay.saveItems(needsSave);
   };
 
   $scope.createTag = function (tag) {
@@ -1980,7 +1284,7 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
           }
         }
       };
-      componentManager.createItem(smartTag, function (createdTag) {
+      componentRelay.createItem(smartTag, function (createdTag) {
         // We don't want to select the tag right away because it hasn't been added yet.
         // If you do $scope.selectTag(createdTag), an issue occurs where selecting another tag
         // after that will not dehighlight this one.
@@ -1996,7 +1300,7 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
       }
       tag.content.title = title;
       tag.dummy = false;
-      componentManager.createItem(tag, function (createdTag) {
+      componentRelay.createItem(tag, function (createdTag) {
         $scope.selectOnLoad = createdTag;
       });
     }
@@ -2011,27 +1315,27 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
 
     var clearMultipleTagsSelection = function clearMultipleTagsSelection() {
       if ($scope.multipleTags) {
-        var _iteratorNormalCompletion9 = true;
-        var _didIteratorError9 = false;
-        var _iteratorError9 = undefined;
+        var _iteratorNormalCompletion8 = true;
+        var _didIteratorError8 = false;
+        var _iteratorError8 = undefined;
 
         try {
-          for (var _iterator9 = $scope.multipleTags[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
-            var selectedTag = _step9.value;
+          for (var _iterator8 = $scope.multipleTags[Symbol.iterator](), _step8; !(_iteratorNormalCompletion8 = (_step8 = _iterator8.next()).done); _iteratorNormalCompletion8 = true) {
+            var selectedTag = _step8.value;
 
             $scope.setSelectedForTag(selectedTag, false);
           }
         } catch (err) {
-          _didIteratorError9 = true;
-          _iteratorError9 = err;
+          _didIteratorError8 = true;
+          _iteratorError8 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion9 && _iterator9.return) {
-              _iterator9.return();
+            if (!_iteratorNormalCompletion8 && _iterator8.return) {
+              _iterator8.return();
             }
           } finally {
-            if (_didIteratorError9) {
-              throw _iteratorError9;
+            if (_didIteratorError8) {
+              throw _iteratorError8;
             }
           }
         }
@@ -2041,7 +1345,7 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
     if (tag.master || tag.smartMaster) {
       clearMultipleTagsSelection();
       $scope.multipleTags = [];
-      componentManager.clearSelection();
+      componentRelay.clearSelection();
     } else {
       if (!$scope.multipleTags) {
         $scope.multipleTags = [];
@@ -2051,11 +1355,11 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
       }
       if (multiSelect && $scope.multipleTags.length > 1) {
         var smartTag = $scope.createEphemeralSmartTagForMultiTags();
-        componentManager.selectItem(smartTag);
+        componentRelay.selectItem(smartTag);
       } else {
         clearMultipleTagsSelection();
         $scope.multipleTags = isSmartTag ? [] : [tag];
-        componentManager.selectItem(tag);
+        componentRelay.selectItem(tag);
       }
     }
 
@@ -2098,29 +1402,29 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
   $scope.toggleCollapse = function (tag) {
     tag.clientData.collapsed = !tag.clientData.collapsed;
     if (!tag.master) {
-      componentManager.saveItem(tag);
+      componentRelay.saveItem(tag);
     }
   };
 
   $scope.saveTags = function (tags) {
-    componentManager.saveItems(tags);
+    componentRelay.saveItems(tags);
   };
 
   $scope.setSelectedForTag = function (tag, selected) {
     tag.selected = selected;
   };
 
-  componentManager.streamItems(["Tag", smartTagContentType], function (newTags) {
+  componentRelay.streamItems(["Tag", smartTagContentType], function (newTags) {
     $timeout(function () {
       var allTags = $scope.masterTag ? $scope.masterTag.rawTags : [];
       var smartTags = $scope.smartMasterTag ? $scope.smartMasterTag.rawTags : SNSmartTag.systemSmartTags();
-      var _iteratorNormalCompletion10 = true;
-      var _didIteratorError10 = false;
-      var _iteratorError10 = undefined;
+      var _iteratorNormalCompletion9 = true;
+      var _didIteratorError9 = false;
+      var _iteratorError9 = undefined;
 
       try {
-        for (var _iterator10 = newTags[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
-          var tag = _step10.value;
+        for (var _iterator9 = newTags[Symbol.iterator](), _step9; !(_iteratorNormalCompletion9 = (_step9 = _iterator9.next()).done); _iteratorNormalCompletion9 = true) {
+          var tag = _step9.value;
 
           var isSmartTag = tag.content_type == smartTagContentType;
           var arrayToUse = isSmartTag ? smartTags : allTags;
@@ -2149,16 +1453,16 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
           }
         }
       } catch (err) {
-        _didIteratorError10 = true;
-        _iteratorError10 = err;
+        _didIteratorError9 = true;
+        _iteratorError9 = err;
       } finally {
         try {
-          if (!_iteratorNormalCompletion10 && _iterator10.return) {
-            _iterator10.return();
+          if (!_iteratorNormalCompletion9 && _iterator9.return) {
+            _iterator9.return();
           }
         } finally {
-          if (_didIteratorError10) {
-            throw _iteratorError10;
+          if (_didIteratorError9) {
+            throw _iteratorError9;
           }
         }
       }
@@ -2224,27 +1528,27 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
     function addChildren(tag) {
       deleteChain.push(tag);
       if (tag.children) {
-        var _iteratorNormalCompletion11 = true;
-        var _didIteratorError11 = false;
-        var _iteratorError11 = undefined;
+        var _iteratorNormalCompletion10 = true;
+        var _didIteratorError10 = false;
+        var _iteratorError10 = undefined;
 
         try {
-          for (var _iterator11 = tag.children[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
-            var child = _step11.value;
+          for (var _iterator10 = tag.children[Symbol.iterator](), _step10; !(_iteratorNormalCompletion10 = (_step10 = _iterator10.next()).done); _iteratorNormalCompletion10 = true) {
+            var child = _step10.value;
 
             addChildren(child);
           }
         } catch (err) {
-          _didIteratorError11 = true;
-          _iteratorError11 = err;
+          _didIteratorError10 = true;
+          _iteratorError10 = err;
         } finally {
           try {
-            if (!_iteratorNormalCompletion11 && _iterator11.return) {
-              _iterator11.return();
+            if (!_iteratorNormalCompletion10 && _iterator10.return) {
+              _iterator10.return();
             }
           } finally {
-            if (_didIteratorError11) {
-              throw _iteratorError11;
+            if (_didIteratorError10) {
+              throw _iteratorError10;
             }
           }
         }
@@ -2253,7 +1557,7 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
 
     addChildren(tag);
 
-    componentManager.deleteItems(deleteChain);
+    componentRelay.deleteItems(deleteChain);
   };
 };
 
@@ -2448,29 +1752,29 @@ var TagTree = function () {
         tag.content.title = title;
 
         function renameChildren(tag) {
-          var _iteratorNormalCompletion12 = true;
-          var _didIteratorError12 = false;
-          var _iteratorError12 = undefined;
+          var _iteratorNormalCompletion11 = true;
+          var _didIteratorError11 = false;
+          var _iteratorError11 = undefined;
 
           try {
-            for (var _iterator12 = tag.children[Symbol.iterator](), _step12; !(_iteratorNormalCompletion12 = (_step12 = _iterator12.next()).done); _iteratorNormalCompletion12 = true) {
-              var child = _step12.value;
+            for (var _iterator11 = tag.children[Symbol.iterator](), _step11; !(_iteratorNormalCompletion11 = (_step11 = _iterator11.next()).done); _iteratorNormalCompletion11 = true) {
+              var child = _step11.value;
 
               child.content.title = child.parent.content.title + delimiter + child.displayTitle;
               tags.push(child);
               renameChildren(child);
             }
           } catch (err) {
-            _didIteratorError12 = true;
-            _iteratorError12 = err;
+            _didIteratorError11 = true;
+            _iteratorError11 = err;
           } finally {
             try {
-              if (!_iteratorNormalCompletion12 && _iterator12.return) {
-                _iterator12.return();
+              if (!_iteratorNormalCompletion11 && _iterator11.return) {
+                _iterator11.return();
               }
             } finally {
-              if (_didIteratorError12) {
-                throw _iteratorError12;
+              if (_didIteratorError11) {
+                throw _iteratorError11;
               }
             }
           }
@@ -2538,7 +1842,7 @@ angular.module('app').directive('tagTree', function () {
 
 
 },{"standard-file-js":2}],2:[function(require,module,exports){
-(function (global){
+(function (global){(function (){
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.SF = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 (function (global){
 /*
@@ -14792,5 +14096,5 @@ if (globalScope) {
 },{}]},{},[1])(1)
 });
 
-}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}]},{},[1]);
