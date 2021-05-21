@@ -2,10 +2,10 @@
 # yarn lockfile v1
 
 
-"@standardnotes/component-relay@2.0.11":
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.0.11.tgz#7d6c3da82fbda286df3c1134174813ef1d9d95e6"
-  integrity sha512-C/VkO3qSwRBjlT3/zUps0FtjSMP7ONxlAILU7P/xoinJKyYmB27YBrxy/xOb6RPkWwp3h31GFitvOZ+hfUm+3g==
+"@standardnotes/component-relay@2.0.13":
+  version "2.0.13"
+  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.0.13.tgz#78ba3b53e8da0b5e1235a19cf2be04ae4624a996"
+  integrity sha512-ezvmNYJzie5lY306XA9ccOCFweUt+/ta2B1bGB0OZVyZAeXpXLRPWRfeqsyIbJQNvZ2fZpvbGmlRi/x4EZAQCQ==
 
 JSONStream@^0.10.0:
   version "0.10.0"

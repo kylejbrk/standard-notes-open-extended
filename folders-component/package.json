@@ -1,12 +1,12 @@
 {
   "name": "sn-folders",
-  "version": "1.3.7",
+  "version": "1.3.8",
   "scripts": {
     "build": "grunt",
     "start": "grunt watch"
   },
   "devDependencies": {
-    "@standardnotes/component-relay": "2.0.11",
+    "@standardnotes/component-relay": "2.0.13",
     "angular": "1.8.0",
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.7.0",
