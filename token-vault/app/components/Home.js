@@ -4,7 +4,7 @@ import EditEntry from '@Components/EditEntry';
 import ViewEntries from '@Components/ViewEntries';
 import ConfirmDialog from '@Components/ConfirmDialog';
 import DataErrorAlert from '@Components/DataErrorAlert';
-import { EditorKit, EditorKitDelegate } from 'sn-editor-kit';
+import EditorKit from '@standardnotes/editor-kit';
 
 const initialState = {
   text: '',
@@ -13,7 +13,8 @@ const initialState = {
   editMode: false,
   editEntry: null,
   confirmRemove: false,
-  displayCopy: false
+  displayCopy: false,
+  canEdit: true
 };
 
 export default class Home extends React.Component {
@@ -24,7 +25,7 @@ export default class Home extends React.Component {
   }
 
   configureEditorKit() {
-    let delegate = new EditorKitDelegate({
+    const delegate = {
       setEditorRawText: text => {
         let parseError = false;
         let entries = [];
@@ -61,14 +62,20 @@ export default class Home extends React.Component {
         }
       },
       clearUndoHistory: () => {},
-      getElementsBySelector: () => []
-    });
+      getElementsBySelector: () => [],
+      onNoteLockToggle: (isLocked) => {
+        this.setState({
+          canEdit: !isLocked
+        });
+      }
+    };
 
-    this.editorKit = new EditorKit({
-      delegate: delegate,
-      mode: 'json',
-      supportsFilesafe: false
-    });
+    this.editorKit = new EditorKit(delegate,
+      {
+        mode: 'json',
+        supportsFileSafe: false
+      }
+    );
   }
 
   saveNote(entries) {
@@ -117,6 +124,9 @@ export default class Home extends React.Component {
 
   // Event Handlers
   onAddNew = () => {
+    if (!this.state.canEdit) {
+      return;
+    }
     this.setState({
       editMode: true,
       editEntry: null
@@ -124,6 +134,9 @@ export default class Home extends React.Component {
   };
 
   onEdit = id => {
+    if (!this.state.canEdit) {
+      return;
+    }
     this.setState(state => ({
       editMode: true,
       editEntry: {
@@ -142,6 +155,9 @@ export default class Home extends React.Component {
   };
 
   onRemove = id => {
+    if (!this.state.canEdit) {
+      return;
+    }
     this.setState(state => ({
       confirmRemove: true,
       editEntry: {
@@ -177,11 +193,13 @@ export default class Home extends React.Component {
 
   render() {
     const editEntry = this.state.editEntry || {};
+    const { canEdit, displayCopy, parseError, editMode, entries, confirmRemove } = this.state;
+
     return (
       <div className="sn-component">
         <div
           className={`auth-copy-notification ${
-            this.state.displayCopy ? 'visible' : 'hidden'
+            displayCopy ? 'visible' : 'hidden'
           }`}
         >
           <div className="sk-panel">
@@ -190,17 +208,17 @@ export default class Home extends React.Component {
             </div>
           </div>
         </div>
-        {this.state.parseError && <DataErrorAlert />}
-        <div id="header">
+        {parseError && <DataErrorAlert />}
+        <div id="header" className={!canEdit ? 'hidden' : '' }>
           <div className="sk-button-group">
-            <div onClick={this.onAddNew} className="sk-button info">
+            <div onClick={this.onAddNew} className="sk-button info" aria-disabled={!canEdit}>
               <div className="sk-label">Add New</div>
             </div>
           </div>
         </div>
 
         <div id="content">
-          {this.state.editMode ? (
+          {editMode ? (
             <EditEntry
               id={editEntry.id}
               entry={editEntry.entry}
@@ -209,13 +227,14 @@ export default class Home extends React.Component {
             />
           ) : (
             <ViewEntries
-              entries={this.state.entries}
+              entries={entries}
               onEdit={this.onEdit}
               onRemove={this.onRemove}
               onCopyToken={this.onCopyToken}
+              canEdit={canEdit}
             />
           )}
-          {this.state.confirmRemove && (
+          {confirmRemove && (
             <ConfirmDialog
               title={`Remove ${editEntry.entry.service}`}
               message="Are you sure you want to remove this entry?"

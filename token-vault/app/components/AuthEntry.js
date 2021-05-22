@@ -67,7 +67,7 @@ export default class AuthEntry extends React.Component {
 
   render() {
     const { service, account, notes } = this.props.entry;
-    const { id, onEdit, onRemove } = this.props;
+    const { id, onEdit, onRemove, canEdit } = this.props;
     const { token } = this.state;
     const timeLeft = this.getTimeLeft();
 
@@ -89,12 +89,14 @@ export default class AuthEntry extends React.Component {
               </div>
             </div>
           </div>
-          <div className="auth-options">
-            <AuthMenu
-              onEdit={onEdit.bind(this, id)}
-              onRemove={onRemove.bind(this, id)}
-            />
-          </div>
+          {canEdit && (
+            <div className="auth-options">
+              <AuthMenu
+                onEdit={onEdit.bind(this, id)}
+                onRemove={onRemove.bind(this, id)}
+              />
+            </div>
+          )}
         </div>
         {notes && (
           <div className="auth-notes-row">
@@ -112,5 +114,6 @@ AuthEntry.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
   onEntryChange: PropTypes.func,
-  onCopyToken: PropTypes.func.isRequired
+  onCopyToken: PropTypes.func.isRequired,
+  canEdit: PropTypes.bool.isRequired
 };

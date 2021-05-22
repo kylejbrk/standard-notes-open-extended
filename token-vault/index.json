@@ -8,8 +8,8 @@
     "identifier": "org.standardnotes.token-vault",
     "name": "TokenVault",
     "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
-    "version": "1.0.8",
-    "download_url": "https://api.github.com/repos/standardnotes/token-vault/zipball/1.0.8",
+    "version": "1.0.9",
+    "download_url": "https://api.github.com/repos/standardnotes/token-vault/zipball/1.0.9",
     "url": "https://kyleburke.net/standard-notes-open-extended/token-vault/dist/index.html",
     "latest_url": "https://kyleburke.net/standard-notes-open-extended/token-vault/index.json"
 }
