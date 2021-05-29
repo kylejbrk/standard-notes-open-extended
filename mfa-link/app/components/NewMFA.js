@@ -154,7 +154,9 @@ export default class NewMFA extends React.Component {
           <div className="sk-panel-row justify-left align-top">
 
             <div className="panel-column">
-              <QRCode value={url}/>
+              <div className="white-border">
+                <QRCode value={url}/>
+              </div>
               <div className="sk-panel-row sk-button-group stretch">
                 <div className="sk-button info" onClick={this.install}>
                   <div className="sk-label">Enable</div>

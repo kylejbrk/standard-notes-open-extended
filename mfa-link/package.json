@@ -1,6 +1,6 @@
 {
   "name": "sn-mfa-link",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "main": "dist/dist.js",
   "scripts": {
     "lint": "eslint --cache --ignore-path .gitignore --ext .jsx,.js --format=node_modules/eslint-formatter-pretty .",

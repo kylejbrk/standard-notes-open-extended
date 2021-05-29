@@ -38,6 +38,11 @@ ol, ol li {
 ol {
   margin-left: 1.3em; }
 
+.white-border {
+  border-color: white !important;
+  border-style: solid;
+  border-width: 5px; }
+
 :root {
   --sn-stylekit-base-font-size: 13px;
   --sn-stylekit-font-size-p: 1.0rem;

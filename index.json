@@ -7,8 +7,8 @@
             "description": "Configure two-factor authentication to add an extra level of security to your account.",
             "identifier": "org.standardnotes.mfa-link",
             "name": "2FA Manager",
-            "version": "1.2.3",
-            "download_url": "https://api.github.com/repos/standardnotes/mfa-link/zipball/1.2.3",
+            "version": "1.2.4",
+            "download_url": "https://api.github.com/repos/standardnotes/mfa-link/zipball/1.2.4",
             "url": "https://kyleburke.net/standard-notes-open-extended/mfa-link/dist/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/mfa-link/index.json"
         },
@@ -197,8 +197,8 @@
             "identifier": "org.standardnotes.token-vault",
             "name": "TokenVault",
             "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
-            "version": "1.0.9",
-            "download_url": "https://api.github.com/repos/standardnotes/token-vault/zipball/1.0.9",
+            "version": "1.0.10",
+            "download_url": "https://api.github.com/repos/standardnotes/token-vault/zipball/1.0.10",
             "url": "https://kyleburke.net/standard-notes-open-extended/token-vault/dist/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/token-vault/index.json"
         },

@@ -3689,7 +3689,11 @@ var NewMFA = function (_React$Component) {
           _react2.default.createElement(
             "div",
             { className: "panel-column" },
-            _react2.default.createElement(QRCode, { value: url }),
+            _react2.default.createElement(
+              "div",
+              { className: "white-border" },
+              _react2.default.createElement(QRCode, { value: url })
+            ),
             _react2.default.createElement(
               "div",
               { className: "sk-panel-row sk-button-group stretch" },
