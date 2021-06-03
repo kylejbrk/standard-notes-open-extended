@@ -2,7 +2,8 @@
   "env": {
     "browser": true,
     "amd": true,
-    "node": true
+    "node": true,
+    "es6": true
   },
   "extends": [
     "@standardnotes/eslint-config-extensions"
@@ -12,6 +13,8 @@
   },
   "globals": {
     "EasyMDE": true,
-    "ComponentRelay": true
+    "ComponentRelay": true,
+    "Stylekit": true,
+    "DOMPurify": true
   }
 }

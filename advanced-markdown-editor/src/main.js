@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
   let ignoreTextChange = false;
   let initialLoad = true;
   let lastValue, lastUUID, clientData;
+  let renderNote = false;
 
-  componentRelay.streamContextItem((note) => {
+  componentRelay.streamContextItem(async (note) => {
     if (note.uuid !== lastUUID) {
       // Note changed, reset last values
       lastValue = null;
@@ -27,6 +28,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Only update UI on non-metadata updates.
     if (note.isMetadataUpdate || !window.easymde) {
+      return;
+    }
+
+    const isUnsafeContent = checkIfUnsafeContent(note.content.text);
+
+    if (isUnsafeContent) {
+      const trustUnsafeContent = clientData['trustUnsafeContent'] ?? false;
+      if (!trustUnsafeContent) {
+        await showUnsafeContentAlert().then((result) => {
+          if (result) {
+            setTrustUnsafeContent(workingNote);
+            renderNote = result;
+          }
+        });
+      } else {
+        renderNote = true;
+      }
+    } else {
+      renderNote = true;
+    }
+
+    /**
+     * If the user decides not to continue rendering the note,
+     * clear the editor and disable it.
+     */
+    if (!renderNote) {
+      window.easymde.togglePreview();
+      disableRendering();
       return;
     }
 
@@ -104,7 +133,11 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   function saveMetadata() {
-    function getEditorMode() {
+    if (!renderNote) {
+      return;
+    }
+
+    const getEditorMode = () => {
       const editor = window.easymde;
 
       if (editor) {
@@ -112,12 +145,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (editor.isSideBySideActive()) return 'split';
       }
       return 'edit';
-    }
+    };
 
     const note = workingNote;
 
     componentRelay.saveItemWithPresave(note, () => {
-      note.clientData = { mode: getEditorMode() };
+      note.clientData = {
+        ...note.clientData,
+        mode: getEditorMode()
+      };
     });
   }
 
@@ -135,22 +171,21 @@ document.addEventListener('DOMContentLoaded', function() {
   window.easymde.codemirror.setOption('viewportMargin', 100);
 
   window.easymde.codemirror.on('change', function() {
-
-    function strip(html) {
+    const strip = (html) => {
       const tmp = document.implementation.createHTMLDocument('New').body;
       tmp.innerHTML = html;
       return tmp.textContent || tmp.innerText || '';
-    }
+    };
 
-    function truncateString(string, limit = 90) {
+    const truncateString = (string, limit = 90) => {
       if (string.length <= limit) {
         return string;
       } else {
         return string.substring(0, limit) + '...';
       }
-    }
+    };
 
-    if (!ignoreTextChange) {
+    if (!ignoreTextChange && renderNote) {
       if (workingNote) {
         // Be sure to capture this object as a variable, as this.note may be reassigned in `streamContextItem`, so by the time
         // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
@@ -171,4 +206,60 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }
   });
+
+  function setTrustUnsafeContent(note) {
+    componentRelay.saveItemWithPresave(note, () => {
+      note.clientData = {
+        ...note.clientData,
+        trustUnsafeContent: true
+      };
+    });
+  }
+
+  function disableRendering() {
+    const previewButton = document.querySelector('.editor-toolbar > button.preview');
+    const sideBySideButton = document.querySelector('.editor-toolbar > button.side-by-side');
+    previewButton.classList.remove('no-disable');
+    sideBySideButton.classList.remove('no-disable');
+  }
+
+  /**
+   * Checks if the content contains at least one script tag.
+   */
+  function checkIfUnsafeContent(content) {
+    const DOMPurify = require('dompurify');
+    const sanitizedContent = DOMPurify.sanitize(content);
+    return content !== sanitizedContent;
+  }
+
+  function showUnsafeContentAlert() {
+    const text = 'We’ve detected that this note contains a script or code snippet which may be unsafe to execute. ' +
+                  'Scripts executed in the editor have the ability to impersonate as the editor to Standard Notes. ' +
+                  'Press Continue to mark this script as safe and proceed, or Cancel to avoid rendering this note.';
+
+    return new Promise((resolve) => {
+      const Stylekit = require('sn-stylekit');
+      const alert = new Stylekit.SKAlert({
+        title: null,
+        text,
+        buttons: [
+          {
+            text: 'Cancel',
+            style: 'neutral',
+            action: function() {
+              resolve(false);
+            },
+          },
+          {
+            text: 'Continue',
+            style: 'danger',
+            action: function() {
+              resolve(true);
+            },
+          },
+        ]
+      });
+      alert.present();
+    });
+  }
 });
