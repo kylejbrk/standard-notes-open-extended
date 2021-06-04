@@ -1,0 +1,8 @@
+{
+    "identifier": "org.yourdomain.my-extension",
+    "name": "Action Bar",
+    "content_type": "SN|Component",
+    "area": "editor-stack",
+    "version": "1.0.0",
+    "url": "http://localhost:8002"
+}

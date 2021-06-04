@@ -705,6 +705,20 @@ angular.module('app', []);
 var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
   _classCallCheck2(this, HomeCtrl);
 
+  var dateToISOFormat = function dateToISOFormat(date) {
+    if (!date) {
+      return;
+    }
+    var year = date.getFullYear();
+    var month = (date.getMonth() + 1).toString().padStart(2, '0');
+    var day = date.getDate().toString().padStart(2, '0');
+    var hours = date.getHours().toString().padStart(2, '0');
+    var minutes = date.getMinutes().toString().padStart(2, '0');
+    var seconds = date.getSeconds().toString().padStart(2, '0');
+
+    return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+  };
+
   var permissions = [{
     name: "stream-context-item"
   }];
@@ -718,8 +732,8 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
   var defaultHeight = 56;
 
   $scope.analyzeNote = function (note) {
-    $scope.createdAt = new Date(note.created_at).toLocaleString();
-    $scope.updatedAt = new Date(note.updated_at).toLocaleString();
+    $scope.createdAt = dateToISOFormat(note.created_at);
+    $scope.updatedAt = dateToISOFormat(note.updated_at);
 
     var text = note.content.text;
     if (!note.content.appData.prefersPlainEditor) {
@@ -757,10 +771,7 @@ var HomeCtrl = function HomeCtrl($rootScope, $scope, $timeout) {
   $scope.buttonPressed = function (action) {
     switch (action) {
       case "date":
-        var date = new Date().toLocaleDateString([], {
-          hour: '2-digit',
-          minute: '2-digit'
-        });
+        var date = dateToISOFormat(new Date());
         $scope.copyTextToClipboard(date, function () {
           $scope.copiedDate = true;
           $timeout(function () {

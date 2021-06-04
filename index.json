@@ -21,8 +21,8 @@
             "marketing_url": "https://standardnotes.org/extensions/action-bar",
             "name": "Action Bar",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/action-bar.jpg",
-            "version": "1.3.1",
-            "download_url": "https://api.github.com/repos/standardnotes/action-bar/zipball/1.3.1",
+            "version": "1.3.2",
+            "download_url": "https://api.github.com/repos/standardnotes/action-bar/zipball/1.3.2",
             "url": "https://kyleburke.net/standard-notes-open-extended/action-bar/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/action-bar/index.json"
         },
@@ -114,8 +114,8 @@
             "marketing_url": "https://standardnotes.org/extensions/minimal-markdown-editor",
             "name": "Minimal Markdown Editor",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/min-markdown.jpg",
-            "version": "1.3.5",
-            "download_url": "https://api.github.com/repos/standardnotes/minimal-markdown-editor/zipball/1.3.5",
+            "version": "1.3.6",
+            "download_url": "https://api.github.com/repos/standardnotes/minimal-markdown-editor/zipball/1.3.6",
             "url": "https://kyleburke.net/standard-notes-open-extended/minimal-markdown-editor/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/minimal-markdown-editor/index.json"
         },

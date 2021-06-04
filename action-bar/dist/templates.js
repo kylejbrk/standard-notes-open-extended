@@ -41,8 +41,8 @@ angular.module('app').run(['$templateCache', function($templateCache) {
     "<div class='sk-panel-column meta'>\n" +
     "<div class='title' ng-click='note.showId = !note.showId'>{{note.content.title}}</div>\n" +
     "<div class='created' ng-if='note.showId'>ID {{note.uuid}}</div>\n" +
-    "<div class='created'>Created {{createdAt}}</div>\n" +
-    "<div class='created'>Updated {{updatedAt}}</div>\n" +
+    "<div class='created'>Created on {{createdAt}}</div>\n" +
+    "<div class='created'>Updated on {{updatedAt}}</div>\n" +
     "</div>\n" +
     "<div class='sk-panel-column info-sections'>\n" +
     "<div class='section'>\n" +

@@ -67,7 +67,15 @@ html {
     opacity: 0.2;
   }
 
-  .cm-variable-2 {
+  .cm-variable-2, .cm-variable-3, .cm-keyword {
+    color: var(--sn-stylekit-editor-foreground-color) !important;
+
+    &.CodeMirror-selectedtext {
+      color: var(--sn-stylekit-info-contrast-color) !important;
+      background: transparent;
+    }
+  }
+  .cm-variable-3 {
     color: var(--sn-stylekit-editor-foreground-color) !important;
 
     &.CodeMirror-selectedtext {
@@ -77,8 +85,7 @@ html {
   }
 
   .cm-link,
-  .cm-string,
-  .cm-keyword {
+  .cm-string {
     color: var(--sn-stylekit-info-color) !important;
 
     &.CodeMirror-selectedtext {
@@ -133,4 +140,8 @@ html {
 .CodeMirror .cm-quote {
   color: var(--sn-stylekit-foreground-color);
   opacity: 0.6;
+}
+
+.CodeMirror .cm-s-default .cm-variable-3 {
+  color: var(--sn-stylekit-success-color) !important;
 }

@@ -6,8 +6,8 @@
           .sk-panel-column.meta
             .title{"ng-click" => "note.showId = !note.showId"} {{note.content.title}}
             .created{"ng-if" => "note.showId"} ID {{note.uuid}}
-            .created Created {{createdAt}}
-            .created Updated {{updatedAt}}
+            .created Created on {{createdAt}}
+            .created Updated on {{updatedAt}}
 
           .sk-panel-column.info-sections
             .section

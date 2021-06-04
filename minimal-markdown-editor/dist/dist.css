@@ -164,17 +164,17 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
 
 .CodeMirror-scroll {
   overflow: scroll !important; /* Things will break if this is overridden */
-  /* 30px is the magic margin used to hide the element's real scrollbars */
+  /* 50px is the magic margin used to hide the element's real scrollbars */
   /* See overflow: hidden in .CodeMirror */
-  margin-bottom: -30px; margin-right: -30px;
-  padding-bottom: 30px;
+  margin-bottom: -50px; margin-right: -50px;
+  padding-bottom: 50px;
   height: 100%;
   outline: none; /* Prevent dragging from highlighting the element */
   position: relative;
 }
 .CodeMirror-sizer {
   position: relative;
-  border-right: 30px solid transparent;
+  border-right: 50px solid transparent;
 }
 
 /* The fake, visible scrollbars. Used to force redraw during scrolling
@@ -212,7 +212,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
   height: 100%;
   display: inline-block;
   vertical-align: top;
-  margin-bottom: -30px;
+  margin-bottom: -50px;
 }
 .CodeMirror-gutter-wrapper {
   position: absolute;
@@ -409,21 +409,26 @@ html {
 .CodeMirror .cm-formatting-em {
   opacity: 0.2;
 }
-.CodeMirror .cm-variable-2 {
+.CodeMirror .cm-variable-2, .CodeMirror .cm-variable-3, .CodeMirror .cm-keyword {
   color: var(--sn-stylekit-editor-foreground-color) !important;
 }
-.CodeMirror .cm-variable-2.CodeMirror-selectedtext {
+.CodeMirror .cm-variable-2.CodeMirror-selectedtext, .CodeMirror .cm-variable-3.CodeMirror-selectedtext, .CodeMirror .cm-keyword.CodeMirror-selectedtext {
+  color: var(--sn-stylekit-info-contrast-color) !important;
+  background: transparent;
+}
+.CodeMirror .cm-variable-3 {
+  color: var(--sn-stylekit-editor-foreground-color) !important;
+}
+.CodeMirror .cm-variable-3.CodeMirror-selectedtext {
   color: var(--sn-stylekit-info-contrast-color) !important;
   background: transparent;
 }
 .CodeMirror .cm-link,
-.CodeMirror .cm-string,
-.CodeMirror .cm-keyword {
+.CodeMirror .cm-string {
   color: var(--sn-stylekit-info-color) !important;
 }
 .CodeMirror .cm-link.CodeMirror-selectedtext,
-.CodeMirror .cm-string.CodeMirror-selectedtext,
-.CodeMirror .cm-keyword.CodeMirror-selectedtext {
+.CodeMirror .cm-string.CodeMirror-selectedtext {
   color: var(--sn-stylekit-info-contrast-color) !important;
   background: var(--sn-stylekit-info-color) !important;
 }
@@ -477,4 +482,8 @@ html {
 .CodeMirror .cm-quote {
   color: var(--sn-stylekit-foreground-color);
   opacity: 0.6;
+}
+
+.CodeMirror .cm-s-default .cm-variable-3 {
+  color: var(--sn-stylekit-success-color) !important;
 }

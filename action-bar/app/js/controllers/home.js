@@ -1,6 +1,21 @@
 class HomeCtrl {
   constructor($rootScope, $scope, $timeout) {
 
+    const dateToISOFormat = (date) => {
+      if (!date) {
+        return;
+      }
+
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, '0');
+      const day = date.getDate().toString().padStart(2, '0');
+      const hours = date.getHours().toString().padStart(2, '0');
+      const minutes = date.getMinutes().toString().padStart(2, '0');
+      const seconds = date.getSeconds().toString().padStart(2, '0');
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
     const permissions = [{
       name: "stream-context-item"
     }];
@@ -14,8 +29,8 @@ class HomeCtrl {
     const defaultHeight = 56;
 
     $scope.analyzeNote = function (note) {
-      $scope.createdAt = new Date(note.created_at).toLocaleString();
-      $scope.updatedAt = new Date(note.updated_at).toLocaleString();
+      $scope.createdAt = dateToISOFormat(note.created_at);
+      $scope.updatedAt = dateToISOFormat(note.updated_at);
 
       let text = note.content.text;
       if (!note.content.appData.prefersPlainEditor) {
@@ -53,10 +68,7 @@ class HomeCtrl {
     $scope.buttonPressed = function (action) {
       switch (action) {
         case "date":
-          const date = new Date().toLocaleDateString([], {
-            hour: '2-digit',
-            minute: '2-digit'
-          });
+          const date = dateToISOFormat(new Date());
           $scope.copyTextToClipboard(date, () => {
             $scope.copiedDate = true;
             $timeout(function () {
