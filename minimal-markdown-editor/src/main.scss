@@ -67,7 +67,7 @@ html {
     opacity: 0.2;
   }
 
-  .cm-variable-2, .cm-variable-3, .cm-keyword {
+  .cm-variable-2, .cm-variable-3 {
     color: var(--sn-stylekit-editor-foreground-color) !important;
 
     &.CodeMirror-selectedtext {
@@ -142,6 +142,10 @@ html {
   opacity: 0.6;
 }
 
-.CodeMirror .cm-s-default .cm-variable-3 {
+.cm-s-default .cm-variable-3, .cm-s-default .cm-type {
   color: var(--sn-stylekit-success-color) !important;
+}
+
+.CodeMirror .cm-link, .CodeMirror .cm-string, .CodeMirror .cm-keyword {
+  color: var(--sn-stylekit-info-color);
 }

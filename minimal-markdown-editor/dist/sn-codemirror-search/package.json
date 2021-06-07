@@ -1,43 +1,18 @@
 {
-  "_from": "sn-codemirror-search@1.0.0",
-  "_id": "sn-codemirror-search@1.0.0",
-  "_inBundle": false,
-  "_integrity": "sha512-T8WAFgdhChF91ZHX2ELGy48kzulMgzwTWA5p1QqMHOZDbgi23i3XWflNzcwPdKw8Px0DIRwpJ6ffQfcft0LMbQ==",
-  "_location": "/sn-codemirror-search",
-  "_phantomChildren": {},
-  "_requested": {
-    "type": "version",
-    "registry": true,
-    "raw": "sn-codemirror-search@1.0.0",
-    "name": "sn-codemirror-search",
-    "escapedName": "sn-codemirror-search",
-    "rawSpec": "1.0.0",
-    "saveSpec": null,
-    "fetchSpec": "1.0.0"
-  },
-  "_requiredBy": [
-    "/"
-  ],
-  "_resolved": "https://registry.npmjs.org/sn-codemirror-search/-/sn-codemirror-search-1.0.0.tgz",
-  "_shasum": "13c06b2cead6a3670eabdbffadd69d839ea53c3f",
-  "_spec": "sn-codemirror-search@1.0.0",
-  "_where": "/home/ningsong/standardnotes/minimal-markdown-editor",
-  "author": "",
-  "bugs": {
-    "url": "https://github.com/mobitar/CodeMirror-search/issues"
-  },
-  "bundleDependencies": false,
-  "deprecated": false,
-  "description": "",
-  "homepage": "https://github.com/mobitar/CodeMirror-search#readme",
-  "main": "search.js",
   "name": "sn-codemirror-search",
+  "version": "1.0.0",
+  "description": "",
+  "main": "search.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mobitar/CodeMirror-search.git"
   },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/mobitar/CodeMirror-search/issues"
   },
-  "version": "1.0.0"
+  "homepage": "https://github.com/mobitar/CodeMirror-search#readme"
 }

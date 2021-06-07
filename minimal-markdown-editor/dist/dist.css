@@ -184,6 +184,7 @@ div.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}
   position: absolute;
   z-index: 6;
   display: none;
+  outline: none;
 }
 .CodeMirror-vscrollbar {
   right: 0; top: 0;
@@ -409,10 +410,10 @@ html {
 .CodeMirror .cm-formatting-em {
   opacity: 0.2;
 }
-.CodeMirror .cm-variable-2, .CodeMirror .cm-variable-3, .CodeMirror .cm-keyword {
+.CodeMirror .cm-variable-2, .CodeMirror .cm-variable-3 {
   color: var(--sn-stylekit-editor-foreground-color) !important;
 }
-.CodeMirror .cm-variable-2.CodeMirror-selectedtext, .CodeMirror .cm-variable-3.CodeMirror-selectedtext, .CodeMirror .cm-keyword.CodeMirror-selectedtext {
+.CodeMirror .cm-variable-2.CodeMirror-selectedtext, .CodeMirror .cm-variable-3.CodeMirror-selectedtext {
   color: var(--sn-stylekit-info-contrast-color) !important;
   background: transparent;
 }
@@ -484,6 +485,10 @@ html {
   opacity: 0.6;
 }
 
-.CodeMirror .cm-s-default .cm-variable-3 {
+.cm-s-default .cm-variable-3, .cm-s-default .cm-type {
   color: var(--sn-stylekit-success-color) !important;
+}
+
+.CodeMirror .cm-link, .CodeMirror .cm-string, .CodeMirror .cm-keyword {
+  color: var(--sn-stylekit-info-color);
 }
