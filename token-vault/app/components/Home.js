@@ -5,6 +5,7 @@ import ViewEntries from '@Components/ViewEntries';
 import ConfirmDialog from '@Components/ConfirmDialog';
 import DataErrorAlert from '@Components/DataErrorAlert';
 import EditorKit from '@standardnotes/editor-kit';
+import ReorderIcon from '@Components/ReorderIcon';
 
 const initialState = {
   text: '',
@@ -13,8 +14,10 @@ const initialState = {
   editMode: false,
   editEntry: null,
   confirmRemove: false,
+  confirmReorder: false,
   displayCopy: false,
-  canEdit: true
+  canEdit: true,
+  searchValue: ''
 };
 
 export default class Home extends React.Component {
@@ -149,6 +152,7 @@ export default class Home extends React.Component {
   onCancel = () => {
     this.setState({
       confirmRemove: false,
+      confirmReorder: false,
       editMode: false,
       editEntry: null
     });
@@ -176,7 +180,7 @@ export default class Home extends React.Component {
     }
   };
 
-  onCopyToken = () => {
+  onCopyValue = () => {
     this.setState({
       displayCopy: true
     });
@@ -191,9 +195,61 @@ export default class Home extends React.Component {
     }, 2000);
   };
 
+  updateEntries = (entries) => {
+    this.saveNote(entries);
+    this.setState({
+      entries
+    });
+  };
+
+  onReorderEntries = () => {
+    if (!this.state.canEdit) {
+      return;
+    }
+    this.setState({
+      confirmReorder: true
+    });
+  };
+
+  onSearchChange = event => {
+    const target = event.target;
+    this.setState({
+      searchValue: target.value.toLowerCase()
+    });
+  };
+
+  clearSearchValue = () => {
+    this.setState({
+      searchValue: ''
+    });
+  }
+
+  reorderEntries = () => {
+    const { entries } = this.state;
+    const orderedEntries = entries.sort((a, b) => {
+      const serviceA = a.service.toLowerCase();
+      const serviceB = b.service.toLowerCase();
+      return (serviceA < serviceB) ? -1 : (serviceA > serviceB) ? 1 : 0;
+    });
+    this.saveNote(orderedEntries);
+    this.setState({
+      entries: orderedEntries,
+      confirmReorder: false
+    });
+  };
+
   render() {
     const editEntry = this.state.editEntry || {};
-    const { canEdit, displayCopy, parseError, editMode, entries, confirmRemove } = this.state;
+    const {
+      canEdit,
+      displayCopy,
+      parseError,
+      editMode,
+      entries,
+      confirmRemove,
+      confirmReorder,
+      searchValue
+    } = this.state;
 
     return (
       <div className="sn-component">
@@ -204,19 +260,41 @@ export default class Home extends React.Component {
         >
           <div className="sk-panel">
             <div className="sk-font-small sk-bold">
-              Copied token to clipboard.
+              Copied value to clipboard.
             </div>
           </div>
         </div>
         {parseError && <DataErrorAlert />}
-        <div id="header" className={!canEdit ? 'hidden' : '' }>
-          <div className="sk-button-group">
-            <div onClick={this.onAddNew} className="sk-button info" aria-disabled={!canEdit}>
-              <div className="sk-label">Add New</div>
+        {canEdit && !editMode && (
+          <div id="header">
+            <div className="sk-horizontal-group left align-items-center">
+              <input
+                name="search"
+                className="sk-input contrast search-bar"
+                placeholder="Search entries..."
+                value={searchValue}
+                onChange={this.onSearchChange}
+                autoComplete="off"
+                type="text"
+              />
+              {searchValue && (
+                <div onClick={this.clearSearchValue} className="sk-button danger">
+                  <div className="sk-label">X</div>
+                </div>
+              )}
+            </div>
+            <div className="sk-horizontal-group right">
+              <div className="sk-button-group stretch">
+                <div onClick={this.onReorderEntries} className="sk-button info">
+                  <ReorderIcon />
+                </div>
+                <div onClick={this.onAddNew} className="sk-button info">
+                  <div className="sk-label">Add new</div>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-
+        )}
         <div id="content">
           {editMode ? (
             <EditEntry
@@ -228,10 +306,12 @@ export default class Home extends React.Component {
           ) : (
             <ViewEntries
               entries={entries}
+              searchValue={searchValue}
               onEdit={this.onEdit}
               onRemove={this.onRemove}
-              onCopyToken={this.onCopyToken}
+              onCopyValue={this.onCopyValue}
               canEdit={canEdit}
+              updateEntries={this.updateEntries}
             />
           )}
           {confirmRemove && (
@@ -239,6 +319,14 @@ export default class Home extends React.Component {
               title={`Remove ${editEntry.entry.service}`}
               message="Are you sure you want to remove this entry?"
               onConfirm={() => this.removeEntry(editEntry.id)}
+              onCancel={this.onCancel}
+            />
+          )}
+          {confirmReorder && (
+            <ConfirmDialog
+              title={'Auto-sort entries'}
+              message="Are you sure you want to auto-sort all entries alphabetically based on service name?"
+              onConfirm={this.reorderEntries}
               onCancel={this.onCancel}
             />
           )}

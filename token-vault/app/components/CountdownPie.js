@@ -42,22 +42,22 @@ const opaReverseAnimation = (
   }
 }`;
 
-function calculateOpaOffset(left, total) {
-  const percentage = calculatePercentage(left, total) * 100;
+function calculateOpaOffset(timeLeft, total) {
+  const percentage = calculatePercentage(timeLeft, total) * 100;
   const percTo50 = 50 - percentage;
   // 8 is an offset because the animation is not in sync otherwise
   return percTo50 < 0 ? 0 : Math.ceil(Math.min(percTo50 + 8, 50));
 }
 
-function calculateRotaOffset(left, total) {
-  return calculatePercentage(left, total) * 360;
+function calculateRotaOffset(timeLeft, total) {
+  return calculatePercentage(timeLeft, total) * 360;
 }
 
-function calculatePercentage(left, total) {
-  return (total - left) / total;
+function calculatePercentage(timeLeft, total) {
+  return (total - timeLeft) / total;
 }
 
-function useRotateAnimation(token, left, total) {
+function useRotateAnimation(token, timeLeft, total) {
   useEffect(
     function createRotateAnimation() {
       const style = document.createElement('style');
@@ -66,12 +66,12 @@ function useRotateAnimation(token, left, total) {
 
       const rotaKeyframes = rotaAnimation(
         token,
-        calculateRotaOffset(left, total)
+        calculateRotaOffset(timeLeft, total)
       );
-      const opaKeyframes = opaAnimation(token, calculateOpaOffset(left, total));
+      const opaKeyframes = opaAnimation(token, calculateOpaOffset(timeLeft, total));
       const opaReverseKeyframes = opaReverseAnimation(
         token,
-        calculateOpaOffset(left, total)
+        calculateOpaOffset(timeLeft, total)
       );
 
       styleSheet.insertRule(rotaKeyframes, styleSheet.cssRules.length);
@@ -82,39 +82,45 @@ function useRotateAnimation(token, left, total) {
         style.remove();
       }
 
-      const timer = setTimeout(cleanup, left * 1000);
+      const timer = setTimeout(cleanup, timeLeft * 1000);
 
       return () => {
         clearTimeout(timer);
         cleanup();
       };
     },
-    [token, left, total]
+    [token, timeLeft, total]
   );
 }
 
-const CountdownPie = ({ token, left, total }) => {
-  useRotateAnimation(token, left, total);
+const CountdownPie = ({ token, timeLeft, total, bgColor, fgColor }) => {
+  useRotateAnimation(token, timeLeft, total);
 
   return (
-    <div className="countdown-pie">
+    <div className="countdown-pie" style={{
+      backgroundColor: bgColor
+    }}>
       <div
         className="pie spinner"
         style={{
-          animation: `rota_${animationName(token)} ${left}s linear`,
+          animation: `rota_${animationName(token)} ${timeLeft}s linear`,
+          backgroundColor: fgColor
         }}
       />
-      <div className="pie background" />
+      <div className="pie background" style={{
+        backgroundColor: fgColor
+      }} />
       <div
         className="pie filler"
         style={{
-          animation: `opa_r_${animationName(token)} ${left}s steps(1, end)`,
+          animation: `opa_r_${animationName(token)} ${timeLeft}s steps(1, end)`,
+          backgroundColor: fgColor
         }}
       />
       <div
         className="mask"
         style={{
-          animation: `opa_${animationName(token)} ${left}s steps(1, end)`,
+          animation: `opa_${animationName(token)} ${timeLeft}s steps(1, end)`,
         }}
       />
     </div>
@@ -123,8 +129,10 @@ const CountdownPie = ({ token, left, total }) => {
 
 CountdownPie.propTypes = {
   token: PropTypes.string.isRequired,
-  left: PropTypes.number.isRequired,
+  timeLeft: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
+  bgColor: PropTypes.string,
+  fgColor: PropTypes.string
 };
 
 export default CountdownPie;

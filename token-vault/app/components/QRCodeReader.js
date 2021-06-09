@@ -1,6 +1,31 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import jsQR from 'jsqr';
 import { parseKeyUri } from '@Lib/otp';
+
+const convertToGrayScale = (imageData) => {
+  if (!imageData) {
+    return;
+  }
+
+  for (let i = 0; i < imageData.data.length; i += 4) {
+    const count = imageData.data[i] + imageData.data[i + 1] + imageData.data[i + 2];
+    let color = 0;
+
+    if (count > 510) {
+      color = 255;
+    } else if (count > 255) {
+      color = 127.5;
+    }
+
+    imageData.data[i] = color;
+    imageData.data[i + 1] = color;
+    imageData.data[i + 2] = color;
+    imageData.data[i + 3] = 255;
+  }
+
+  return imageData;
+};
 
 export default class QRCodeReader extends React.Component {
   onImageSelected = evt => {
@@ -17,18 +42,23 @@ export default class QRCodeReader extends React.Component {
       canvas.width = this.width;
       canvas.height = this.height;
       context.drawImage(this, 0, 0);
-      const imageData = context.getImageData(0, 0, this.width, this.height);
+
+      let imageData = context.getImageData(0, 0, this.width, this.height);
+      imageData = convertToGrayScale(imageData);
+
       const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+      const { onError, onSuccess } = self.props;
 
       if (code) {
         const otpData = parseKeyUri(code.data);
         if (otpData.type !== 'totp') {
-          self.props.onError(`${otpData.type} is not supported.`);
+          onError(`The '${otpData.type}' type is not supported.`);
         } else {
-          self.props.onSuccess(otpData);
+          onSuccess(otpData);
         }
       } else {
-        self.props.onError('Error reading qrcode image');
+        onError('Error reading QR code from image. Please try again.');
       }
     };
 
@@ -39,7 +69,7 @@ export default class QRCodeReader extends React.Component {
 
   render() {
     return (
-      <div className="file sk-button info">
+      <div className="sk-button info">
         <label className="no-style">
           <input
             type="file"
@@ -52,3 +82,8 @@ export default class QRCodeReader extends React.Component {
     );
   }
 }
+
+QRCodeReader.propTypes = {
+  onError: PropTypes.func.isRequired,
+  onSuccess: PropTypes.func.isRequired
+};

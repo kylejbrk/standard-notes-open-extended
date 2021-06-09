@@ -34,12 +34,8 @@ html {
   min-height: 26px;
   padding: 10px;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-#header.hidden {
-  display: none;
+  flex-direction: row;
+  align-items: center;
 }
 
 #content {
@@ -49,7 +45,7 @@ html {
 }
 
 .auth-dialog {
-  width: 450px;
+  min-width: 380px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -84,11 +80,23 @@ html {
   padding: 28px 14px 28px 28px !important;
 }
 
-.auth-notes-row {
-  .auth-notes {
-    font-size: var(--sn-stylekit-base-font-size);
-    font-style: italic;
-    overflow: hidden;
+.auth-optional {
+  margin-top: 15px;
+  .auth-notes-row {
+    .auth-notes {
+      font-size: var(--sn-stylekit-base-font-size);
+      font-style: italic;
+      overflow: hidden;
+    }
+  }
+  .auth-password-row {
+    margin-top: 8px;
+
+    .auth-password {
+      font-size: var(--sn-stylekit-font-size-h1);
+      overflow: hidden;
+      cursor: pointer;
+    }
   }
 }
 
@@ -128,12 +136,11 @@ html {
   @media screen and (max-width: 480px) {
     .auth-details {
       flex-direction: column !important;
-      align-items: flex-start !important;
+      align-items: stretch !important;
     }
   }
 
   .auth-details {
-    margin-bottom: 8px;
     flex: 1;
     display: flex;
     flex-direction: row;
@@ -144,6 +151,7 @@ html {
     .auth-info {
       margin: 4px 0;
       min-width: inherit;
+      word-wrap: break-word;
 
       .auth-service {
         font-size: var(--sn-stylekit-font-size-h1);
@@ -169,7 +177,6 @@ html {
         font-size: 2rem;
         align-self: center;
         font-weight: bold;
-        color: var(--sn-stylekit-info-color);
         display: flex;
         justify-content: space-between;
         width: 8.2rem;
@@ -203,13 +210,21 @@ html {
     color: var(--sn-stylekit-contrast-foreground-color);
     overflow: visible;
     margin-bottom: 8px;
-    align-self: flex-start;
+    align-self: center;
 
     .sk-menu-panel {
       position: absolute;
       right: 0;
       z-index: 200;
     }
+  }
+
+  .auth-drag-indicator-container {
+    color: inherit;
+    overflow: visible;
+    margin-bottom: 8px;
+    align-self: center;
+    padding-right: 22px;
   }
 }
 
@@ -246,7 +261,7 @@ html {
   border-radius: 50%;
   width: 100%;
   z-index: 40;
-  color: var(--sn-stylekit-info-color);
+  color: inherit;
   opacity: 0.4;
 }
 
@@ -271,6 +286,96 @@ html {
   // animation: opa 30s steps(1, end) infinite;
 }
 
+.color-picker-swatch {
+  padding: 5px;
+  background: var(--sn-stylekit-contrast-background-color);
+  border-radius: 1px;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.1);
+  display: inline-block;
+  cursor: pointer;
+}
+
+.color-picker-popover {
+  position: absolute;
+  z-index: 200;
+  right: 40px;
+  top: 80px;
+}
+
+.color-picker-cover {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.sk-base-custom {
+  color: var(--sn-stylekit-foreground-color);
+  position: relative;
+  background-color: var(--sn-stylekit-background-color);
+  overflow: hidden;
+  border-radius: var(--sn-stylekit-general-border-radius);
+  border-color: var(--sn-stylekit-border-color);
+  border: 1px solid var(--sn-stylekit-border-color);
+}
+
+@media only screen and (max-width: 600px) {
+  .left {
+    width: 60% !important;
+  }
+
+  .right {
+    width: 40% !important;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .left {
+    width: 75% !important;
+  }
+
+  .right {
+    width: 25% !important;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .left {
+    width: 80% !important;
+  }
+
+  .right {
+    width: 20% !important;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .left {
+    width: 85% !important;
+  }
+
+  .right {
+    width: 15% !important;
+  }
+}
+
+.left {
+  margin-right: 10px;
+  display: flex;
+}
+
+.right {
+  text-align: right;
+}
+
+.search-bar {
+  height: 27px;
+}
 // Injected in CountdownPie.js
 // @keyframes rota {
 //   0% {

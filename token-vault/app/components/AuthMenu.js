@@ -27,9 +27,16 @@ export default class AuthMenu extends React.Component {
   }
 
   render() {
+    const { buttonColor } = this.props;
+
+    const buttonStyle = {};
+    if (buttonColor) {
+      buttonStyle.color = buttonColor;
+    }
+
     return (
       <div className="auth-menu">
-        <div className="sk-button" onClick={this.onToggle}>
+        <div className="sk-button" onClick={this.onToggle} style={buttonStyle}>
           <div className="sk-label">•••</div>
         </div>
         {this.state.show && (
@@ -50,5 +57,6 @@ export default class AuthMenu extends React.Component {
 
 AuthMenu.propTypes = {
   onEdit: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired
+  onRemove: PropTypes.func.isRequired,
+  buttonColor: PropTypes.string
 };

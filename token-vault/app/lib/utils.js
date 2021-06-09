@@ -116,3 +116,35 @@ export function parseKeyUri(uri) {
   // Returned the parsed parts of the URI
   return { type: type.toLowerCase(), label, query };
 }
+
+/**
+ * Converts a hex color string to an object containing RGB values.
+ */
+export function hexColorToRGB(hexColor) {
+  // Expand the shorthand form (e.g. "0AB") to full form (e.g. "00AABB")
+  const shortHandFormRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
+  hexColor = hexColor.replace(shortHandFormRegex, function(m, red, green, blue) {
+    return red + red + green + green + blue + blue;
+  });
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hexColor);
+  return result ? {
+    red: parseInt(result[1], 16),
+    green: parseInt(result[2], 16),
+    blue: parseInt(result[3], 16)
+  } : null;
+}
+
+/**
+ * Gets the color variable to be used based on the calculated constrast of a color.
+ */
+export function getVarColorForContrast(backgroundColor) {
+  const styleKitColors = {
+    foreground: '--sn-stylekit-contrast-foreground-color',
+    background: '--sn-stylekit-contrast-background-color'
+  };
+  if (!backgroundColor) {
+    return styleKitColors.foreground;
+  }
+  const colorContrast = Math.round(((parseInt(backgroundColor.red) * 299) + (parseInt(backgroundColor.green) * 587) + (parseInt(backgroundColor.blue) * 114)) / 1000);
+  return (colorContrast > 125) ? styleKitColors.background : styleKitColors.foreground;
+}
