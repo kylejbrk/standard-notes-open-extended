@@ -12,6 +12,7 @@ export default class Home extends React.Component {
 
     this.numRows = 75;
     this.numColumns = 26;
+    this.sheetSizeUpdated = false;
   }
 
   componentDidMount() {
@@ -49,16 +50,27 @@ export default class Home extends React.Component {
         hideRow: this.onChange,
         deleteColumn: this.onChange,
         deleteRow: this.onChange,
-        insertColumn: () => {
-          var workbook = this.getJSON();
-          workbook.columns = ++this.numColumns;
-          this.getSpreadsheet().fromJSON(workbook);
+        insertColumn: (event) => {
+          this.numColumns++;
+          this.sheetSizeUpdated = true;
           this.onChange();
         },
         insertRow: (event) => {
-          var workbook = this.getJSON();
-          workbook.rows = ++this.numRows;
-          this.getSpreadsheet().fromJSON(workbook);
+          this.numRows++;
+          this.sheetSizeUpdated = true;
+          this.onChange();
+        },
+        render: () => {
+          if (!this.sheetSizeUpdated) {
+            return;
+          }
+          /**
+           * To update the sheet size when a new column/row is inserted, we need to:
+           * 1. Rebuild the spreadsheet with the current data
+           * 2. Immediately save the note
+           */
+          this.sheetSizeUpdated = false;
+          this.getSpreadsheet().fromJSON(this.getJSON());
           this.onChange();
         }
       });
