@@ -4,7 +4,10 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   context: __dirname,
-  entry: path.resolve(__dirname, 'app/main.js'),
+  entry: [
+    path.resolve(__dirname, 'app/main.js'),
+    path.resolve(__dirname, 'app/stylesheets/main.scss')
+  ],
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'dist.js'
@@ -18,14 +21,7 @@ module.exports = {
           MiniCssExtractPlugin.loader,
           "css-loader",
           {
-            loader: "sass-loader",
-            options: {
-              sassOptions: {
-                includePaths: [
-                  path.resolve(__dirname, 'app/stylesheets/main.scss')
-                ],
-              },
-            },
+            loader: "sass-loader"
           },
         ],
       },

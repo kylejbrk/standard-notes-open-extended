@@ -153,10 +153,10 @@ export default class Tasks extends React.Component {
     const { unsavedTask, openTasks, completedTasks } = this.state;
 
     return (
-      <div>
+      <>
 
         {this.state.ready &&
-          <div>
+          <div className='task-input'>
             <CreateTask onSubmit={this.createTask} onUpdate={this.saveUnsavedTask} unsavedTask={unsavedTask} />
           </div>
         }
@@ -186,7 +186,7 @@ export default class Tasks extends React.Component {
           }
         </div>
 
-      </div>
+      </>
     );
   }
 }

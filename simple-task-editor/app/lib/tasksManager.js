@@ -49,6 +49,11 @@ export default class TasksManager {
     return this.componentRelay && this.componentRelay.isRunningInMobileApplication();
   }
 
+  get showTutorial() {
+    const showTutorial = this.componentRelay.getComponentDataValueForKey('showTutorial');
+    return showTutorial === undefined;
+  }
+
   setOnReady(onReady) {
     this.onReady = onReady;
   }
@@ -213,6 +218,10 @@ export default class TasksManager {
         note.content.preview_html = this.buildHtmlPreview();
         note.content.preview_plain = this.buildPlainPreview();
       });
+
+      if (this.showTutorial) {
+        this.componentRelay.setComponentDataValueForKey('showTutorial', false);
+      }
     }
   }
 
