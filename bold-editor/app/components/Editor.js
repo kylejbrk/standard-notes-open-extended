@@ -1,9 +1,6 @@
 import React from 'react';
 import FilesafeEmbed from 'filesafe-embed';
-import {
-  EditorKit,
-  EditorKitDelegate
-} from 'sn-editor-kit';
+import EditorKit from '@standardnotes/editor-kit';
 
 // Not used directly here, but required to be imported so that it is included
 // in dist file.
@@ -29,7 +26,7 @@ export default class Editor extends React.Component {
     // easier to build editors. As such, it very general and does not know
     // how the functions are implemented, just that they are needed. It is
     // up to the Bold Editor wrapper to implement these important functions.
-    const delegate = new EditorKitDelegate({
+    const delegate = {
       insertRawText: (rawText) => {
         this.redactor.insertion.insertHtml(rawText);
       },
@@ -129,12 +126,11 @@ export default class Editor extends React.Component {
         const cleaned = this.redactor.cleaner.input(rawText);
         $R('#editor', 'source.setCode', cleaned);
       }
-    });
+    };
 
-    this.editorKit = new EditorKit({
-      delegate: delegate,
+    this.editorKit = new EditorKit(delegate, {
       mode: 'html',
-      supportsFilesafe: true,
+      supportsFileSafe: true,
       // Redactor has its own debouncing, so we'll set ours to 0
       coallesedSavingDelay: 0
     });
@@ -144,7 +140,7 @@ export default class Editor extends React.Component {
     // We need to set this as a window variable so that the filesafe plugin
     // can interact with this object passing it as an opt for some reason
     // strips any functions off the objects.
-    const filesafeInstance = await this.editorKit.getFilesafe();
+    const filesafeInstance = await this.editorKit.getFileSafe();
     window.filesafe_params = {
       embed: FilesafeEmbed,
       client: filesafeInstance

@@ -940,6 +940,11 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
+"@standardnotes/editor-kit@2.1.0":
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/@standardnotes/editor-kit/-/editor-kit-2.1.0.tgz#dd32ac7d4965137b4fef0b34683ddfa50830aaca"
+  integrity sha512-pjDcjkNvth+51LnHChT7klj4vfYAb//rALyCdGMQqCWvvVKBCRvHPSkLEMBlhEmKzv7urf/1aPkGB4+8qUMqYg==
+
 "@standardnotes/eslint-config-extensions@^1.0.3":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@standardnotes/eslint-config-extensions/-/eslint-config-extensions-1.0.4.tgz#451a90b3f140aa19430023d887fb143c4f6df2bd"
@@ -5402,11 +5407,6 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
-
-sn-editor-kit@1.0.9:
-  version "1.0.9"
-  resolved "https://registry.yarnpkg.com/sn-editor-kit/-/sn-editor-kit-1.0.9.tgz#e37e884dfa820db0bb508192623ff7f3efc5f0e2"
-  integrity sha512-Ryx7h91dGigDAqrwZ67n74d0g7M3E1xbQsewoY/4b7s7u4D5u9JMq4QvBZtBOdossthlLtnU5nJ41GjhcmmpQQ==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
