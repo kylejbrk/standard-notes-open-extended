@@ -17,7 +17,7 @@ export default class Home extends React.Component {
 
   componentDidMount() {
     $(function() {
-      $("#spreadsheet").kendoSpreadsheet({
+      $('#spreadsheet').kendoSpreadsheet({
         rows: this.numRows,
         columns: this.numColumns,
         change: this.onChange,
@@ -25,20 +25,20 @@ export default class Home extends React.Component {
         excelImport: (event) => {
           // Excel import functionality has been disabled completely.
           // We'll keep this code around below incase we enable it again in the future.
-          if(!confirm("Importing will completely overwrite any existing data. Are you sure you want to continue?")) {
+          if (!confirm('Importing will completely overwrite any existing data. Are you sure you want to continue?')) {
             event.preventDefault();
             return;
           }
 
-          if(!confirm("Note that importing from Excel may cause very large file sizes within Standard Notes, which may affect performance. You may continue with import, but if you notice performance issues, it is recommended you manually import data instead.")) {
+          if (!confirm('Note that importing from Excel may cause very large file sizes within Standard Notes, which may affect performance. You may continue with import, but if you notice performance issues, it is recommended you manually import data instead.')) {
             event.preventDefault();
             return;
           }
 
           event.promise.done(() => {
-            console.log("Import complete");
+            console.log('Import complete');
             this.onChange();
-          })
+          });
 
         },
         insertSheet: this.onChange,
@@ -50,12 +50,12 @@ export default class Home extends React.Component {
         hideRow: this.onChange,
         deleteColumn: this.onChange,
         deleteRow: this.onChange,
-        insertColumn: (event) => {
+        insertColumn: (_event) => {
           this.numColumns++;
           this.sheetSizeUpdated = true;
           this.onChange();
         },
-        insertRow: (event) => {
+        insertRow: () => {
           this.numRows++;
           this.sheetSizeUpdated = true;
           this.onChange();
@@ -77,23 +77,23 @@ export default class Home extends React.Component {
 
       this.reloadSpreadsheetContent();
 
-      $(".k-item, .k-button").click((e) => {
+      $('.k-item, .k-button').click(() => {
         setTimeout(() => {
           this.onChange();
         }, 10);
       });
 
       // remove import option
-      $(".k-upload-button").remove();
+      $('.k-upload-button').remove();
     }.bind(this));
   }
 
   getSpreadsheet() {
-    return $("#spreadsheet").getKendoSpreadsheet();
+    return $('#spreadsheet').getKendoSpreadsheet();
   }
 
-  onChange = (event) => {
-    if(!this.note) {
+  onChange = () => {
+    if (!this.note) {
       return;
     }
 
@@ -108,33 +108,32 @@ export default class Home extends React.Component {
 
     this.componentManager.saveItemWithPresave(note, () => {
       note.content.preview_html = null;
-      note.content.preview_plain = "Created with Secure Spreadsheets";
+      note.content.preview_plain = 'Created with Secure Spreadsheets';
 
-      var json = this.getJSON();
-      var content = JSON.stringify(json);
+      let json = this.getJSON();
+      let content = JSON.stringify(json);
       note.content.text = content;
     });
   }
 
   getJSON() {
-    var json = this.getSpreadsheet().toJSON();
+    const json = this.getSpreadsheet().toJSON();
     json.rows = this.numRows;
     json.columns = this.numColumns;
     return json;
   }
 
-
   connectToBridge() {
-    var permissions = [
+    const permissions = [
       {
-        name: "stream-context-item"
+        name: 'stream-context-item'
       }
-    ]
+    ];
 
     this.componentManager = new ComponentManager(permissions, () => {
       // on ready
-      var platform = this.componentManager.platform;
-      if(platform) {
+      const platform = this.componentManager.platform;
+      if (platform) {
         document.body.classList.add(platform);
       }
     });
@@ -144,8 +143,8 @@ export default class Home extends React.Component {
     this.componentManager.streamContextItem((note) => {
       this.note = note;
 
-       // Only update UI on non-metadata updates.
-      if(note.isMetadataUpdate) {
+      // Only update UI on non-metadata updates.
+      if (note.isMetadataUpdate) {
         return;
       }
 
@@ -154,24 +153,36 @@ export default class Home extends React.Component {
   }
 
   reloadSpreadsheetContent() {
-    if(!this.note) {
+    if (!this.note) {
       return;
     }
 
-    var text = this.note.content.text;
-    if(text.length == 0) {
-      return;
+    const text = this.note.content.text;
+
+    /**
+     * If the note's text is empty, we want to save the note
+     * so that the empty string is replaced with a JSON string
+     * that is readable by the editor.
+     */
+    if (text.length === 0) {
+      this.saveSpreadsheet();
     }
 
-    var json = JSON.parse(text);
-    if(json.rows) { this.numRows = json.rows; }
-    if(json.columns) { this.numColumns = json.columns; }
+    const json = JSON.parse(text);
+    if (json.rows) {
+      this.numRows = json.rows;
+    }
+
+    if (json.columns) {
+      this.numColumns = json.columns;
+    }
     this.getSpreadsheet().fromJSON(json);
+    this.getSpreadsheet().refresh();
   }
 
   render() {
     return (
       <div></div>
-    )
+    );
   }
 }
