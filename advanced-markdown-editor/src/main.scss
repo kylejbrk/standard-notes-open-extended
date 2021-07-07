@@ -11,12 +11,6 @@ body, html {
   -webkit-tap-highlight-color: rgba(0,0,0,0);
 }
 
-.mobile, .mac-web, .mac-desktop {
-  .editor-toolbar, .editor-toolbar.fullscreen {
-    overflow-x: auto;
-  }
-}
-
 .editor-toolbar.fullscreen, .CodeMirror-fullscreen {
   // On Mobile, resizing the webview to avoid keyboard causes the option bar to be offset because its position is fixed.
   position: absolute !important
@@ -63,6 +57,34 @@ body, html {
 
 .editor-toolbar.disabled-for-preview button:not(.no-disable) {
   background: inherit;
+}
+
+.editor-toolbar.fullscreen {
+  @media screen and (max-width: 525px) {
+    height: 80px !important;
+  }
+  @media screen and (min-width: 526px) {
+    height: 50px !important;
+  }
+}
+
+.EasyMDEContainer {
+  .CodeMirror-fullscreen {
+    @media screen and (max-width: 525px) {
+      top: 80px !important;
+    }
+    @media screen and (min-width: 526px) {
+      top: 50px !important;
+    }
+  }
+  .editor-preview-side {
+    @media screen and (max-width: 525px) {
+      top: 80px !important;
+    }
+    @media screen and (min-width: 526px) {
+      top: 50px !important;
+    }
+  }
 }
 
 .editor-preview-active, .editor-preview-active-side {
