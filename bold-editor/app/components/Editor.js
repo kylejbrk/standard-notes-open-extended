@@ -1,6 +1,8 @@
 import React from 'react';
 import FilesafeEmbed from 'filesafe-embed';
 import EditorKit from '@standardnotes/editor-kit';
+import DOMPurify  from 'dompurify';
+import { SKAlert } from 'sn-stylekit';
 
 // Not used directly here, but required to be imported so that it is included
 // in dist file.
@@ -113,14 +115,38 @@ export default class Editor extends React.Component {
         this.redactor.insertion.insertHtml(replacement, 'start');
         this.redactor.selection.restoreMarkers();
       },
-      onReceiveNote: (_note) => {
-        // Empty
-      },
       clearUndoHistory: () => {
         // Called when switching notes to prevent history mixup.
         $R('#editor', 'module.buffer.clear');
       },
+      onNoteValueChange: async (note) => {
+        const shouldRenderNote = async () => {
+          const isUnsafeContent = this.checkIfUnsafeContent(note.content.text);
+          if (isUnsafeContent) {
+            const trustUnsafeContent = note.clientData['trustUnsafeContent'] ?? false;
+            if (!trustUnsafeContent) {
+              const result = await this.showUnsafeContentAlert();
+              if (result) {
+                this.setTrustUnsafeContent(note);
+              }
+              return result;
+            }
+          }
+          return true;
+        };
+
+        const renderNote = await shouldRenderNote();
+        if (!renderNote) {
+          $R('#editor', 'source.setCode', '');
+          $R('#editor', 'enableReadOnly');
+        } else {
+          $R('#editor', 'disableReadOnly');
+        }
+      },
       setEditorRawText: (rawText) => {
+        if (this.redactor.isReadOnly()) {
+          return;
+        }
         // Called when the Bold Editor is loaded, when switching to a Bold
         // Editor note, or when uploading files, maybe in more places too.
         const cleaned = this.redactor.cleaner.input(rawText);
@@ -226,10 +252,94 @@ export default class Editor extends React.Component {
     }
   }
 
+  /**
+   * Checks if HTML is safe to render.
+   */
+  checkIfUnsafeContent(renderedHtml) {
+    const sanitizedHtml = DOMPurify.sanitize(renderedHtml, {
+      /**
+       * We don't need script or style tags.
+       */
+      FORBID_TAGS: ['script', 'style'],
+      /**
+       * XSS payloads can be injected via these attributes.
+       */
+      FORBID_ATTR: [
+        'onerror',
+        'onload',
+        'onunload',
+        'onclick',
+        'ondblclick',
+        'onmousedown',
+        'onmouseup',
+        'onmouseover',
+        'onmousemove',
+        'onmouseout',
+        'onfocus',
+        'onblur',
+        'onkeypress',
+        'onkeydown',
+        'onkeyup',
+        'onsubmit',
+        'onreset',
+        'onselect',
+        'onchange'
+      ]
+    });
+
+    /**
+     * Create documents from both the sanitized string and the rendered string.
+     * This will allow us to compare them, and if they are not equal
+     * (i.e: do not contain the same properties, attributes, inner text, etc)
+     * it means something was stripped.
+     */
+    const renderedDom = new DOMParser().parseFromString(renderedHtml, 'text/html');
+    const sanitizedDom = new DOMParser().parseFromString(sanitizedHtml, 'text/html');
+    return !renderedDom.isEqualNode(sanitizedDom);
+  }
+
+  async showUnsafeContentAlert() {
+    const text = 'We’ve detected that this note contains a script or code snippet which may be unsafe to execute. ' +
+                  'Scripts executed in the editor have the ability to impersonate as the editor to Standard Notes. ' +
+                  'Press Continue to mark this script as safe and proceed, or Cancel to avoid rendering this note.';
+
+    return new Promise((resolve) => {
+      const alert = new SKAlert({
+        title: null,
+        text,
+        buttons: [
+          {
+            text: 'Cancel',
+            style: 'neutral',
+            action: function() {
+              resolve(false);
+            },
+          },
+          {
+            text: 'Continue',
+            style: 'danger',
+            action: function() {
+              resolve(true);
+            },
+          },
+        ]
+      });
+      alert.present();
+    });
+  }
+
+  setTrustUnsafeContent(note) {
+    this.editorKit.saveItemWithPresave(note, () => {
+      note.clientData = {
+        ...note.clientData,
+        trustUnsafeContent: true
+      };
+    });
+  }
+
   render() {
     return (
-      <div key="editor" className={'sn-component ' + this.state.platform}>
-      </div>
+      <div key="editor" className={'sn-component'} />
     );
   }
 }

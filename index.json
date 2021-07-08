@@ -49,8 +49,8 @@
             "marketing_url": null,
             "name": "Bold Editor",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/bold.jpg",
-            "version": "1.2.0",
-            "download_url": "https://api.github.com/repos/standardnotes/bold-editor/zipball/1.2.0",
+            "version": "1.2.1",
+            "download_url": "https://api.github.com/repos/standardnotes/bold-editor/zipball/1.2.1",
             "url": "https://kyleburke.net/standard-notes-open-extended/bold-editor/dist/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/bold-editor/index.json"
         },
@@ -197,8 +197,8 @@
             "identifier": "org.standardnotes.token-vault",
             "name": "TokenVault",
             "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
-            "version": "2.0.0",
-            "download_url": "https://api.github.com/repos/standardnotes/token-vault/zipball/2.0.0",
+            "version": "2.0.1",
+            "download_url": "https://api.github.com/repos/standardnotes/token-vault/zipball/2.0.1",
             "url": "https://kyleburke.net/standard-notes-open-extended/token-vault/dist/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/token-vault/index.json"
         },

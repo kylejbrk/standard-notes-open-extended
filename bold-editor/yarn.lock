@@ -940,10 +940,10 @@
     "@nodelib/fs.scandir" "2.1.4"
     fastq "^1.6.0"
 
-"@standardnotes/editor-kit@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@standardnotes/editor-kit/-/editor-kit-2.1.0.tgz#dd32ac7d4965137b4fef0b34683ddfa50830aaca"
-  integrity sha512-pjDcjkNvth+51LnHChT7klj4vfYAb//rALyCdGMQqCWvvVKBCRvHPSkLEMBlhEmKzv7urf/1aPkGB4+8qUMqYg==
+"@standardnotes/editor-kit@2.1.1":
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@standardnotes/editor-kit/-/editor-kit-2.1.1.tgz#cb896bac6e2b1aa80e656f8996609abb1e1d3a20"
+  integrity sha512-lZ3JynBuPv5lMSddvI4sg0PnJpiDbsWKRW5OqhTc7oTpYrybAlGCYYxrDdTD2WMQaulakvUJVFL7664YEpUuKQ==
 
 "@standardnotes/eslint-config-extensions@^1.0.3":
   version "1.0.4"
@@ -2216,6 +2216,11 @@ domhandler@^2.3.0:
   integrity sha512-JiK04h0Ht5u/80fdLMCEmV4zkNh2BcoMFBmZ/91WtYZ8qVXSKjiw7fXMgFPnHcSZgOo3XdinHvmnDUeMf5R4wA==
   dependencies:
     domelementtype "1"
+
+dompurify@^2.2.9:
+  version "2.2.9"
+  resolved "https://registry.yarnpkg.com/dompurify/-/dompurify-2.2.9.tgz#4b42e244238032d9286a0d2c87b51313581d9624"
+  integrity sha512-+9MqacuigMIZ+1+EwoEltogyWGFTJZWU3258Rupxs+2CGs4H914G9er6pZbsme/bvb5L67o2rade9n21e4RW/w==
 
 domutils@^1.5.1, domutils@^1.7.0:
   version "1.7.0"
@@ -5407,6 +5412,11 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
+
+sn-stylekit@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/sn-stylekit/-/sn-stylekit-3.0.1.tgz#1dbc41e403c5e3152fcbaa72c631236df11442d2"
+  integrity sha512-KOwLcCfYYVM7PKu9NyS3LsdRlJ+dcd2Hwd5UkoFpt4xXcqqp1U+BWzRu5ciIuT97I+kCBGl6A3A7/hN66Y0svg==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"
