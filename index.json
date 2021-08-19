@@ -7,8 +7,8 @@
             "description": "Configure two-factor authentication to add an extra level of security to your account.",
             "identifier": "org.standardnotes.mfa-link",
             "name": "2FA Manager",
-            "version": "1.2.4",
-            "download_url": "https://api.github.com/repos/standardnotes/mfa-link/zipball/1.2.4",
+            "version": "1.2.5",
+            "download_url": "https://api.github.com/repos/standardnotes/mfa-link/zipball/1.2.5",
             "url": "https://kyleburke.net/standard-notes-open-extended/mfa-link/dist/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/mfa-link/index.json"
         },

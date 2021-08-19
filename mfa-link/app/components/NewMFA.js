@@ -7,7 +7,7 @@ export default class NewMFA extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {secret: Util.generateSecretKey(), allowRecovery: true}
+    this.state = {secret: Util.generateSecretKey()}
     setInterval(() => {
       var epoch = Math.round(new Date().getTime() / 1000.0);
       var countDown = 30 - (epoch % 30);
@@ -24,7 +24,7 @@ export default class NewMFA extends React.Component {
   }
 
   confirmInstall = () => {
-    BridgeManager.get().installMfa(this.state.secret, this.state.allowRecovery);
+    BridgeManager.get().installMfa(this.state.secret);
   }
 
   handleKeyInputChange = (event) => {
@@ -48,10 +48,6 @@ export default class NewMFA extends React.Component {
       // Install
       this.confirmInstall();
     }
-  }
-
-  toggleEmailRecovery = () => {
-    this.setState({allowRecovery: !this.state.allowRecovery})
   }
 
   recoveryLearnMore = () => {
@@ -98,13 +94,6 @@ export default class NewMFA extends React.Component {
                 onChange={this.handleTokenInputChange}
               />
 
-              <div className="sk-panel-row center justify-left">
-                <label>
-                  <input checked={this.state.allowRecovery} onChange={this.toggleEmailRecovery} type="checkbox" />
-                  Allow email recovery
-                </label>
-              </div>
-
               <div className="sk-panel-row"/>
 
               <div className="sk-panel-row button-group stretch form-submit">
@@ -113,26 +102,6 @@ export default class NewMFA extends React.Component {
                 </button>
               </div>
 
-              <div className="sk-panel-row"/>
-
-              <div className="sk-panel-section-outer-title sk-bold">
-                Email Recovery
-              </div>
-
-              <div className="sk-panel-row" style={{paddingBottom: 14}}>
-                <div className="panel-column">
-                  <div className="sk-p">
-                    If you lose access to your device and your secret key, you will be unable to login to your account.
-                    If you enable Email Recovery, you can email Standard Notes from your account email to disable 2FA
-                    and allow you to sign back in to your account.
-                  </div>
-                  <br/>
-                  <div className="sk-p">
-                    If you leave this option unchecked, you will permanently lose access to your account if you lose your secret key and do not have it backed up.
-                    For power users who maintain good data safety practices, we recommend keeping this option <i>disabled</i> for optimum security.
-                  </div>
-                </div>
-              </div>
             </div>
           </form>
         </div>

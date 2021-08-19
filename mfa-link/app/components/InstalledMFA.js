@@ -52,10 +52,6 @@ export default class InstalledMFA extends React.Component {
               <span className="info sk-bold">{otp}</span>
             </div>
 
-            <div className="sk-panel-row justify-left multi-label">
-              Email Recovery
-              <span className="info sk-bold">{this.props.mfa.content.allowEmailRecovery ? "Enabled" : "Disabled"}</span>
-            </div>
           </div>
         </div>
       </div>

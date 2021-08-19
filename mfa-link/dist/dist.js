@@ -239,12 +239,12 @@ var BridgeManager = function () {
     }
   }, {
     key: "installMfa",
-    value: function installMfa(secret, allowRecovery) {
+    value: function installMfa(secret) {
       this.componentManager.createItem({
         content_type: "SF|MFA",
         content: {
           name: "Two-factor authentication",
-          allowEmailRecovery: allowRecovery,
+          allowEmailRecovery: true,
           secret: secret
         }
       });
@@ -2207,16 +2207,6 @@ var InstalledMFA = function (_React$Component) {
                 { className: 'info sk-bold' },
                 otp
               )
-            ),
-            _react2.default.createElement(
-              'div',
-              { className: 'sk-panel-row justify-left multi-label' },
-              'Email Recovery',
-              _react2.default.createElement(
-                'span',
-                { className: 'info sk-bold' },
-                this.props.mfa.content.allowEmailRecovery ? "Enabled" : "Disabled"
-              )
             )
           )
         )
@@ -3503,7 +3493,7 @@ var NewMFA = function (_React$Component) {
     };
 
     _this.confirmInstall = function () {
-      _BridgeManager2.default.get().installMfa(_this.state.secret, _this.state.allowRecovery);
+      _BridgeManager2.default.get().installMfa(_this.state.secret);
     };
 
     _this.handleKeyInputChange = function (event) {
@@ -3529,10 +3519,6 @@ var NewMFA = function (_React$Component) {
       }
     };
 
-    _this.toggleEmailRecovery = function () {
-      _this.setState({ allowRecovery: !_this.state.allowRecovery });
-    };
-
     _this.recoveryLearnMore = function () {
       _this.setState({ showRecoveryDetails: !_this.state.showRecoveryDetails });
     };
@@ -3541,7 +3527,7 @@ var NewMFA = function (_React$Component) {
       _Util2.default.saveFile("standardnotes_2fa_key.txt", _this.state.secret);
     };
 
-    _this.state = { secret: _Util2.default.generateSecretKey(), allowRecovery: true };
+    _this.state = { secret: _Util2.default.generateSecretKey() };
     setInterval(function () {
       var epoch = Math.round(new Date().getTime() / 1000.0);
       var countDown = 30 - epoch % 30;
@@ -3606,16 +3592,6 @@ var NewMFA = function (_React$Component) {
               value: this.state.confirmToken,
               onChange: this.handleTokenInputChange
             }),
-            _react2.default.createElement(
-              "div",
-              { className: "sk-panel-row center justify-left" },
-              _react2.default.createElement(
-                "label",
-                null,
-                _react2.default.createElement("input", { checked: this.state.allowRecovery, onChange: this.toggleEmailRecovery, type: "checkbox" }),
-                "Allow email recovery"
-              )
-            ),
             _react2.default.createElement("div", { className: "sk-panel-row" }),
             _react2.default.createElement(
               "div",
@@ -3627,37 +3603,6 @@ var NewMFA = function (_React$Component) {
                   "div",
                   { className: "sk-label" },
                   "Install 2FA"
-                )
-              )
-            ),
-            _react2.default.createElement("div", { className: "sk-panel-row" }),
-            _react2.default.createElement(
-              "div",
-              { className: "sk-panel-section-outer-title sk-bold" },
-              "Email Recovery"
-            ),
-            _react2.default.createElement(
-              "div",
-              { className: "sk-panel-row", style: { paddingBottom: 14 } },
-              _react2.default.createElement(
-                "div",
-                { className: "panel-column" },
-                _react2.default.createElement(
-                  "div",
-                  { className: "sk-p" },
-                  "If you lose access to your device and your secret key, you will be unable to login to your account. If you enable Email Recovery, you can email Standard Notes from your account email to disable 2FA and allow you to sign back in to your account."
-                ),
-                _react2.default.createElement("br", null),
-                _react2.default.createElement(
-                  "div",
-                  { className: "sk-p" },
-                  "If you leave this option unchecked, you will permanently lose access to your account if you lose your secret key and do not have it backed up. For power users who maintain good data safety practices, we recommend keeping this option ",
-                  _react2.default.createElement(
-                    "i",
-                    null,
-                    "disabled"
-                  ),
-                  " for optimum security."
                 )
               )
             )
