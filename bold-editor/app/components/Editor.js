@@ -24,6 +24,20 @@ export default class Editor extends React.Component {
   }
 
   configureEditorKit() {
+    const enableReadOnly = () => {
+      if (this.redactor.isReadOnly()) {
+        return;
+      }
+      $R('#editor', 'enableReadOnly');
+    };
+
+    const disableReadOnly = () => {
+      if (!this.redactor.isReadOnly()) {
+        return;
+      }
+      $R('#editor', 'disableReadOnly');
+    };
+
     // EditorKit is a wrapper on top of the component manager to make it
     // easier to build editors. As such, it very general and does not know
     // how the functions are implemented, just that they are needed. It is
@@ -138,9 +152,9 @@ export default class Editor extends React.Component {
         const renderNote = await shouldRenderNote();
         if (!renderNote) {
           $R('#editor', 'source.setCode', '');
-          $R('#editor', 'enableReadOnly');
+          enableReadOnly();
         } else {
-          $R('#editor', 'disableReadOnly');
+          disableReadOnly();
         }
       },
       setEditorRawText: (rawText) => {
