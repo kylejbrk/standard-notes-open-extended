@@ -160,16 +160,14 @@ export default class EditEntry extends React.Component {
                 <div className="color-picker-swatch" onClick={this.handleSwatchClick}>
                   <div style={swatchStyle} />
                 </div>
+                {id == null && (
+                  <QRCodeReader
+                    onSuccess={this.onQRCodeSuccess}
+                    onError={this.onQRCodeError}
+                  />
+                )}
               </div>
             </div>
-            {id == null && (
-              <div className="sk-panel-section sk-panel-hero align-items-center">
-                <QRCodeReader
-                  onSuccess={this.onQRCodeSuccess}
-                  onError={this.onQRCodeError}
-                />
-              </div>
-            )}
             <form onSubmit={this.onSave} autoComplete="off">
               <div className="sk-panel-section">
                 <input
