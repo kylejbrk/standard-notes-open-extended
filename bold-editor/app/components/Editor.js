@@ -38,6 +38,10 @@ export default class Editor extends React.Component {
       $R('#editor', 'disableReadOnly');
     };
 
+    const scrollToTop = () => {
+      window.scroll(0, 0);
+    };
+
     // EditorKit is a wrapper on top of the component manager to make it
     // easier to build editors. As such, it very general and does not know
     // how the functions are implemented, just that they are needed. It is
@@ -156,6 +160,7 @@ export default class Editor extends React.Component {
         } else {
           disableReadOnly();
         }
+        scrollToTop();
       },
       setEditorRawText: (rawText) => {
         if (this.redactor.isReadOnly()) {
