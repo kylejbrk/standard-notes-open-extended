@@ -16,6 +16,7 @@ export default class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.alert = null;
   }
 
   componentDidMount() {
@@ -24,24 +25,6 @@ export default class Editor extends React.Component {
   }
 
   configureEditorKit() {
-    const enableReadOnly = () => {
-      if (this.redactor.isReadOnly()) {
-        return;
-      }
-      $R('#editor', 'enableReadOnly');
-    };
-
-    const disableReadOnly = () => {
-      if (!this.redactor.isReadOnly()) {
-        return;
-      }
-      $R('#editor', 'disableReadOnly');
-    };
-
-    const scrollToTop = () => {
-      window.scroll(0, 0);
-    };
-
     // EditorKit is a wrapper on top of the component manager to make it
     // easier to build editors. As such, it very general and does not know
     // how the functions are implemented, just that they are needed. It is
@@ -138,29 +121,14 @@ export default class Editor extends React.Component {
         $R('#editor', 'module.buffer.clear');
       },
       onNoteValueChange: async (note) => {
-        const shouldRenderNote = async () => {
-          const isUnsafeContent = this.checkIfUnsafeContent(note.content.text);
-          if (isUnsafeContent) {
-            const trustUnsafeContent = note.clientData['trustUnsafeContent'] ?? false;
-            if (!trustUnsafeContent) {
-              const result = await this.showUnsafeContentAlert();
-              if (result) {
-                this.setTrustUnsafeContent(note);
-              }
-              return result;
-            }
-          }
-          return true;
-        };
-
-        const renderNote = await shouldRenderNote();
+        const renderNote = await this.shouldRenderNote(note);
         if (!renderNote) {
           $R('#editor', 'source.setCode', '');
-          enableReadOnly();
+          this.enableReadOnly();
         } else {
-          disableReadOnly();
+          this.disableReadOnly();
         }
-        scrollToTop();
+        this.scrollToTop();
       },
       setEditorRawText: (rawText) => {
         if (this.redactor.isReadOnly()) {
@@ -323,7 +291,7 @@ export default class Editor extends React.Component {
                   'Press Continue to mark this script as safe and proceed, or Cancel to avoid rendering this note.';
 
     return new Promise((resolve) => {
-      const alert = new SKAlert({
+      this.alert = new SKAlert({
         title: null,
         text,
         buttons: [
@@ -343,7 +311,7 @@ export default class Editor extends React.Component {
           },
         ]
       });
-      alert.present();
+      this.alert.present();
     });
   }
 
@@ -354,6 +322,57 @@ export default class Editor extends React.Component {
         trustUnsafeContent: true
       };
     });
+  }
+
+  enableReadOnly() {
+    if (this.redactor.isReadOnly()) {
+      return;
+    }
+    $R('#editor', 'enableReadOnly');
+  }
+
+  disableReadOnly() {
+    if (!this.redactor.isReadOnly()) {
+      return;
+    }
+    $R('#editor', 'disableReadOnly');
+  }
+
+  scrollToTop() {
+    window.scroll(0, 0);
+  }
+
+  async shouldRenderNote(noteItem) {
+    this.dismissUnsafeContentAlerts();
+
+    const isUnsafeContent = this.checkIfUnsafeContent(noteItem.content.text);
+    const trustUnsafeContent = noteItem.clientData['trustUnsafeContent'] ?? false;
+
+    if (!isUnsafeContent) {
+      return true;
+    }
+
+    if (isUnsafeContent && trustUnsafeContent) {
+      return true;
+    }
+
+    const result = await this.showUnsafeContentAlert();
+    if (result) {
+      this.setTrustUnsafeContent(noteItem);
+    }
+
+    return result;
+  }
+
+  dismissUnsafeContentAlerts() {
+    try {
+      if (this.alert) {
+        this.alert.dismiss();
+      }
+      this.alert = null;
+    } catch (e) {
+      console.warn('Trying to dismiss an alert that does not exist anymore.');
+    }
   }
 
   render() {
