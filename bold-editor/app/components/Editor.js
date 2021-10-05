@@ -121,13 +121,14 @@ export default class Editor extends React.Component {
         $R('#editor', 'module.buffer.clear');
       },
       onNoteValueChange: async (note) => {
+        $R('#editor', 'source.setCode', '');
+        this.enableReadOnly();
+
         const renderNote = await this.shouldRenderNote(note);
-        if (!renderNote) {
-          $R('#editor', 'source.setCode', '');
-          this.enableReadOnly();
-        } else {
+        if (renderNote) {
           this.disableReadOnly();
         }
+
         this.scrollToTop();
       },
       setEditorRawText: (rawText) => {
