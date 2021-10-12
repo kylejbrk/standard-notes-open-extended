@@ -68,7 +68,7 @@ module.exports = {
     new MergeIntoSingleFilePlugin({
       files: {
         "vendor.js": [
-          'redactor/src/redactor.js',
+          'redactor/src/redactor.min.js',
           'redactor/plugins/**/*.min.js',
         ],
         "vendor.css": [
