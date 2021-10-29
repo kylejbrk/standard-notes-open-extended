@@ -1,6 +1,6 @@
 {
   "name": "sn-spreadsheets",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "main": "dist/dist.js",
   "scripts": {
     "lint": "eslint app/ --ext .js",

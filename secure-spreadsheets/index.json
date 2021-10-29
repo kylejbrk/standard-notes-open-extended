@@ -7,8 +7,8 @@
     "marketing_url": null,
     "name": "Secure Spreadsheets",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/spreadsheets.png",
-    "version": "1.4.1",
-    "download_url": "https://api.github.com/repos/standardnotes/secure-spreadsheets/zipball/1.4.1",
+    "version": "1.4.2",
+    "download_url": "https://api.github.com/repos/standardnotes/secure-spreadsheets/zipball/1.4.2",
     "url": "https://kyleburke.net/standard-notes-open-extended/secure-spreadsheets/dist/index.html",
     "latest_url": "https://kyleburke.net/standard-notes-open-extended/secure-spreadsheets/index.json"
 }

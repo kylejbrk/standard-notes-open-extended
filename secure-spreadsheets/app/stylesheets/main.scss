@@ -225,3 +225,7 @@ div.k-window, div.k-window.k-state-focused {
     filter: brightness(130%);
   }
 }
+
+.k-tabstrip-items-wrapper {
+  background-color: var(--sn-stylekit-contrast-background-color) !important;
+}
