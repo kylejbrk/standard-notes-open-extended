@@ -12,8 +12,8 @@
     "marketing_url": "https://standardnotes.org/extensions/focused",
     "name": "Focus",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/focus-with-mobile.jpg",
-    "version": "1.2.3",
-    "download_url": "https://api.github.com/repos/standardnotes/focus-theme/zipball/1.2.3",
+    "version": "1.2.4",
+    "download_url": "https://api.github.com/repos/standardnotes/focus-theme/zipball/1.2.4",
     "url": "https://kyleburke.net/standard-notes-open-extended/focus-theme/dist/dist.css",
     "latest_url": "https://kyleburke.net/standard-notes-open-extended/focus-theme/index.json"
 }
