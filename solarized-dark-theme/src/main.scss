@@ -5,7 +5,7 @@
 
   --foreground-color: #FDF6E3;
   --highlight-color: #2AA198;
-  --border-color: #1f5461;
+  --border-color: #00252e;
   --pre-color: #d6dbdb;
 
   --content-1: #586D75;
@@ -71,4 +71,6 @@
   --sn-desktop-titlebar-border-color: var(--border-color);
   --sn-desktop-titlebar-ui-color: var(--foreground-color);
   --sn-desktop-titlebar-ui-hover-color: var(--highlight-color);
+
+  --sn-stylekit-menu-border: 1px solid #1f5461;
 }

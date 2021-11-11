@@ -26,7 +26,7 @@
 
   --sn-stylekit-background-color: #d9dbde;
   --sn-stylekit-foreground-color: #3d3c40;
-  --sn-stylekit-border-color: #b2b2b3;
+  --sn-stylekit-border-color: #c9cccf;
 
   --sn-stylekit-contrast-background-color: #e7e7e7;
   --sn-stylekit-contrast-foreground-color: #3d3c40;
@@ -52,4 +52,6 @@
   --sn-desktop-titlebar-border-color: var(--highlight-color);
   --sn-desktop-titlebar-ui-color: var(--foreground-color);
   --sn-desktop-titlebar-ui-hover-color: var(--background-color);
+
+  --sn-stylekit-menu-border: 1px solid #b2b2b3;
 }

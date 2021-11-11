@@ -23,7 +23,7 @@
   --sn-stylekit-editor-foreground-color: var(--sn-stylekit-foreground-color);
   --sn-stylekit-background-color: var(--background-color);
   --sn-stylekit-foreground-color: var(--foreground-color);
-  --sn-stylekit-border-color: #424242;
+  --sn-stylekit-border-color: #000000;
   --sn-stylekit-contrast-background-color: #000000;
   --sn-stylekit-contrast-foreground-color: #ffffff;
   --sn-stylekit-contrast-border-color: #000000;
@@ -40,6 +40,7 @@
   --sn-desktop-titlebar-ui-hover-color: var(--highlight-color);
   --sn-stylekit-scrollbar-track-border-color: var(--border-color);
   --sn-stylekit-scrollbar-thumb-color: var(--sn-stylekit-info-color);
+  --sn-stylekit-menu-border: 1px solid #424242;
 }
 
 /*# sourceMappingURL=dist.css.map */

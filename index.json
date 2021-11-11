@@ -265,8 +265,8 @@
             "marketing_url": "https://standardnotes.org/extensions/focused",
             "name": "Focus",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/focus-with-mobile.jpg",
-            "version": "1.2.4",
-            "download_url": "https://api.github.com/repos/standardnotes/focus-theme/zipball/1.2.4",
+            "version": "1.2.5",
+            "download_url": "https://api.github.com/repos/standardnotes/focus-theme/zipball/1.2.5",
             "url": "https://kyleburke.net/standard-notes-open-extended/focus-theme/dist/dist.css",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/focus-theme/index.json"
         },
@@ -284,8 +284,8 @@
             "marketing_url": "https://standardnotes.org/extensions/futura",
             "name": "Futura",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/futura-with-mobile.jpg",
-            "version": "1.2.3",
-            "download_url": "https://api.github.com/repos/standardnotes/futura-theme/zipball/1.2.3",
+            "version": "1.2.4",
+            "download_url": "https://api.github.com/repos/standardnotes/futura-theme/zipball/1.2.4",
             "url": "https://kyleburke.net/standard-notes-open-extended/futura-theme/dist/dist.css",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/futura-theme/index.json"
         },
@@ -303,8 +303,8 @@
             "marketing_url": "https://standardnotes.org/extensions/midnight",
             "name": "Midnight",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/midnight-with-mobile.jpg",
-            "version": "1.2.3",
-            "download_url": "https://api.github.com/repos/standardnotes/midnight-theme/zipball/1.2.3",
+            "version": "1.2.4",
+            "download_url": "https://api.github.com/repos/standardnotes/midnight-theme/zipball/1.2.4",
             "url": "https://kyleburke.net/standard-notes-open-extended/midnight-theme/dist/dist.css",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/midnight-theme/index.json"
         },
@@ -339,8 +339,8 @@
             "marketing_url": "https://standardnotes.org/extensions/solarized-dark",
             "name": "Solarized Dark",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
-            "version": "1.2.2",
-            "download_url": "https://api.github.com/repos/standardnotes/solarized-dark-theme/zipball/1.2.2",
+            "version": "1.2.3",
+            "download_url": "https://api.github.com/repos/standardnotes/solarized-dark-theme/zipball/1.2.3",
             "url": "https://kyleburke.net/standard-notes-open-extended/solarized-dark-theme/dist/dist.css",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/solarized-dark-theme/index.json"
         },
@@ -358,8 +358,8 @@
             "marketing_url": "https://standardnotes.org/extensions/titanium",
             "name": "Titanium",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/titanium-with-mobile.jpg",
-            "version": "1.2.3",
-            "download_url": "https://api.github.com/repos/standardnotes/titanium-theme/zipball/1.2.3",
+            "version": "1.2.4",
+            "download_url": "https://api.github.com/repos/standardnotes/titanium-theme/zipball/1.2.4",
             "url": "https://kyleburke.net/standard-notes-open-extended/titanium-theme/dist/dist.css",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/titanium-theme/index.json"
         }
