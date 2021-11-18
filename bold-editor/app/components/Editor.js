@@ -221,7 +221,9 @@ export default class Editor extends React.Component {
     // "Set the focus to the editor layer to the end of the content."
     // Doesn't work because setEditorRawText is called when loading a note and
     // it doesn't save the caret location, so focuses to beginning.
-    this.redactor.editor.endFocus();
+    if (!this.redactor.editor.isEmpty()) {
+      this.redactor.editor.endFocus();
+    }
   }
 
   onEditorFilesDrop(files) {

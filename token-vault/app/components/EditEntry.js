@@ -227,7 +227,7 @@ export default class EditEntry extends React.Component {
               )}
               <div className="sk-panel-section">
                 <div className="sk-button-group stretch">
-                  <button type="submit" className="sk-button neutral" onClick={this.props.onCancel}>
+                  <button type="button" className="sk-button neutral" onClick={this.props.onCancel}>
                     <div className="sk-label">Cancel</div>
                   </button>
                   <button type="submit" className="sk-button info">

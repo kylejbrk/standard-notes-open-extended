@@ -265,3 +265,8 @@ hr {
 .redactor-focus.redactor-styles-on {
     border: none !important;
 }
+
+.redactor-toolbar-wrapper > .redactor-toolbar.redactor-toolbar-fixed {
+    background-color: var(--sn-stylekit-background-color) !important;
+    opacity: 0.95;
+}

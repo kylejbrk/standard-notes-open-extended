@@ -265,9 +265,9 @@ export default class Home extends React.Component {
           </div>
         </div>
         {parseError && <DataErrorAlert />}
-        {canEdit && !editMode && (
+        {!editMode && (
           <div id="header">
-            <div className="sk-horizontal-group left align-items-center">
+            <div className={`sk-horizontal-group left align-items-center ${!canEdit && 'full-width'}`}>
               <input
                 name="search"
                 className="sk-input contrast search-bar"
@@ -283,16 +283,18 @@ export default class Home extends React.Component {
                 </div>
               )}
             </div>
-            <div className="sk-horizontal-group right">
-              <div className="sk-button-group stretch">
-                <div onClick={this.onReorderEntries} className="sk-button info">
-                  <ReorderIcon />
-                </div>
-                <div onClick={this.onAddNew} className="sk-button info">
-                  <div className="sk-label">Add new</div>
+            {canEdit && (
+              <div className="sk-horizontal-group right">
+                <div className="sk-button-group stretch">
+                  <div onClick={this.onReorderEntries} className="sk-button info">
+                    <ReorderIcon />
+                  </div>
+                  <div onClick={this.onAddNew} className="sk-button info">
+                    <div className="sk-label">Add new</div>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
           </div>
         )}
         <div id="content">
