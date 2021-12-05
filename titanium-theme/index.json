@@ -8,7 +8,7 @@
         "foreground_color": "#ffffff",
         "type": "circle"
     },
-    "identifier": "org.standardnotes.theme-titanium",
+    "identifier": "com.standardnotes.theme-titanium",
     "marketing_url": "https://standardnotes.org/extensions/titanium",
     "name": "Titanium",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/titanium-with-mobile.jpg",

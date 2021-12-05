@@ -5,7 +5,7 @@
     "flags": [
         "Beta"
     ],
-    "identifier": "org.standardnotes.token-vault",
+    "identifier": "com.standardnotes.token-vault",
     "name": "TokenVault",
     "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
     "version": "2.0.4",

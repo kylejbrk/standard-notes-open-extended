@@ -2,7 +2,7 @@
     "area": "editor-editor",
     "content_type": "SN|Component",
     "description": "A beautiful split-pane Markdown editor with synced-scroll and LaTeX support. When LaTeX is detected, makes external render network request.",
-    "identifier": "org.standardnotes.fancy-markdown-editor",
+    "identifier": "com.standardnotes.fancy-markdown-editor",
     "marketing_url": "https://standardnotes.org/extensions/math-editor",
     "name": "Math Editor",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/fancy-markdown.jpg",

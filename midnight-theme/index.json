@@ -8,7 +8,7 @@
         "foreground_color": "#ffffff",
         "type": "circle"
     },
-    "identifier": "org.standardnotes.theme-midnight",
+    "identifier": "com.standardnotes.theme-midnight",
     "marketing_url": "https://standardnotes.org/extensions/midnight",
     "name": "Midnight",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/midnight-with-mobile.jpg",

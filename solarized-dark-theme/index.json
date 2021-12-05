@@ -8,7 +8,7 @@
         "foreground_color": "#ffffff",
         "type": "circle"
     },
-    "identifier": "org.standardnotes.theme-solarized-dark",
+    "identifier": "com.standardnotes.theme-solarized-dark",
     "marketing_url": "https://standardnotes.org/extensions/solarized-dark",
     "name": "Solarized Dark",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
