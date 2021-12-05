@@ -3,7 +3,7 @@ index:
   content_type: SN|Component
   description: From highlighting to custom font sizes and colors, to tables and lists, this editor is perfect for crafting any document.
   flags: []
-  identifier: org.standardnotes.plus-editor
+  identifier: com.standardnotes.plus-editor
   marketing_url: https://standardnotes.org/extensions/plus-editor
   name: Plus Editor
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/editors/plus-editor.jpg

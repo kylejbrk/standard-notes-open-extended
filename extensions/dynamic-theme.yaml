@@ -13,7 +13,7 @@ index:
       0.131-0.201 0.264-0.303 0.397-0.441 0.58-0.915 1.201-1.439 1.818 1.356 1.324
       3 2.324 5.232 2.324h0.92v2.398l3.989-4.025-3.988-4.025v2.851z"></path></svg>
     type: svg
-  identifier: org.standardnotes.theme-dynamic
+  identifier: com.standardnotes.theme-dynamic
   layerable: true
   marketing_url: https://standardnotes.org/extensions/dynamic
   name: Dynamic

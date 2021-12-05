@@ -5,7 +5,7 @@ index:
     Not recommended for large data sets, as encryption of such data may decrease editor
     performance.
   flags: []
-  identifier: org.standardnotes.standard-sheets
+  identifier: com.standardnotes.standard-sheets
   marketing_url: null
   name: Secure Spreadsheets
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/editors/spreadsheets.png

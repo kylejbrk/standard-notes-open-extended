@@ -7,7 +7,7 @@ index:
     border_color: '#a464c2'
     foreground_color: '#ffffff'
     type: circle
-  identifier: org.standardnotes.theme-focus
+  identifier: com.standardnotes.theme-focus
   marketing_url: https://standardnotes.org/extensions/focused
   name: Focus
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/themes/focus-with-mobile.jpg

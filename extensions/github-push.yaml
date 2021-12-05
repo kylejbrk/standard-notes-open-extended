@@ -3,7 +3,7 @@ index:
   content_type: SN|Component
   description: Push note changes to a public or private GitHub repository, with options
     for file extension and commit message.
-  identifier: org.standardnotes.github-push
+  identifier: com.standardnotes.github-push
   marketing_url: https://standardnotes.org/extensions/github-push
   name: GitHub Push
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/components/github-push.jpg

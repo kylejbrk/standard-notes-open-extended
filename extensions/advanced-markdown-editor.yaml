@@ -4,7 +4,7 @@ index:
   description: A fully featured Markdown editor that supports live preview, a styling
     toolbar, and split pane support.
   flags: []
-  identifier: org.standardnotes.advanced-markdown-editor
+  identifier: com.standardnotes.advanced-markdown-editor
   marketing_url: https://standardnotes.org/extensions/advanced-markdown
   name: Advanced Markdown Editor
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/editors/adv-markdown.jpg

@@ -7,7 +7,7 @@ index:
     border_color: '#fca429'
     foreground_color: '#ffffff'
     type: circle
-  identifier: org.standardnotes.theme-futura
+  identifier: com.standardnotes.theme-futura
   marketing_url: https://standardnotes.org/extensions/futura
   name: Futura
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/themes/futura-with-mobile.jpg

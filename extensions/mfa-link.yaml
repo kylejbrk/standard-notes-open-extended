@@ -3,7 +3,7 @@ index:
   content_type: SN|Component
   description: Configure two-factor authentication to add an extra level of security
     to your account.
-  identifier: org.standardnotes.mfa-link
+  identifier: com.standardnotes.mfa-link
   name: 2FA Manager
 meta:
   github: sn-extensions/mfa-link

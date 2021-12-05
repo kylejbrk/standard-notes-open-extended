@@ -4,7 +4,7 @@ index:
   description: Useful utility bar with information about the current note as well
     as actions like duplicate, copy, and save.
   flags: []
-  identifier: org.standardnotes.action-bar
+  identifier: com.standardnotes.action-bar
   marketing_url: https://standardnotes.org/extensions/action-bar
   name: Action Bar
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/components/action-bar.jpg

@@ -4,7 +4,7 @@ index:
   description: Create nested folders from your tags with easy drag and drop. Folders
     also supports Smart Tags, which allow you to build custom filters for viewing
     your notes.
-  identifier: org.standardnotes.folders-component
+  identifier: com.standardnotes.folders-component
   name: Folders Component
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/components/folders.jpg
 meta:
