@@ -1,0 +1,12 @@
+index:
+  area: editor-stack
+  content_type: SN|Component
+  description: Encrypted attachments for your notes using your Dropbox, Google Drive, or WebDAV server. Limited to 50MB per file.
+  flags: []
+  identifier: com.standardnotes.file-safe
+  marketing_url: https://standardnotes.com/features/filesafe
+  name: FileSafe
+  thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/FileSafe-banner.png
+meta:
+  github: standardnotes/filesafe-bar
+  main: dist/index.html
