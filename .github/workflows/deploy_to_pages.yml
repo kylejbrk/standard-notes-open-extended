@@ -2,7 +2,7 @@ name: Build and Deploy
 on: 
   push:
     branches:
-      - master
+      - patch-1
   schedule:
       - cron: '0 0 * * *' # Once per day at midnight
 jobs:
