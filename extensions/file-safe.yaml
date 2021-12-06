@@ -9,4 +9,4 @@ index:
   thumbnail_url: https://s3.amazonaws.com/standard-notes/screenshots/models/FileSafe-banner.png
 meta:
   github: standardnotes/filesafe-bar
-  main: app/index.html
+  main: dist/index.html
