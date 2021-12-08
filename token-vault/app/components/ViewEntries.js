@@ -11,7 +11,7 @@ const reorderEntries = (list, startIndex, endIndex) => {
   return result;
 };
 
-const ViewEntries = ({ entries, onEdit, onRemove, onCopyValue, canEdit, updateEntries, searchValue }) => {
+const ViewEntries = ({ entries, onEdit, onRemove, onCopyValue, canEdit, updateEntries, searchValue, lastUpdated }) => {
   const onDragEnd = (result) => {
     const droppedOutsideList = !result.destination;
     if (droppedOutsideList) {
@@ -63,6 +63,7 @@ const ViewEntries = ({ entries, onEdit, onRemove, onCopyValue, canEdit, updateEn
                       onRemove={onRemove}
                       onCopyValue={onCopyValue}
                       canEdit={canEdit}
+                      lastUpdated={lastUpdated}
                     />
                   )}
                 </Draggable>
@@ -82,6 +83,7 @@ ViewEntries.propTypes =  {
   onRemove: PropTypes.func.isRequired,
   onCopyValue: PropTypes.func.isRequired,
   canEdit: PropTypes.bool.isRequired,
+  lastUpdated: PropTypes.number.isRequired,
   updateEntries: PropTypes.func.isRequired,
   searchValue: PropTypes.string
 };

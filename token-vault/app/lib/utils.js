@@ -134,6 +134,8 @@ export function hexColorToRGB(hexColor) {
   } : null;
 }
 
+export const defaultBgColor = '#FFF';
+
 /**
  * Gets the color variable to be used based on the calculated constrast of a color.
  */
@@ -146,5 +148,42 @@ export function getVarColorForContrast(backgroundColor) {
     return styleKitColors.foreground;
   }
   const colorContrast = Math.round(((parseInt(backgroundColor.red) * 299) + (parseInt(backgroundColor.green) * 587) + (parseInt(backgroundColor.blue) * 114)) / 1000);
-  return (colorContrast > 125) ? styleKitColors.background : styleKitColors.foreground;
+  return (colorContrast > 70) ? styleKitColors.background : styleKitColors.foreground;
+}
+
+function getPropertyValue(document, propertyName) {
+  return getComputedStyle(document.documentElement)
+    .getPropertyValue(propertyName).trim().toUpperCase();
+}
+
+export const contextualColors = [
+  'info',
+  'success',
+  'neutral',
+  'warning'
+];
+
+export function getContextualColor(document, colorName) {
+  if (!contextualColors.includes(colorName)) {
+    return;
+  }
+
+  return getPropertyValue(
+    document,
+    `--sn-stylekit-${colorName}-color`
+  );
+}
+
+export function getEntryColor(document, entry) {
+  const { color } = entry;
+
+  if (!contextualColors.includes(color)) {
+    return color;
+  }
+
+  return getContextualColor(document, color);
+}
+
+export function getAllContextualColors(document) {
+  return contextualColors.map((colorName) => getContextualColor(document, colorName));
 }

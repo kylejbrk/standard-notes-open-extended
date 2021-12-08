@@ -17,7 +17,8 @@ const initialState = {
   confirmReorder: false,
   displayCopy: false,
   canEdit: true,
-  searchValue: ''
+  searchValue: '',
+  lastUpdated: 0
 };
 
 export default class Home extends React.Component {
@@ -64,21 +65,24 @@ export default class Home extends React.Component {
           };
         }
       },
-      clearUndoHistory: () => {},
+      clearUndoHistory: () => { },
       getElementsBySelector: () => [],
       onNoteLockToggle: (isLocked) => {
         this.setState({
           canEdit: !isLocked
         });
+      },
+      onThemesChange: () => {
+        this.setState({
+          lastUpdated: Date.now(),
+        });
       }
     };
 
-    this.editorKit = new EditorKit(delegate,
-      {
-        mode: 'json',
-        supportsFileSafe: false
-      }
-    );
+    this.editorKit = new EditorKit(delegate, {
+      mode: 'json',
+      supportsFileSafe: false
+    });
   }
 
   saveNote(entries) {
@@ -184,6 +188,7 @@ export default class Home extends React.Component {
     this.setState({
       displayCopy: true
     });
+
     if (this.clearTooltipTimer) {
       clearTimeout(this.clearTooltipTimer);
     }
@@ -248,16 +253,13 @@ export default class Home extends React.Component {
       entries,
       confirmRemove,
       confirmReorder,
-      searchValue
+      searchValue,
+      lastUpdated
     } = this.state;
 
     return (
       <div className="sn-component">
-        <div
-          className={`auth-copy-notification ${
-            displayCopy ? 'visible' : 'hidden'
-          }`}
-        >
+        <div className={`auth-copy-notification ${displayCopy ? 'visible' : 'hidden'}`}>
           <div className="sk-panel">
             <div className="sk-font-small sk-bold">
               Copied value to clipboard.
@@ -313,6 +315,7 @@ export default class Home extends React.Component {
               onRemove={this.onRemove}
               onCopyValue={this.onCopyValue}
               canEdit={canEdit}
+              lastUpdated={lastUpdated}
               updateEntries={this.updateEntries}
             />
           )}

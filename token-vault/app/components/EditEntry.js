@@ -4,20 +4,7 @@ import QRCodeReader from '@Components/QRCodeReader';
 import { secretPattern } from '@Lib/otp';
 import { TwitterPicker } from 'react-color';
 import { SKAlert } from 'sn-stylekit';
-
-const defaultBgColor = '#fff';
-const defaultColorOptions = [
-  '#FFB299',
-  '#FFEBB5',
-  '#7BDCB5',
-  '#BDD684',
-  '#799AE0',
-  '#7ECEFD',
-  '#ABB8C3',
-  '#F27977',
-  '#FFAFAF',
-  '#D5C8EB'
-];
+import { contextualColors, defaultBgColor, getAllContextualColors, getEntryColor } from '@Lib/utils';
 
 export default class EditEntry extends React.Component {
   static defaultProps = {
@@ -55,15 +42,6 @@ export default class EditEntry extends React.Component {
       entry: {
         ...state.entry,
         [name]: value
-      }
-    }));
-  };
-
-  handleColorChange = color => {
-    this.setState(state => ({
-      entry: {
-        ...state.entry,
-        color: color.hex
       }
     }));
   };
@@ -138,11 +116,39 @@ export default class EditEntry extends React.Component {
       qrCodeAlert.present();
     }
 
+    const entryColor = getEntryColor(document, entry);
     const swatchStyle = {
       width: '36px',
       height: '14px',
       borderRadius: '2px',
-      background: `${entry.color ?? defaultBgColor}`,
+      background: `${entryColor ?? defaultBgColor}`,
+    };
+
+    const themeColors = getAllContextualColors(document);
+    const defaultColorOptions = [
+      ...themeColors,
+      '#658bdb',
+      '#4CBBFC',
+      '#FF794D',
+      '#EF5276',
+      '#91B73D',
+      '#9B7ECF'
+    ];
+
+    const handleColorChange = (color) => {
+      let selectedColor = color.hex.toUpperCase();
+      const colorIndex = defaultColorOptions.indexOf(selectedColor);
+
+      if (colorIndex > -1 && colorIndex <= themeColors.length - 1) {
+        selectedColor = contextualColors[colorIndex];
+      }
+
+      this.setState(state => ({
+        entry: {
+          ...state.entry,
+          color: selectedColor
+        }
+      }));
     };
 
     return (
@@ -158,14 +164,16 @@ export default class EditEntry extends React.Component {
                     onError={this.onQRCodeError}
                   />
                 )}
-                {entry.color && (
-                  <div className="sk-button danger" onClick={this.removeColor}>
-                    <div className="sk-label">Clear color</div>
+                <>
+                  {entryColor && (
+                    <div className="sk-button danger" onClick={this.removeColor}>
+                      <div className="sk-label">Clear color</div>
+                    </div>
+                  )}
+                  <div className="color-picker-swatch" onClick={this.handleSwatchClick}>
+                    <div style={swatchStyle} />
                   </div>
-                )}
-                <div className="color-picker-swatch" onClick={this.handleSwatchClick}>
-                  <div style={swatchStyle} />
-                </div>
+                </>
               </div>
             </div>
             <form onSubmit={this.onSave} autoComplete="off">
@@ -218,10 +226,19 @@ export default class EditEntry extends React.Component {
                 <div className="color-picker-popover">
                   <div className="color-picker-cover" onClick={this.handleColorPickerClose} />
                   <TwitterPicker
-                    color={entry.color ?? defaultBgColor}
+                    color={entryColor}
                     colors={defaultColorOptions}
-                    onChangeComplete={this.handleColorChange}
+                    onChangeComplete={handleColorChange}
                     triangle="top-right"
+                    onSwatchHover={(color, event) => {
+                      const hoveredColor = color.hex.toUpperCase();
+                      if (themeColors.includes(hoveredColor)) {
+                        event.target.setAttribute(
+                          'title',
+                          'This color will change depending on your active theme.'
+                        );
+                      }
+                    }}
                   />
                 </div>
               )}
