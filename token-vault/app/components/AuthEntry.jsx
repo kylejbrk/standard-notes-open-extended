@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { totp } from '@Lib/otp';
 import CountdownPie from '@Components/CountdownPie';
 import AuthMenu from '@Components/AuthMenu';
-import DragIndicator from '@Components/DragIndicator';
+import DragIndicator from '../assets/svg/drag-indicator.svg';
 import { getEntryColor, getVarColorForContrast, hexColorToRGB } from '@Lib/utils';
 
 export default class AuthEntry extends React.Component {
@@ -154,8 +154,8 @@ export default class AuthEntry extends React.Component {
             </div>
             <div className="auth-token-info">
               <div className="auth-token" onClick={() => this.copyToClipboard(token)}>
-                <div>{token.substr(0, 3)}</div>
-                <div>{token.substr(3, 3)}</div>
+                <div>{token.slice(0, 3)}</div>
+                <div>{token.slice(3, 6)}</div>
               </div>
               <div className="auth-countdown">
                 <CountdownPie

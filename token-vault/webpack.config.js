@@ -37,7 +37,14 @@ module.exports = {
         use: ['babel-loader']
       },
       {
-        test: /\.svg$/,
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        exclude: /node_modules/,
+        use: ['@svgr/webpack'],
+      },
+      {
+        test: /\.svg$/i,
+        issuer: /\.s[ac]ss$/i,
         exclude: /node_modules/,
         use: [
           {

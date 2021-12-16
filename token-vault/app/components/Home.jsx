@@ -5,7 +5,7 @@ import ViewEntries from '@Components/ViewEntries';
 import ConfirmDialog from '@Components/ConfirmDialog';
 import DataErrorAlert from '@Components/DataErrorAlert';
 import EditorKit from '@standardnotes/editor-kit';
-import ReorderIcon from '@Components/ReorderIcon';
+import ReorderIcon from '../assets/svg/reorder-icon.svg';
 
 const initialState = {
   text: '',
@@ -281,7 +281,7 @@ export default class Home extends React.Component {
               />
               {searchValue && (
                 <div onClick={this.clearSearchValue} className="sk-button danger">
-                  <div className="sk-label">X</div>
+                  <div className="sk-label">✕</div>
                 </div>
               )}
             </div>
