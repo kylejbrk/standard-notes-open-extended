@@ -17,6 +17,8 @@ export default class Editor extends React.Component {
     super(props);
     this.state = {};
     this.alert = null;
+    this.renderNote = false;
+    this.isNoteLocked = false;
   }
 
   componentDidMount() {
@@ -121,24 +123,31 @@ export default class Editor extends React.Component {
         $R('#editor', 'module.buffer.clear');
       },
       onNoteValueChange: async (note) => {
-        $R('#editor', 'source.setCode', '');
-        this.enableReadOnly();
-
-        const renderNote = await this.shouldRenderNote(note);
-        if (renderNote) {
-          this.disableReadOnly();
-        }
+        this.renderNote = await this.shouldRenderNote(note);
+        this.isNoteLocked = this.getNoteLockState(note);
 
         this.scrollToTop();
       },
       setEditorRawText: (rawText) => {
-        if (this.redactor.isReadOnly()) {
+        // Disabling read-only mode so that we can use source.setCode
+        this.disableReadOnly();
+
+        if (!this.renderNote) {
+          $R('#editor', 'source.setCode', '');
+          this.enableReadOnly();
           return;
         }
+
         // Called when the Bold Editor is loaded, when switching to a Bold
         // Editor note, or when uploading files, maybe in more places too.
         const cleaned = this.redactor.cleaner.input(rawText);
         $R('#editor', 'source.setCode', cleaned);
+
+        if (this.isNoteLocked) {
+          this.enableReadOnly();
+        } else {
+          this.disableReadOnly();
+        }
       }
     };
 
@@ -181,6 +190,9 @@ export default class Editor extends React.Component {
       ],
       callbacks: {
         changed: (html) => {
+          if (this.isNoteLocked || this.redactor.isReadOnly() || !this.renderNote) {
+            return;
+          }
           // I think it's already cleaned so we don't need to do this.
           // let cleaned = this.redactor.cleaner.output(html);
           this.editorKit.onEditorValueChanged(html);
@@ -376,6 +388,10 @@ export default class Editor extends React.Component {
     } catch (e) {
       console.warn('Trying to dismiss an alert that does not exist anymore.');
     }
+  }
+
+  getNoteLockState(note) {
+    return note.content.appData['org.standardnotes.sn']['locked'] ?? false;
   }
 
   render() {
