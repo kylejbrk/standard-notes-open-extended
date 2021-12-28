@@ -12,8 +12,8 @@
     "marketing_url": "https://standardnotes.org/extensions/midnight",
     "name": "Midnight",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/midnight-with-mobile.jpg",
-    "version": "1.2.4",
-    "download_url": "https://api.github.com/repos/standardnotes/midnight-theme/zipball/1.2.4",
+    "version": "1.2.5",
+    "download_url": "https://api.github.com/repos/standardnotes/midnight-theme/zipball/1.2.5",
     "url": "https://kyleburke.net/standard-notes-open-extended/midnight-theme/dist/dist.css",
     "latest_url": "https://kyleburke.net/standard-notes-open-extended/midnight-theme/index.json"
 }
