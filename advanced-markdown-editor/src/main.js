@@ -36,6 +36,11 @@ document.addEventListener('DOMContentLoaded', function() {
       return;
     }
 
+    document.getElementsByClassName('CodeMirror-code')[0].setAttribute(
+      'spellcheck',
+      JSON.stringify(note.content.spellcheck)
+    );
+
     const isUnsafeContent = checkIfUnsafeContent(note.content.text);
 
     if (isUnsafeContent) {
@@ -96,6 +101,8 @@ document.addEventListener('DOMContentLoaded', function() {
     element: document.getElementById('editor'),
     autoDownloadFontAwesome: false,
     spellChecker: false,
+    nativeSpellcheck: true,
+    inputStyle: 'contenteditable',
     status: false,
     shortcuts: {
       toggleSideBySide: 'Cmd-Alt-P'

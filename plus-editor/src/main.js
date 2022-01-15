@@ -88,6 +88,8 @@ document.addEventListener('DOMContentLoaded', function () {
     clientData = note.clientData;
     let newText = note.content.text;
 
+    $('.note-editable').attr('spellcheck', JSON.stringify(note.content.spellcheck));
+
     if (newText == lastValue) {
       return;
     }
