@@ -895,10 +895,10 @@
     readdirp "^2.2.1"
     upath "^1.1.1"
 
-"@standardnotes/component-relay@2.1.0":
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.1.0.tgz#9cbc165562c8503dd1e392d0dbec9f477061108e"
-  integrity sha512-2CoBKPdu/WE2R9Pu13Egjxn075Iy0aA7LVLR6/HqslpAPXVQ6FAK8nHeT3HSZwrccz86EiVEf5dwqFOduKGrbQ==
+"@standardnotes/component-relay@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.2.0.tgz#3b51e1047997e624594c8bce00c38e73d49cfb8f"
+  integrity sha512-cJMSnT/fREYK1zq/U6aSfxWPiLPhzI1sLNDUMhmZnJ2npBKFeqE7qQj7NGdp4Q5f72yk4Oqevg5O2BxWDKpYHA==
 
 "@standardnotes/eslint-config-extensions@1.0.1":
   version "1.0.1"

@@ -902,10 +902,10 @@
   dependencies:
     execa "^0.2.2"
 
-"@standardnotes/component-relay@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.0.3.tgz#bdf9ccbc2cfe9bfd6dcb1f478202c19e38a4b1fc"
-  integrity sha512-Gx8L1GEdR4UnGkP464/fyRxQ+SPxucBqItRsvJCZm0JgGxrfaQKJrI0DOSQs/Hn5bpgQOo00Fxe3428pSkXcPA==
+"@standardnotes/component-relay@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.2.0.tgz#3b51e1047997e624594c8bce00c38e73d49cfb8f"
+  integrity sha512-cJMSnT/fREYK1zq/U6aSfxWPiLPhzI1sLNDUMhmZnJ2npBKFeqE7qQj7NGdp4Q5f72yk4Oqevg5O2BxWDKpYHA==
 
 "@stroncium/procfs@^1.0.0":
   version "1.2.1"
@@ -1486,7 +1486,7 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
-codemirror@^5.59.2:
+codemirror@5.59.2:
   version "5.59.2"
   resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.59.2.tgz#ee674d3a4a8d241af38d52afc482625ba7393922"
   integrity sha512-/D5PcsKyzthtSy2NNKCyJi3b+htRkoKv3idswR/tR6UAvMNKA7SrmyZy6fOONJxSRs1JlUWEDAbxqfdArbK8iA==

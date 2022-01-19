@@ -1,6 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './App';
+import Home from './components/Home';
+
+class App extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return (
+      <div className="sn-component">
+        <Home />
+      </div>
+    );
+  }
+}
 
 ReactDOM.render(
   <App />,

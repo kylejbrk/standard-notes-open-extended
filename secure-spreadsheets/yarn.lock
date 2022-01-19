@@ -989,6 +989,11 @@
     "@nodelib/fs.scandir" "2.1.5"
     fastq "^1.6.0"
 
+"@standardnotes/component-relay@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.2.0.tgz#3b51e1047997e624594c8bce00c38e73d49cfb8f"
+  integrity sha512-cJMSnT/fREYK1zq/U6aSfxWPiLPhzI1sLNDUMhmZnJ2npBKFeqE7qQj7NGdp4Q5f72yk4Oqevg5O2BxWDKpYHA==
+
 "@standardnotes/eslint-config-extensions@^1.0.4":
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/@standardnotes/eslint-config-extensions/-/eslint-config-extensions-1.0.4.tgz#451a90b3f140aa19430023d887fb143c4f6df2bd"
@@ -5247,11 +5252,6 @@ slice-ansi@^4.0.0:
     ansi-styles "^4.0.0"
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
-
-sn-components-api@1.2.8:
-  version "1.2.8"
-  resolved "https://registry.yarnpkg.com/sn-components-api/-/sn-components-api-1.2.8.tgz#5fbba6652c08d5b3e92502d782453c1520165721"
-  integrity sha512-epBFsQIKLK78SnJ6e5JNjYbdOAYbKzRyydjpAqji0WdX3S/tOD5Z3UVdLVyi4orKaM4322dk6nRJiTHMI1VyIw==
 
 sn-stylekit@2.0.22:
   version "2.0.22"

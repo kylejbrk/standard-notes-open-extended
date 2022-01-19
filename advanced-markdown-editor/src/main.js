@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
 
   let workingNote;
 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!window.easymde.isSideBySideActive()) {
           window.easymde.toggleSideBySide();
         }
-      // falback config
+        // falback config
       } else if (window.easymde.isPreviewActive()) {
         window.easymde.togglePreview();
       }
@@ -111,14 +111,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // renderingConfig: {
     //   codeSyntaxHighlighting: true
     // },
-    toolbar:[
+    toolbar: [
       {
         className: 'fa fa-eye',
         default: true,
         name: 'preview',
         noDisable: true,
         title: 'Toggle Preview',
-        action: function() {
+        action: function () {
           window.easymde.togglePreview();
           saveMetadata();
         }
@@ -130,7 +130,7 @@ document.addEventListener('DOMContentLoaded', function() {
         noDisable: true,
         noMobile: true,
         title: 'Toggle Side by Side',
-        action: function() {
+        action: function () {
           window.easymde.toggleSideBySide();
           saveMetadata();
         }
@@ -183,7 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
     */
   window.easymde.codemirror.setOption('viewportMargin', 100);
 
-  window.easymde.codemirror.on('change', function() {
+  window.easymde.codemirror.on('change', function () {
     const strip = (html) => {
       const tmp = document.implementation.createHTMLDocument('New').body;
       tmp.innerHTML = html;
@@ -294,8 +294,8 @@ document.addEventListener('DOMContentLoaded', function() {
     showingUnsafeContentAlert = true;
 
     const text = 'We’ve detected that this note contains a script or code snippet which may be unsafe to execute. ' +
-                  'Scripts executed in the editor have the ability to impersonate as the editor to Standard Notes. ' +
-                  'Press Continue to mark this script as safe and proceed, or Cancel to avoid rendering this note.';
+      'Scripts executed in the editor have the ability to impersonate as the editor to Standard Notes. ' +
+      'Press Continue to mark this script as safe and proceed, or Cancel to avoid rendering this note.';
 
     return new Promise((resolve) => {
       const Stylekit = require('sn-stylekit');
@@ -306,7 +306,7 @@ document.addEventListener('DOMContentLoaded', function() {
           {
             text: 'Cancel',
             style: 'neutral',
-            action: function() {
+            action: function () {
               showingUnsafeContentAlert = false;
               resolve(false);
             },
@@ -314,7 +314,7 @@ document.addEventListener('DOMContentLoaded', function() {
           {
             text: 'Continue',
             style: 'danger',
-            action: function() {
+            action: function () {
               showingUnsafeContentAlert = false;
               resolve(true);
             },

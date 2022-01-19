@@ -229,3 +229,7 @@ div.k-window, div.k-window.k-state-focused {
 .k-tabstrip-items-wrapper {
   background-color: var(--sn-stylekit-contrast-background-color) !important;
 }
+
+.k-spreadsheet-pane .k-spreadsheet-merged-cell {
+  background-color: var(--sn-stylekit-background-color) !important;
+}

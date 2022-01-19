@@ -106,14 +106,7 @@ export default class Home extends React.Component {
   }
 
   connectToBridge() {
-    const initialPermissions = [
-      {
-        name: 'stream-context-item'
-      }
-    ];
-
     this.componentRelay = new ComponentRelay({
-      initialPermissions,
       targetWindow: window,
       onReady: () => {
         const { platform } = this.componentRelay;

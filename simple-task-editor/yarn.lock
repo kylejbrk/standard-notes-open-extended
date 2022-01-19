@@ -932,10 +932,10 @@
     minimatch "^3.0.4"
     strip-json-comments "^3.1.1"
 
-"@standardnotes/component-relay@2.0.3":
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.0.3.tgz#bdf9ccbc2cfe9bfd6dcb1f478202c19e38a4b1fc"
-  integrity sha512-Gx8L1GEdR4UnGkP464/fyRxQ+SPxucBqItRsvJCZm0JgGxrfaQKJrI0DOSQs/Hn5bpgQOo00Fxe3428pSkXcPA==
+"@standardnotes/component-relay@2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@standardnotes/component-relay/-/component-relay-2.2.0.tgz#3b51e1047997e624594c8bce00c38e73d49cfb8f"
+  integrity sha512-cJMSnT/fREYK1zq/U6aSfxWPiLPhzI1sLNDUMhmZnJ2npBKFeqE7qQj7NGdp4Q5f72yk4Oqevg5O2BxWDKpYHA==
 
 "@standardnotes/eslint-config-extensions@^1.0.2":
   version "1.0.2"

@@ -1,5 +1,5 @@
 import React from 'react';
-import ComponentManager from 'sn-components-api';
+import ComponentRelay from '@standardnotes/component-relay';
 
 export default class Home extends React.Component {
 
@@ -104,14 +104,14 @@ export default class Home extends React.Component {
     // Be sure to capture this object as a variable, as this.note may be reassigned in `streamContextItem`, so by the time
     // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
     // the right object, and it will save incorrectly.
-    let note = this.note;
+    const note = this.note;
 
-    this.componentManager.saveItemWithPresave(note, () => {
+    this.componentRelay.saveItemWithPresave(note, () => {
       note.content.preview_html = null;
       note.content.preview_plain = 'Created with Secure Spreadsheets';
 
-      let json = this.getJSON();
-      let content = JSON.stringify(json);
+      const json = this.getJSON();
+      const content = JSON.stringify(json);
       note.content.text = content;
     });
   }
@@ -124,23 +124,17 @@ export default class Home extends React.Component {
   }
 
   connectToBridge() {
-    const permissions = [
-      {
-        name: 'stream-context-item'
-      }
-    ];
-
-    this.componentManager = new ComponentManager(permissions, () => {
-      // on ready
-      const platform = this.componentManager.platform;
-      if (platform) {
-        document.body.classList.add(platform);
+    this.componentRelay = new ComponentRelay({
+      targetWindow: window,
+      onReady: () => {
+        const { platform } = this.componentRelay;
+        if (platform) {
+          document.body.classList.add(platform);
+        }
       }
     });
 
-    // componentManager.loggingEnabled = true;
-
-    this.componentManager.streamContextItem((note) => {
+    this.componentRelay.streamContextItem((note) => {
       this.note = note;
 
       // Only update UI on non-metadata updates.

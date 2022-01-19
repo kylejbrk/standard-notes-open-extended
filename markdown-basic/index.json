@@ -7,8 +7,8 @@
     "marketing_url": "https://standardnotes.org/extensions/simple-markdown-editor",
     "name": "Simple Markdown Editor",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/simple-markdown.jpg",
-    "version": "1.4.0",
-    "download_url": "https://api.github.com/repos/standardnotes/markdown-basic/zipball/1.4.0",
+    "version": "1.4.1",
+    "download_url": "https://api.github.com/repos/standardnotes/markdown-basic/zipball/1.4.1",
     "url": "https://kyleburke.net/standard-notes-open-extended/markdown-basic/dist/index.html",
     "latest_url": "https://kyleburke.net/standard-notes-open-extended/markdown-basic/index.json"
 }
