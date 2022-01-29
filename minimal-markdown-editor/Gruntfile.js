@@ -1,46 +1,46 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   grunt.initConfig({
 
-  watch: {
-    js: {
-      files: ['src/**/*.js'],
-      tasks: ['concat:app', 'babel', 'browserify', 'concat:lib', 'concat:dist'],
-      options: {
-        spawn: false,
-      },
-    },
-    css: {
-      files: ['src/main.scss'],
-      tasks: ['sass', 'concat:css'],
-      options: {
-        spawn: false,
-      },
-    }
-  },
-
-  sass: {
-    dist: {
-      options: {
-       style: 'expanded',
-       sourcemap: 'none'
-     },
-      files: {
-        'dist/app.css': 'src/main.scss'
-      }
-    }
-  },
-
-   babel: {
+    watch: {
+      js: {
+        files: ['src/**/*.js'],
+        tasks: ['concat:app', 'babel', 'browserify', 'concat:lib', 'concat:dist'],
         options: {
-            sourceMap: true,
-            presets: ['@babel/preset-env']
+          spawn: false,
         },
-        app: {
-            files: {
-                'dist/app.js': ['dist/app.js']
-            }
+      },
+      css: {
+        files: ['src/main.scss'],
+        tasks: ['sass', 'concat:css'],
+        options: {
+          spawn: false,
+        },
+      }
+    },
+
+    sass: {
+      dist: {
+        options: {
+          style: 'expanded',
+          sourceMap: false
+        },
+        files: {
+          'dist/app.css': 'src/main.scss'
         }
+      }
+    },
+
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: ['@babel/preset-env']
+      },
+      app: {
+        files: {
+          'dist/app.js': ['dist/app.js']
+        }
+      }
     },
 
     browserify: {
@@ -66,7 +66,7 @@ module.exports = function(grunt) {
       lib: {
         src: [
           'node_modules/codemirror/lib/codemirror.js',
-          'node_modules/sn-components-api/dist/dist.js',
+          'node_modules/@standardnotes/component-relay/dist/dist.js',
           'vendor/modes/markdown/markdown.js',
           'vendor/addon/modes/overlay.js',
           'vendor/modes/gfm/gfm.js',
@@ -91,7 +91,7 @@ module.exports = function(grunt) {
     copy: {
       main: {
         files: [
-          {expand: true, cwd: 'node_modules/',  src: ['sn-codemirror-search/**'], dest: 'dist/'},
+          { expand: true, cwd: 'node_modules/', src: ['sn-codemirror-search/**'], dest: 'dist/' },
         ],
       },
     },

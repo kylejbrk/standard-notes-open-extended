@@ -1,43 +1,46 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
 
   grunt.initConfig({
 
-  watch: {
-    js: {
-      files: ['src/**/*.js'],
-      tasks: ['concat:app', 'babel', 'browserify', 'concat:lib', 'concat:dist'],
-      options: {
-        spawn: false,
+    watch: {
+      js: {
+        files: ['src/**/*.js'],
+        tasks: ['concat:app', 'babel', 'browserify', 'concat:lib', 'concat:dist'],
+        options: {
+          spawn: false,
+        },
       },
+      css: {
+        files: ['src/main.scss'],
+        tasks: ['sass', 'concat:css'],
+        options: {
+          spawn: false,
+        },
+      }
     },
 
-    css: {
-      files: ['src/**/*.scss'],
-      tasks: ['sass', 'concat:css'],
-      options: {
-        spawn: false,
-      },
-    }
-  },
-
-  sass: {
-    dist: {
-      options: {
-       style: 'expanded',
-       sourcemap: 'none'
-     },
-      files: {
-        'dist/app.css': 'src/main.scss'
-      }
-    }
-  },
-
-   babel: {
-        app: {
-            files: {
-                'dist/app.js': ['dist/app.js']
-            }
+    sass: {
+      dist: {
+        options: {
+          style: 'expanded',
+          sourceMap: false
+        },
+        files: {
+          'dist/app.css': 'src/main.scss'
         }
+      }
+    },
+
+    babel: {
+      options: {
+        sourceMap: true,
+        presets: ['@babel/preset-env']
+      },
+      app: {
+        files: {
+          'dist/app.js': ['dist/app.js']
+        }
+      }
     },
 
     browserify: {
@@ -55,22 +58,22 @@ module.exports = function(grunt) {
 
       app: {
         src: [
-          'src/**/*.js',
+          "src/main.js"
         ],
         dest: 'dist/app.js',
       },
 
       lib: {
         src: [
-          'src/upmath/**/*.js',
-          "node_modules/draggabilly/dist/draggabilly.pkgd.js",
-          "node_modules/markdown-it/dist/markdown-it.min.js",
+          "vendor/upmath/**/*.js",
+          "node_modules/draggabilly/dist/draggabilly.pkgd.min.js",
+          "node_modules/markdown-it/dist/markdown-it.js",
           "node_modules/markdown-it-sub/dist/markdown-it-sub.min.js",
           "node_modules/markdown-it-sup/dist/markdown-it-sup.min.js",
           "node_modules/markdown-it-footnote/dist/markdown-it-footnote.min.js",
           "node_modules/markdown-it-task-lists/dist/markdown-it-task-lists.min.js",
           "node_modules/katex/dist/katex.min.js",
-          "node_modules/sn-components-api/dist/dist.js"
+          "node_modules/@standardnotes/component-relay/dist/dist.js",
         ],
         dest: 'dist/lib.js',
       },
@@ -104,6 +107,26 @@ module.exports = function(grunt) {
           }
         ]
       }
+    },
+
+    remove_comments: {
+      app: {
+        src: 'dist/app.js',
+        dest: 'dist/app.js'
+      },
+
+      lib: {
+        src: 'dist/lib.js',
+        dest: 'dist/lib.js'
+      }
+    },
+
+    uglify: {
+      dist: {
+        files: {
+          'dist/dist.js': 'dist/dist.js'
+        }
+      }
     }
   });
 
@@ -114,15 +137,19 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-remove-comments');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
 
   grunt.registerTask('default', [
     'concat:app',
     'babel',
     'browserify',
     'concat:lib',
+    'remove_comments',
     'concat:dist',
     'sass',
     'concat:css',
     'copy',
+    'uglify'
   ]);
 };
