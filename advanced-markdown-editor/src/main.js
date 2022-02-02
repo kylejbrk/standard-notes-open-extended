@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   let workingNote;
 
-  let componentRelay = new ComponentRelay({
+  const componentRelay = new ComponentRelay({
     targetWindow: window,
     onReady: () => {
       document.body.classList.add(componentRelay.platform);
@@ -102,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function () {
     autoDownloadFontAwesome: false,
     spellChecker: false,
     nativeSpellcheck: true,
-    inputStyle: 'contenteditable',
+    inputStyle: getInputStyleForEnvironment(),
     status: false,
     shortcuts: {
       toggleSideBySide: 'Cmd-Alt-P'
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
       '|', 'clean-block',
       '|', 'link', 'image',
       '|', 'table'
-    ]
+    ],
   });
 
   function saveMetadata() {
@@ -323,5 +323,10 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       alert.present();
     });
+  }
+
+  function getInputStyleForEnvironment() {
+    const environment = componentRelay.environment ?? 'web';
+    return environment === 'mobile' ? 'textarea' : 'contenteditable';
   }
 });

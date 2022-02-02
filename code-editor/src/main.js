@@ -32,6 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
         if (platform) {
           document.body.classList.add(platform);
         }
+
+        loadEditor();
+
         const initialKeyMap = componentRelay.getComponentDataValueForKey("keyMap") ?? "default";
         window.setKeyMap(initialKeyMap);
         updateVimStatus(initialKeyMap, true);
@@ -43,7 +46,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  function save() {
+  function saveNote() {
     if (workingNote) {
       // Be sure to capture this object as a variable, as this.note may be reassigned in `streamContextItem`, so by the time
       // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
@@ -78,12 +81,12 @@ document.addEventListener("DOMContentLoaded", function () {
     clientData = note.clientData;
     const mode = clientData.mode;
 
-    if (mode) {
-      changeMode(mode);
-    } else {
+    if (!mode) {
       // assign editor's default from component settings
       let defaultLanguage = componentRelay.getComponentDataValueForKey("language");
       changeMode(defaultLanguage);
+    } else {
+      changeMode(mode);
     }
 
     if (editor) {
@@ -97,13 +100,18 @@ document.addEventListener("DOMContentLoaded", function () {
         initialLoad = false;
         editor.getDoc().clearHistory();
       }
+
+      editor.setOption(
+        "spellcheck",
+        workingNote.content.spellcheck
+      )
     }
   }
 
   function loadEditor() {
     // Handler for the save command that is mapped to the :w (write) Vim key binding.
     CodeMirror.commands.save = function() {
-      save();
+      saveNote();
     };
     editor = CodeMirror.fromTextArea(document.getElementById("code"), {
       extraKeys: {
@@ -111,7 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       lineNumbers: true,
       styleSelectedText: true,
-      lineWrapping: true
+      lineWrapping: true,
+      inputStyle: getInputStyleForEnvironment()
     });
     editor.setSize("100%", "100%");
 
@@ -125,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (ignoreTextChange) {
         return;
       }
-      save();
+      saveNote();
     });
   }
 
@@ -147,7 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
   window.onLanguageSelect = function () {
     const language = modes[select.selectedIndex];
     changeMode(language);
-    save();
+    saveNote();
   }
 
   window.setDefaultLanguage = function () {
@@ -211,7 +220,9 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   function changeMode(inputMode) {
-    if (!inputMode) { return; }
+    if (!inputMode) {
+      return;
+    }
 
     const mode = inputModeToMode(inputMode);
 
@@ -255,6 +266,10 @@ document.addEventListener("DOMContentLoaded", function () {
     updateVimStatus(newKeyMap);
   }
 
-  loadEditor();
+  function getInputStyleForEnvironment() {
+    const environment = componentRelay.environment ?? 'web';
+    return environment === 'mobile' ? 'textarea' : 'contenteditable';
+  }
+
   loadComponentRelay();
 });

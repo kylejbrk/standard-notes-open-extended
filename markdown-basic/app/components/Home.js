@@ -129,6 +129,11 @@ export default class Home extends React.Component {
 
       this.editor.value = note.content.text;
       this.preview.innerHTML = this.markdown.render(note.content.text);
+
+      document.getElementById('editor').setAttribute(
+        'spellcheck',
+        JSON.stringify(note.content.spellcheck)
+      );
     });
   }
 
@@ -294,7 +299,7 @@ export default class Home extends React.Component {
         </div>
 
         <div id="editor-container" className={this.state.mode.css}>
-          <textarea dir="auto" id="editor" spellCheck="true" className={this.state.mode.css}></textarea>
+          <textarea dir="auto" id="editor" className={this.state.mode.css}></textarea>
           <div id="column-resizer" className={this.state.mode.css}></div>
           <div id="preview" className={this.state.mode.css}></div>
         </div>

@@ -4,11 +4,14 @@ import ComponentRelay from '@standardnotes/component-relay';
 const TaskDelimitter = '\n';
 
 export default class TasksManager {
+  spellcheckEnabled = true
 
   /* Singleton */
   static instance = null;
   static get() {
-    if (this.instance == null) { this.instance = new TasksManager(); }
+    if (this.instance === null) { 
+      this.instance = new TasksManager();
+    }
     return this.instance;
   }
 
@@ -38,6 +41,7 @@ export default class TasksManager {
       this.unsavedTask = note.content.unsavedTask;
       this.reloadData();
       this.dataChangeHandler && this.dataChangeHandler(this.tasks);
+      this.spellcheckEnabled = JSON.stringify(note.content.spellcheck);
     });
   }
 

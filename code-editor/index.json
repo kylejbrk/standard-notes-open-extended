@@ -6,8 +6,8 @@
     "marketing_url": "https://standardnotes.org/extensions/code-editor",
     "name": "Code Editor",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/code.jpg",
-    "version": "1.3.9",
-    "download_url": "https://api.github.com/repos/standardnotes/code-editor/zipball/1.3.9",
+    "version": "1.3.10",
+    "download_url": "https://api.github.com/repos/standardnotes/code-editor/zipball/1.3.10",
     "url": "https://kyleburke.net/standard-notes-open-extended/code-editor/index.html",
     "latest_url": "https://kyleburke.net/standard-notes-open-extended/code-editor/index.json"
 }

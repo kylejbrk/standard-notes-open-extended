@@ -24,6 +24,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     editor.value = note.content.text;
     window.upmath.updateText();
+
+    editor.setAttribute(
+      'spellcheck',
+      JSON.stringify(workingNote.content.spellcheck)
+    );
   });
 
   editor.addEventListener("input", function (event) {

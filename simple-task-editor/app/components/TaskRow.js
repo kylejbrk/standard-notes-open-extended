@@ -66,7 +66,7 @@ class TaskRow extends Component {
 
   render() {
     const { isChecked } = this.state;
-    const { task } = this.props;
+    const { task, spellcheckEnabled } = this.props;
 
     const classes = `task ${task.completed ? 'completed' : ''}`;
     return (
@@ -79,6 +79,7 @@ class TaskRow extends Component {
             checked={isChecked}
             onChange={this.toggleCheckboxChange}
             className="checkbox"
+            spellCheck={spellcheckEnabled}
           />
           <span className="checkmark"></span>
         </label>
@@ -92,6 +93,7 @@ class TaskRow extends Component {
           type="text"
           dir="auto"
           className='task-input-textarea'
+          spellCheck={spellcheckEnabled}
         />
       </div>
     );
@@ -102,7 +104,8 @@ TaskRow.propTypes = {
   task: PropTypes.object.isRequired,
   handleCheckboxChange: PropTypes.func.isRequired,
   handleTextChange: PropTypes.func.isRequired,
-  deleteTask: PropTypes.func.isRequired
+  deleteTask: PropTypes.func.isRequired,
+  spellcheckEnabled: PropTypes.bool.isRequired
 };
 
 export default TaskRow;

@@ -47,6 +47,8 @@ export default class CreateTask extends React.Component {
       placeholderText = 'Type in your task, then press Enter.';
     }
 
+    const { spellcheckEnabled } = TasksManager.get();
+
     return (
       <input
         className='create-task-input'
@@ -57,6 +59,7 @@ export default class CreateTask extends React.Component {
         value={this.props.unsavedTask}
         onChange={this.onTextChange}
         onKeyPress={this.handleKeyPress}
+        spellCheck={spellcheckEnabled}
       />
     );
   }
