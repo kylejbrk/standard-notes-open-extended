@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", function () {
   let workingNote, clientData;
   let lastValue, lastUUID;
   let editor, select;
-  const defaultMode = "JavaScript";
   let ignoreTextChange = false;
   let initialLoad = true;
 
@@ -32,12 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (platform) {
           document.body.classList.add(platform);
         }
-
         loadEditor();
-
-        const initialKeyMap = componentRelay.getComponentDataValueForKey("keyMap") ?? "default";
-        window.setKeyMap(initialKeyMap);
-        updateVimStatus(initialKeyMap, true);
       }
     });
 
@@ -79,15 +73,14 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     clientData = note.clientData;
-    const mode = clientData.mode;
+    let mode = clientData.mode;
 
     if (!mode) {
-      // assign editor's default from component settings
-      let defaultLanguage = componentRelay.getComponentDataValueForKey("language");
-      changeMode(defaultLanguage);
-    } else {
-      changeMode(mode);
+      // Assign editor's default mode from component settings
+      mode = componentRelay.getComponentDataValueForKey("language") ?? "JavaScript";
     }
+
+    changeMode(mode);
 
     if (editor) {
       if (note.content.text !== lastValue) {
@@ -124,10 +117,6 @@ document.addEventListener("DOMContentLoaded", function () {
     });
     editor.setSize("100%", "100%");
 
-    setTimeout(function () {
-      changeMode(defaultMode);
-    }, 1);
-
     createSelectElements();
 
     editor.on("change", function() {
@@ -136,6 +125,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       saveNote();
     });
+
+    const initialKeyMap = componentRelay.getComponentDataValueForKey("keyMap") ?? "default";
+    window.setKeyMap(initialKeyMap);
   }
 
   function createSelectElements() {
@@ -151,6 +143,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Editor Modes
   window.setKeyMap = function (keymap) {
     editor.setOption("keyMap", keymap);
+    updateVimStatus(keymap);
   }
 
   window.onLanguageSelect = function () {
@@ -262,8 +255,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     window.setKeyMap(newKeyMap);
     componentRelay.setComponentDataValueForKey("keyMap", newKeyMap);
-
-    updateVimStatus(newKeyMap);
   }
 
   function getInputStyleForEnvironment() {

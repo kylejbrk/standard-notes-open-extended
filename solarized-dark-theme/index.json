@@ -12,8 +12,8 @@
     "marketing_url": "https://standardnotes.org/extensions/solarized-dark",
     "name": "Solarized Dark",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
-    "version": "1.2.4",
-    "download_url": "https://api.github.com/repos/standardnotes/solarized-dark-theme/zipball/1.2.4",
+    "version": "1.2.5",
+    "download_url": "https://api.github.com/repos/standardnotes/solarized-dark-theme/zipball/1.2.5",
     "url": "https://kyleburke.net/standard-notes-open-extended/solarized-dark-theme/dist/dist.css",
     "latest_url": "https://kyleburke.net/standard-notes-open-extended/solarized-dark-theme/index.json"
 }
