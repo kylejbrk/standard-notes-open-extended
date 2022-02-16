@@ -6,6 +6,7 @@ import ConfirmDialog from '@Components/ConfirmDialog';
 import DataErrorAlert from '@Components/DataErrorAlert';
 import EditorKit from '@standardnotes/editor-kit';
 import ReorderIcon from '../assets/svg/reorder-icon.svg';
+import CopyNotification from './CopyNotification';
 
 const initialState = {
   text: '',
@@ -36,7 +37,7 @@ export default class Home extends React.Component {
 
         if (text) {
           try {
-            entries = JSON.parse(text);
+            entries = this.parseNote(text);
           } catch (e) {
             // Couldn't parse the content
             parseError = true;
@@ -56,7 +57,7 @@ export default class Home extends React.Component {
       generateCustomPreview: text => {
         let entries = [];
         try {
-          entries = JSON.parse(text);
+          entries = this.parseNote(text);
         } finally {
           // eslint-disable-next-line no-unsafe-finally
           return {
@@ -83,6 +84,30 @@ export default class Home extends React.Component {
       mode: 'json',
       supportsFileSafe: false
     });
+  }
+
+  parseNote(text) {
+    const entries = JSON.parse(text);
+
+    if (entries instanceof Array) {
+      if (entries.length === 0) {
+        return [];
+      }
+
+      for (const entry of entries) {
+        if (!('service' in entry)) {
+          throw Error('Service key is missing for an entry.');
+        }
+
+        if (!('secret' in entry)) {
+          throw Error('Secret key is missing for an entry.');
+        }
+      }
+
+      return entries;
+    }
+
+    return [];
   }
 
   saveNote(entries) {
@@ -257,16 +282,17 @@ export default class Home extends React.Component {
       lastUpdated
     } = this.state;
 
+    if (parseError) {
+      return (
+        <div className="sn-component">
+          <DataErrorAlert />
+        </div>
+      );
+    }
+
     return (
       <div className="sn-component">
-        <div className={`auth-copy-notification ${displayCopy ? 'visible' : 'hidden'}`}>
-          <div className="sk-panel">
-            <div className="sk-font-small sk-bold">
-              Copied value to clipboard.
-            </div>
-          </div>
-        </div>
-        {parseError && <DataErrorAlert />}
+        <CopyNotification isVisible={displayCopy} />
         {!editMode && (
           <div id="header">
             <div className={`sk-horizontal-group left align-items-center ${!canEdit && 'full-width'}`}>
