@@ -244,11 +244,16 @@ export default class Editor extends React.Component {
   }
 
   onEditorFilesDrop(files) {
+    if (!this.editorKit.canUseFileSafe()) {
+      return;
+    }
+
     if (!this.editorKit.canUploadFiles()) {
       // Open filesafe modal
       this.redactor.plugin.filesafe.open();
       return;
     }
+
     for (const file of files) {
       // Observers in EditorKitInternal.js will handle successful upload
       this.editorKit.uploadJSFileObject(file).then((descriptor) => {
