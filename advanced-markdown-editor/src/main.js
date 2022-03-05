@@ -1,20 +1,21 @@
 document.addEventListener('DOMContentLoaded', function () {
 
   let workingNote;
+  let ignoreTextChange = false;
+  let initialLoad = true;
+  let lastValue, lastUUID, clientData;
+  let renderNote = false;
+  let showingUnsafeContentAlert = false;
 
   const componentRelay = new ComponentRelay({
     targetWindow: window,
     onReady: () => {
       document.body.classList.add(componentRelay.platform);
       document.body.classList.add(componentRelay.environment);
+
+      initializeEditor();
     }
   });
-
-  let ignoreTextChange = false;
-  let initialLoad = true;
-  let lastValue, lastUUID, clientData;
-  let renderNote = false;
-  let showingUnsafeContentAlert = false;
 
   componentRelay.streamContextItem(async (note) => {
     if (showingUnsafeContentAlert) {
@@ -42,7 +43,6 @@ document.addEventListener('DOMContentLoaded', function () {
     );
 
     const isUnsafeContent = checkIfUnsafeContent(note.content.text);
-
     if (isUnsafeContent) {
       const trustUnsafeContent = clientData['trustUnsafeContent'] ?? false;
       if (!trustUnsafeContent) {
@@ -97,53 +97,121 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  window.easymde = new EasyMDE({
-    element: document.getElementById('editor'),
-    autoDownloadFontAwesome: false,
-    spellChecker: false,
-    nativeSpellcheck: true,
-    inputStyle: getInputStyleForEnvironment(),
-    status: false,
-    shortcuts: {
-      toggleSideBySide: 'Cmd-Alt-P'
-    },
-    // Syntax highlighting is disabled until we figure out performance issue: https://github.com/sn-extensions/advanced-markdown-editor/pull/20#issuecomment-513811633
-    // renderingConfig: {
-    //   codeSyntaxHighlighting: true
-    // },
-    toolbar: [
-      {
-        className: 'fa fa-eye',
-        default: true,
-        name: 'preview',
-        noDisable: true,
-        title: 'Toggle Preview',
-        action: function () {
-          window.easymde.togglePreview();
-          saveMetadata();
-        }
+  function initializeEditor() {
+    window.easymde = new EasyMDE({
+      element: document.getElementById('editor'),
+      autoDownloadFontAwesome: false,
+      spellChecker: false,
+      nativeSpellcheck: true,
+      inputStyle: getInputStyleForEnvironment(),
+      status: false,
+      shortcuts: {
+        toggleSideBySide: 'Cmd-Alt-P'
       },
-      {
-        className: 'fa fa-columns',
-        default: true,
-        name: 'side-by-side',
-        noDisable: true,
-        noMobile: true,
-        title: 'Toggle Side by Side',
-        action: function () {
-          window.easymde.toggleSideBySide();
-          saveMetadata();
+      // Syntax highlighting is disabled until we figure out performance issue: https://github.com/sn-extensions/advanced-markdown-editor/pull/20#issuecomment-513811633
+      // renderingConfig: {
+      //   codeSyntaxHighlighting: true
+      // },
+      toolbar: [
+        {
+          className: 'fa fa-eye',
+          default: true,
+          name: 'preview',
+          noDisable: true,
+          title: 'Toggle Preview',
+          action: function () {
+            window.easymde.togglePreview();
+            saveMetadata();
+          }
+        },
+        {
+          className: 'fa fa-columns',
+          default: true,
+          name: 'side-by-side',
+          noDisable: true,
+          noMobile: true,
+          title: 'Toggle Side by Side',
+          action: function () {
+            window.easymde.toggleSideBySide();
+            saveMetadata();
+          }
+        },
+        '|',
+        'heading', 'bold', 'italic', 'strikethrough',
+        '|', 'quote', 'code',
+        '|', 'unordered-list', 'ordered-list',
+        '|', 'clean-block',
+        '|', 'link', 'image',
+        '|', 'table'
+      ],
+    });
+
+    /**
+     * Can be set to Infinity to make sure the whole document is always rendered,
+     * and thus the browser's text search works on it. This will have bad effects
+     * on performance of big documents.Really bad performance on Safari. Unusable.
+     */
+    window.easymde.codemirror.setOption('viewportMargin', 100);
+
+    window.easymde.codemirror.on('change', function () {
+      const strip = (html) => {
+        const tmp = document.implementation.createHTMLDocument('New').body;
+        tmp.innerHTML = html;
+        return tmp.textContent || tmp.innerText || '';
+      };
+
+      const truncateString = (string, limit = 90) => {
+        if (string.length <= limit) {
+          return string;
+        } else {
+          return string.substring(0, limit) + '...';
         }
-      },
-      '|',
-      'heading', 'bold', 'italic', 'strikethrough',
-      '|', 'quote', 'code',
-      '|', 'unordered-list', 'ordered-list',
-      '|', 'clean-block',
-      '|', 'link', 'image',
-      '|', 'table'
-    ],
-  });
+      };
+
+      if (!ignoreTextChange && renderNote) {
+        if (workingNote) {
+          // Be sure to capture this object as a variable, as this.note may be reassigned in `streamContextItem`, so by the time
+          // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
+          // the right object, and it will save incorrectly.
+          const note = workingNote;
+
+          componentRelay.saveItemWithPresave(note, () => {
+            lastValue = window.easymde.value();
+
+            let html = window.easymde.options.previewRender(window.easymde.value());
+            let strippedHtml = truncateString(strip(html));
+
+            note.content.preview_plain = strippedHtml;
+            note.content.preview_html = null;
+            note.content.text = lastValue;
+          });
+        }
+      }
+    });
+
+    /**
+     * Scrolls the cursor into view, so the soft keyboard on mobile devices
+     * doesn't overlap the cursor. A short delay is added to prevent scrolling
+     * before the keyboard is shown.
+     */
+    const scrollCursorIntoView = (editor) => {
+      setTimeout(() => editor.scrollIntoView(), 200);
+    };
+
+    window.easymde.codemirror.on('cursorActivity', function (editor) {
+      if (componentRelay.environment !== 'mobile') {
+        return;
+      }
+      scrollCursorIntoView(editor);
+    });
+
+    // Some sort of issue on Mobile RN where this causes an exception (".className is not defined")
+    try {
+      window.easymde.toggleFullScreen();
+    } catch (e) {
+      console.log('Error:', e);
+    }
+  }
 
   function saveMetadata() {
     if (!renderNote) {
@@ -169,56 +237,6 @@ document.addEventListener('DOMContentLoaded', function () {
       };
     });
   }
-
-  // Some sort of issue on Mobile RN where this causes an exception (".className is not defined")
-  try {
-    window.easymde.toggleFullScreen();
-  } catch (e) {
-    console.log('Error:', e);
-  }
-
-  /*
-    Can be set to Infinity to make sure the whole document is always rendered, and thus the browser's text search works on it. This will have bad effects on performance of big documents.
-    Really bad performance on Safari. Unusable.
-    */
-  window.easymde.codemirror.setOption('viewportMargin', 100);
-
-  window.easymde.codemirror.on('change', function () {
-    const strip = (html) => {
-      const tmp = document.implementation.createHTMLDocument('New').body;
-      tmp.innerHTML = html;
-      return tmp.textContent || tmp.innerText || '';
-    };
-
-    const truncateString = (string, limit = 90) => {
-      if (string.length <= limit) {
-        return string;
-      } else {
-        return string.substring(0, limit) + '...';
-      }
-    };
-
-    if (!ignoreTextChange && renderNote) {
-      if (workingNote) {
-        // Be sure to capture this object as a variable, as this.note may be reassigned in `streamContextItem`, so by the time
-        // you modify it in the presave block, it may not be the same object anymore, so the presave values will not be applied to
-        // the right object, and it will save incorrectly.
-        const note = workingNote;
-
-        componentRelay.saveItemWithPresave(note, () => {
-          lastValue = window.easymde.value();
-
-          let html = window.easymde.options.previewRender(window.easymde.value());
-          let strippedHtml = truncateString(strip(html));
-
-          note.content.preview_plain = strippedHtml;
-          note.content.preview_html = null;
-          note.content.text = lastValue;
-        });
-
-      }
-    }
-  });
 
   function setTrustUnsafeContent(note) {
     componentRelay.saveItemWithPresave(note, () => {

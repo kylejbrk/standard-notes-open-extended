@@ -99,3 +99,7 @@ body, html {
   color: var(--sn-stylekit-foreground-color);
   opacity: 0.6;
 }
+
+.cm-fat-cursor .CodeMirror-line > span[role="presentation"] {
+  caret-color: transparent;
+}

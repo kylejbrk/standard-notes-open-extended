@@ -1486,10 +1486,10 @@ clone-deep@^4.0.1:
     kind-of "^6.0.2"
     shallow-clone "^3.0.0"
 
-codemirror@5.59.2:
-  version "5.59.2"
-  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.59.2.tgz#ee674d3a4a8d241af38d52afc482625ba7393922"
-  integrity sha512-/D5PcsKyzthtSy2NNKCyJi3b+htRkoKv3idswR/tR6UAvMNKA7SrmyZy6fOONJxSRs1JlUWEDAbxqfdArbK8iA==
+codemirror@5.65.2:
+  version "5.65.2"
+  resolved "https://registry.yarnpkg.com/codemirror/-/codemirror-5.65.2.tgz#5799a70cb3d706e10f60e267245e3a75205d3dd9"
+  integrity sha512-SZM4Zq7XEC8Fhroqe3LxbEEX1zUPWH1wMr5zxiBuiUF64iYOUH/JI88v4tBag8MiBS8B8gRv8O1pPXGYXQ4ErA==
 
 collection-visit@^1.0.0:
   version "1.0.0"
@@ -3548,9 +3548,9 @@ slice-ansi@^4.0.0:
     is-fullwidth-code-point "^3.0.0"
 
 sn-stylekit@^2.1.1:
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/sn-stylekit/-/sn-stylekit-2.1.1.tgz#1d32c08e770bc9e4560f6fa4d05e66a3229aca4e"
-  integrity sha512-Qzarr8CFTJr6f5KVwwv3oFUZ9wukCvDGIr6o/Z5o5GZk3tipIshKcJtTuuqtzkihvaGnJmzXbRTQzxadjgfiRg==
+  version "2.2.1"
+  resolved "https://registry.yarnpkg.com/sn-stylekit/-/sn-stylekit-2.2.1.tgz#4a81a05b2b2d67a11af9d06f3964ac1ece3aa84a"
+  integrity sha512-mrvUbf2HbWOfxbNglo7RXa5JBe9UV9rurupeGoX/Kh4/lVlB2n/56ZT103xk/4tp0/mVCpxjD7Dt1stKFxsvFA==
 
 snapdragon-node@^2.0.1:
   version "2.1.1"

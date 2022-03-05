@@ -126,6 +126,22 @@ document.addEventListener("DOMContentLoaded", function () {
       saveNote();
     });
 
+    /**
+     * Scrolls the cursor into view, so the soft keyboard on mobile devices
+     * doesn't overlap the cursor. A short delay is added to prevent scrolling
+     * before the keyboard is shown.
+     */
+    const scrollCursorIntoView = (editor) => {
+      setTimeout(() => editor.scrollIntoView(), 200);
+    };
+
+    editor.on('cursorActivity', function (editor) {
+      if (componentRelay.environment !== 'mobile') {
+        return;
+      }
+      scrollCursorIntoView(editor);
+    });
+
     const initialKeyMap = componentRelay.getComponentDataValueForKey("keyMap") ?? "default";
     window.setKeyMap(initialKeyMap);
   }

@@ -35,7 +35,6 @@ body, html {
   &::before, &::after {
     background: none !important;
   }
-
 }
 
 .editor-toolbar i.separator {
@@ -72,6 +71,10 @@ body, html {
   .CodeMirror-fullscreen {
     @media screen and (max-width: 525px) {
       top: 80px !important;
+
+      .CodeMirror-scroll {
+        min-height: unset !important;
+      }
     }
     @media screen and (min-width: 526px) {
       top: 50px !important;
