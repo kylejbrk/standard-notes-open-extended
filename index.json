@@ -196,8 +196,8 @@
             "marketing_url": "https://standardnotes.org/extensions/simple-task-editor",
             "name": "Simple Task Editor",
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/task-editor.jpg",
-            "version": "1.3.9",
-            "download_url": "https://api.github.com/repos/standardnotes/simple-task-editor/zipball/1.3.9",
+            "version": "1.3.10",
+            "download_url": "https://api.github.com/repos/standardnotes/simple-task-editor/zipball/1.3.10",
             "url": "https://kyleburke.net/standard-notes-open-extended/simple-task-editor/dist/index.html",
             "latest_url": "https://kyleburke.net/standard-notes-open-extended/simple-task-editor/index.json"
         },

@@ -60,6 +60,7 @@ export default class CreateTask extends React.Component {
         onChange={this.onTextChange}
         onKeyPress={this.handleKeyPress}
         spellCheck={spellcheckEnabled}
+        enterKeyHint={'go'}
       />
     );
   }
