@@ -9,8 +9,8 @@
             "name": "2FA Manager",
             "version": "1.2.5",
             "download_url": "https://api.github.com/repos/standardnotes/mfa-link/zipball/1.2.5",
-            "url": "https://kyleburke.net/standard-notes-open-extended/mfa-link/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/mfa-link/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/mfa-link/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/mfa-link/index.json"
         },
         {
             "area": "editor-stack",
@@ -23,8 +23,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/action-bar.jpg",
             "version": "1.3.2",
             "download_url": "https://api.github.com/repos/standardnotes/action-bar/zipball/1.3.2",
-            "url": "https://kyleburke.net/standard-notes-open-extended/action-bar/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/action-bar/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/action-bar/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/action-bar/index.json"
         },
         {
             "area": "editor-editor",
@@ -37,8 +37,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/adv-markdown.jpg",
             "version": "1.5.0",
             "download_url": "https://api.github.com/repos/standardnotes/markdown-pro/zipball/1.5.0",
-            "url": "https://kyleburke.net/standard-notes-open-extended/advanced-markdown-editor/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/advanced-markdown-editor/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/advanced-markdown-editor/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/advanced-markdown-editor/index.json"
         },
         {
             "area": "editor-editor",
@@ -51,8 +51,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/bold.jpg",
             "version": "1.3.5",
             "download_url": "https://api.github.com/repos/standardnotes/bold-editor/zipball/1.3.5",
-            "url": "https://kyleburke.net/standard-notes-open-extended/bold-editor/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/bold-editor/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/bold-editor/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/bold-editor/index.json"
         },
         {
             "area": "editor-editor",
@@ -64,8 +64,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/code.jpg",
             "version": "1.3.12",
             "download_url": "https://api.github.com/repos/standardnotes/code-editor/zipball/1.3.12",
-            "url": "https://kyleburke.net/standard-notes-open-extended/code-editor/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/code-editor/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/code-editor/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/code-editor/index.json"
         },
         {
             "area": "editor-stack",
@@ -78,8 +78,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/FileSafe-banner.png",
             "version": "2.0.10",
             "download_url": "https://api.github.com/repos/standardnotes/filesafe-bar/zipball/2.0.10",
-            "url": "https://kyleburke.net/standard-notes-open-extended/file-safe/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/file-safe/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/file-safe/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/file-safe/index.json"
         },
         {
             "area": "tags-list",
@@ -90,8 +90,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/folders.jpg",
             "version": "1.3.8",
             "download_url": "https://api.github.com/repos/standardnotes/folders-component/zipball/1.3.8",
-            "url": "https://kyleburke.net/standard-notes-open-extended/folders-component/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/folders-component/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/folders-component/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/folders-component/index.json"
         },
         {
             "area": "editor-stack",
@@ -103,8 +103,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/github-push.jpg",
             "version": "1.2.4",
             "download_url": "https://api.github.com/repos/standardnotes/github-push/zipball/1.2.4",
-            "url": "https://kyleburke.net/standard-notes-open-extended/github-push/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/github-push/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/github-push/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/github-push/index.json"
         },
         {
             "area": "editor-editor",
@@ -116,8 +116,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/fancy-markdown.jpg",
             "version": "1.3.6",
             "download_url": "https://api.github.com/repos/standardnotes/math-editor/zipball/1.3.6",
-            "url": "https://kyleburke.net/standard-notes-open-extended/math-editor/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/math-editor/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/math-editor/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/math-editor/index.json"
         },
         {
             "area": "editor-editor",
@@ -130,8 +130,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/min-markdown.jpg",
             "version": "1.3.9",
             "download_url": "https://api.github.com/repos/standardnotes/minimal-markdown-editor/zipball/1.3.9",
-            "url": "https://kyleburke.net/standard-notes-open-extended/minimal-markdown-editor/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/minimal-markdown-editor/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/minimal-markdown-editor/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/minimal-markdown-editor/index.json"
         },
         {
             "area": "editor-editor",
@@ -144,8 +144,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/plus-editor.jpg",
             "version": "1.6.1",
             "download_url": "https://api.github.com/repos/standardnotes/plus-editor/zipball/1.6.1",
-            "url": "https://kyleburke.net/standard-notes-open-extended/plus-editor/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/plus-editor/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/plus-editor/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/plus-editor/index.json"
         },
         {
             "area": "note-tags",
@@ -156,8 +156,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/components/autocomplete.jpg",
             "version": "1.3.2",
             "download_url": "https://api.github.com/repos/standardnotes/quick-tags/zipball/1.3.2",
-            "url": "https://kyleburke.net/standard-notes-open-extended/autocomplete-tags/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/autocomplete-tags/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/autocomplete-tags/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/autocomplete-tags/index.json"
         },
         {
             "area": "editor-editor",
@@ -170,8 +170,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/spreadsheets.png",
             "version": "1.4.4",
             "download_url": "https://api.github.com/repos/standardnotes/secure-spreadsheets/zipball/1.4.4",
-            "url": "https://kyleburke.net/standard-notes-open-extended/secure-spreadsheets/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/secure-spreadsheets/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/secure-spreadsheets/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/secure-spreadsheets/index.json"
         },
         {
             "area": "editor-editor",
@@ -184,8 +184,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/simple-markdown.jpg",
             "version": "1.4.2",
             "download_url": "https://api.github.com/repos/standardnotes/markdown-basic/zipball/1.4.2",
-            "url": "https://kyleburke.net/standard-notes-open-extended/markdown-basic/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/markdown-basic/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/markdown-basic/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/markdown-basic/index.json"
         },
         {
             "area": "editor-editor",
@@ -198,8 +198,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/task-editor.jpg",
             "version": "1.3.10",
             "download_url": "https://api.github.com/repos/standardnotes/simple-task-editor/zipball/1.3.10",
-            "url": "https://kyleburke.net/standard-notes-open-extended/simple-task-editor/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/simple-task-editor/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/simple-task-editor/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/simple-task-editor/index.json"
         },
         {
             "area": "editor-editor",
@@ -213,8 +213,8 @@
             "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
             "version": "2.0.10",
             "download_url": "https://api.github.com/repos/standardnotes/token-vault/zipball/2.0.10",
-            "url": "https://kyleburke.net/standard-notes-open-extended/token-vault/dist/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/token-vault/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/token-vault/dist/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/token-vault/index.json"
         },
         {
             "area": "editor-editor",
@@ -227,8 +227,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/vim.jpg",
             "version": "1.3.7",
             "download_url": "https://api.github.com/repos/standardnotes/vim-editor/zipball/1.3.7",
-            "url": "https://kyleburke.net/standard-notes-open-extended/vim-editor/index.html",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/vim-editor/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/vim-editor/index.html",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/vim-editor/index.json"
         },
         {
             "area": "themes",
@@ -245,8 +245,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/autobiography.jpg",
             "version": "1.0.4",
             "download_url": "https://api.github.com/repos/standardnotes/autobiography-theme/zipball/1.0.4",
-            "url": "https://kyleburke.net/standard-notes-open-extended/autobiography-theme/dist/dist.css",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/autobiography-theme/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/autobiography-theme/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/autobiography-theme/index.json"
         },
         {
             "area": "themes",
@@ -262,8 +262,8 @@
             "name": "Dynamic",
             "version": "1.0.4",
             "download_url": "https://api.github.com/repos/standardnotes/dynamic-theme/zipball/1.0.4",
-            "url": "https://kyleburke.net/standard-notes-open-extended/dynamic-theme/dist/dist.css",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/dynamic-theme/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/dynamic-theme/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/dynamic-theme/index.json"
         },
         {
             "area": "themes",
@@ -281,8 +281,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/focus-with-mobile.jpg",
             "version": "1.2.9",
             "download_url": "https://api.github.com/repos/standardnotes/focus-theme/zipball/1.2.9",
-            "url": "https://kyleburke.net/standard-notes-open-extended/focus-theme/dist/dist.css",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/focus-theme/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/focus-theme/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/focus-theme/index.json"
         },
         {
             "area": "themes",
@@ -300,8 +300,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/futura-with-mobile.jpg",
             "version": "1.2.9",
             "download_url": "https://api.github.com/repos/standardnotes/futura-theme/zipball/1.2.9",
-            "url": "https://kyleburke.net/standard-notes-open-extended/futura-theme/dist/dist.css",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/futura-theme/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/futura-theme/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/futura-theme/index.json"
         },
         {
             "area": "themes",
@@ -319,8 +319,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/midnight-with-mobile.jpg",
             "version": "1.2.8",
             "download_url": "https://api.github.com/repos/standardnotes/midnight-theme/zipball/1.2.8",
-            "url": "https://kyleburke.net/standard-notes-open-extended/midnight-theme/dist/dist.css",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/midnight-theme/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/midnight-theme/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/midnight-theme/index.json"
         },
         {
             "area": "themes",
@@ -336,8 +336,8 @@
             "name": "No Distraction",
             "version": "1.2.2",
             "download_url": "https://api.github.com/repos/standardnotes/no-distraction-theme/zipball/1.2.2",
-            "url": "https://kyleburke.net/standard-notes-open-extended/no-distraction-theme/dist/dist.css",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/no-distraction-theme/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-theme/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/no-distraction-theme/index.json"
         },
         {
             "area": "themes",
@@ -355,8 +355,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
             "version": "1.2.7",
             "download_url": "https://api.github.com/repos/standardnotes/solarized-dark-theme/zipball/1.2.7",
-            "url": "https://kyleburke.net/standard-notes-open-extended/solarized-dark-theme/dist/dist.css",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/solarized-dark-theme/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/solarized-dark-theme/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/solarized-dark-theme/index.json"
         },
         {
             "area": "themes",
@@ -374,8 +374,8 @@
             "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/titanium-with-mobile.jpg",
             "version": "1.2.7",
             "download_url": "https://api.github.com/repos/standardnotes/titanium-theme/zipball/1.2.7",
-            "url": "https://kyleburke.net/standard-notes-open-extended/titanium-theme/dist/dist.css",
-            "latest_url": "https://kyleburke.net/standard-notes-open-extended/titanium-theme/index.json"
+            "url": "https://kylejbrk.github.io/standard-notes-open-extended/titanium-theme/dist/dist.css",
+            "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/titanium-theme/index.json"
         }
     ]
 }
