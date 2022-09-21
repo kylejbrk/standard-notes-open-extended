@@ -1,56 +1,69 @@
 import os
 import zipfile
 import json
+import requests
+from io import BytesIO
+from urllib.parse import urljoin, urlparse
 
-def unzip_all(zip_dir, output_dir):
-    for f in os.listdir(zip_dir):
-        if f.endswith('.zip'):
-            zip_path = os.path.join(zip_dir, f)
-            # SN doesn't seem to like "." in the file path
-            output_path = os.path.join(output_dir, f.replace('.zip', '').replace('.', '_'))
+def process_extensions(ext_dir: str, output_dir: str, domain: str):
+    for f in os.listdir(ext_dir):
+        # download and process zips
+        json_path = os.path.join(ext_dir, f)
+        index_info = read_json(json_path)
+        
+        download_url = index_info['download_url']
+        resp = requests.get(download_url)
+        
+        output_path = os.path.join(output_dir, f.replace('.json', ''))
 
-            with zipfile.ZipFile(zip_path) as z:
-                z.extractall(output_path)
+        data = BytesIO(resp.content) 
+        with zipfile.ZipFile(data) as z:
+            z.extractall(output_path)
 
-            print(f'Output contents of {zip_path} to {output_path}')
+        # generate the index
+        package_path = os.path.join(output_path, 'package.json')
+        package_info = read_json(package_path)
 
-            # create_index(output_path)
+        root_file = package_info.get('sn', {}).get('main', 'index.html')
+        base_url = urljoin(domain, output_path.replace('\\', '/') + '/')
 
-def create_index(output_path):
-    package_file = 'package.json'
-    if package_file in os.listdir(output_path):
-        package_path = os.path.join(output_path, package_file)
-
-        with open(package_path) as f:
-            package_info = json.load(f)
-
-        index = {
-            'name': package_info['name'],
-            'version': package_info['version'],
-            'description': package_info.get('description', ''),
-            'url': 'http://127.0.0.1:5500/' + output_path.replace('\\', '/') + '/' + package_info.get('sn', {}).get('main', 'index.html'),
-            'latest_url': 'http://127.0.0.1:5500/' + output_path.replace('\\', '/') + '/' + 'index.json'
-        }
-
-        if 'theme' in output_path:
-            index['area'] = 'themes' 
-            index['content_type'] = 'SN|Theme'
-        else:
-            index['area'] = 'editor-editor'
-            index['content_type'] = 'SN|Component'        
-
-        print(index['latest_url'])
+        index_info['url'] = urljoin(base_url, root_file)
+        index_info['version'] = package_info['version']
+        index_info['latest_url'] = urljoin(base_url, 'index.json')
+        index_info['identifier'] = gen_ident(base_url)
 
         with open(os.path.join(output_path, 'index.json'), 'w') as f:
-            json.dump(index, f, indent = 4)
+            json.dump(index_info, f, indent = 4)    
+
+        print('Hosting {} at {}'.format(index_info['name'], index_info['latest_url']))
+
+def gen_ident(url):
+    parsed_url = urlparse(url)
+    netloc = parsed_url[1]
+    path = parsed_url[2]
+
+    ident = '.'.join(netloc.split('.')[::-1])
+    ident += '.' + path.split('/')[-2]
+
+    return ident
+
+def get_domain() -> str:
+    if 'CUSTOM_DOMAIN' in os.environ:
+        return os.environ['CUSTOM_DOMAIN']
     else:
-        print('no package.json')
+        repo = os.environ['GITHUB_REPOSITORY']
+        user = repo.split('/')[0]
+        name = repo.split('/')[1]
 
-def main():
-    zip_dir = 'zips'
-    output_dir = 'public'
+        return f'https://{user}.github.io/{name}/'
 
-    unzip_all(zip_dir, output_dir)
+def read_json(fp: str) -> dict:
+    with open(fp, 'r') as f:
+        return json.load(f)
 
 if __name__ == '__main__': 
-    main()
+    ext_dir = 'extensions'
+    output_dir = 'public'
+    domain = get_domain()
+    
+    process_extensions(ext_dir, output_dir, domain)
