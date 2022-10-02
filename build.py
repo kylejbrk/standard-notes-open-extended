@@ -52,7 +52,7 @@ def gen_index(output_path: str, ext_dir: str, index_info: dict, domain: str):
     package_info = read_json(package_path)
 
     root_file = package_info.get('sn', {}).get('main', 'index.html')
-    base_url = urljoin(domain, output_path.reaplce(ext_dir, '').replace('\\', '/') + '/')
+    base_url = urljoin(domain, output_path.replace(ext_dir, '').replace('\\', '/') + '/')
 
     index_info['url'] = urljoin(base_url, root_file)
     index_info['version'] = package_info['version']
