@@ -55,6 +55,8 @@ def gen_index(output_path: str, index_info: dict, domain: str):
     ext_dir = output_path.split('\\')[-1]
     base_url = urljoin(domain, ext_dir + '/')
 
+    print(base_url, ext_dir)
+
     index_info['url'] = urljoin(base_url, root_file)
     index_info['version'] = package_info['version']
     index_info['latest_url'] = urljoin(base_url, 'index.json')
