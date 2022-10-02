@@ -7,8 +7,8 @@
     ],
     "name": "Advanced Checklist",
     "download_url": "https://raw.githubusercontent.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.advanced-checklist.zip",
-    "url": "https://kylejbrk.github.io/standard-notes-open-extended/public/advanced-checklist/build/index.html",
+    "url": "https://kylejbrk.github.io/advanced-checklist/build/index.html",
     "version": "0.2.5",
-    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/public/advanced-checklist/index.json",
+    "latest_url": "https://kylejbrk.github.io/advanced-checklist/index.json",
     "identifier": "io.github.kylejbrk.advanced-checklist"
 }

@@ -8,8 +8,8 @@
     "name": "TokenVault",
     "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
     "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.token-vault.zip",
-    "url": "https://kylejbrk.github.io/standard-notes-open-extended/public/token-vault/dist/index.html",
+    "url": "https://kylejbrk.github.io/token-vault/dist/index.html",
     "version": "2.2.4",
-    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/public/token-vault/index.json",
+    "latest_url": "https://kylejbrk.github.io/token-vault/index.json",
     "identifier": "io.github.kylejbrk.token-vault"
 }
