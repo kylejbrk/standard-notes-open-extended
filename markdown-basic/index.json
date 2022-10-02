@@ -7,8 +7,8 @@
     "name": "Simple Markdown Editor",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/simple-markdown.jpg",
     "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.simple-markdown-editor.zip",
-    "url": "https://kylejbrk.github.io/markdown-basic/dist/index.html",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/public/markdown-basic/dist/index.html",
     "version": "1.4.7",
-    "latest_url": "https://kylejbrk.github.io/markdown-basic/index.json",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/public/markdown-basic/index.json",
     "identifier": "io.github.kylejbrk.markdown-basic"
 }

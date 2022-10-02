@@ -7,8 +7,8 @@
     "name": "Minimal Markdown Editor",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/min-markdown.jpg",
     "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.minimal-markdown-editor.zip",
-    "url": "https://kylejbrk.github.io/minimal-markdown-editor/index.html",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/public/minimal-markdown-editor/index.html",
     "version": "1.3.13",
-    "latest_url": "https://kylejbrk.github.io/minimal-markdown-editor/index.json",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/public/minimal-markdown-editor/index.json",
     "identifier": "io.github.kylejbrk.minimal-markdown-editor"
 }
