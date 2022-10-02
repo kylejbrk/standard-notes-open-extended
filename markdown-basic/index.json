@@ -3,12 +3,12 @@
     "content_type": "SN|Component",
     "description": "A Markdown editor with dynamic split-pane preview.",
     "flags": [],
-    "identifier": "com.standardnotes.simple-markdown-editor",
     "marketing_url": "https://standardnotes.org/extensions/simple-markdown-editor",
     "name": "Simple Markdown Editor",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/simple-markdown.jpg",
-    "version": "1.4.2",
-    "download_url": "https://api.github.com/repos/standardnotes/markdown-basic/zipball/1.4.2",
-    "url": "https://kylejbrk.github.io/standard-notes-open-extended/markdown-basic/dist/index.html",
-    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/markdown-basic/index.json"
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.simple-markdown-editor.zip",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/public/markdown-basic/dist/index.html",
+    "version": "1.4.7",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/public/markdown-basic/index.json",
+    "identifier": "io.github.kylejbrk.markdown-basic"
 }

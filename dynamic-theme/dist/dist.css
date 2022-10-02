@@ -1,31 +1,22 @@
-#navigation.section,
-.section.tags,
-navigation {
-  flex: none !important;
-  width: 190px !important;
-  transition: width 0.25s;
+@media screen and (min-width: 768px) {
+  #navigation {
+    flex: none !important;
+    width: 10px !important;
+    transition: width 0.25s;
+  }
+  #navigation:hover {
+    flex: initial;
+    width: 200px !important;
+    transition: width 0.25s;
+  }
+  #items-column {
+    flex: none !important;
+    width: 270px !important;
+    transition: width 0.25s;
+  }
+  #items-column:hover {
+    flex: initial;
+    width: 380px !important;
+    transition: width 0.25s;
+  }
 }
-
-#navigation.section:hover,
-.section.tags:hover,
-navigation:hover {
-  flex: initial;
-  width: 250px !important;
-  transition: width 0.25s;
-}
-
-.section.notes,
-notes-view {
-  flex: none !important;
-  width: 270px !important;
-  transition: width 0.25s;
-}
-
-.section.notes:hover,
-notes-view:hover {
-  flex: initial;
-  width: 420px !important;
-  transition: width 0.25s;
-}
-
-/*# sourceMappingURL=dist.css.map */

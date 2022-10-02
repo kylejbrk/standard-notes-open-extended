@@ -3,12 +3,12 @@
     "content_type": "SN|Component",
     "description": "A powerful spreadsheet editor with formatting and formula support. Not recommended for large data sets, as encryption of such data may decrease editor performance.",
     "flags": [],
-    "identifier": "com.standardnotes.standard-sheets",
     "marketing_url": null,
     "name": "Secure Spreadsheets",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/spreadsheets.png",
-    "version": "1.4.4",
-    "download_url": "https://api.github.com/repos/standardnotes/secure-spreadsheets/zipball/1.4.4",
-    "url": "https://kylejbrk.github.io/standard-notes-open-extended/secure-spreadsheets/dist/index.html",
-    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/secure-spreadsheets/index.json"
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.standard-sheets.zip",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/public/secure-spreadsheets/dist/index.html",
+    "version": "1.5.1",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/public/secure-spreadsheets/index.json",
+    "identifier": "io.github.kylejbrk.secure-spreadsheets"
 }

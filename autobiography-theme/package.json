@@ -1,26 +1,16 @@
 {
   "name": "@standardnotes/autobiography-theme",
-  "version": "1.0.4",
+  "version": "1.1.1",
   "main": "dist/dist.css",
-  "devDependencies": {
-    "grunt": "^1.0.1",
-    "grunt-contrib-watch": "^1.0.0",
-    "grunt-newer": "^1.2.0",
-    "grunt-contrib-sass": "^1.0.0"
-  },
-  "scripts": {
-    "prepublishOnly": "npm run build",
-    "build": "grunt"
-  },
+  "private": true,
   "sn": {
     "main": "dist/dist.css"
   },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/standardnotes/autobiography-theme.git"
+  "scripts": {
+    "components:compile": "webpack --entry ./src/main.scss --config ../theme.webpack.config.js",
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
-  "publishConfig": {
-    "access": "public",
-    "registry": "https://registry.npmjs.org/"
+  "devDependencies": {
+    "webpack": "*"
   }
 }

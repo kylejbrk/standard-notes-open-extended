@@ -1,13 +1,16 @@
 {
-  "name": "sn-filesafe",
-  "version": "2.0.10",
+  "name": "@standardnotes/filesafe-bar",
+  "version": "2.0.16",
   "main": "dist/dist.js",
+  "private": true,
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "lint": "eslint --cache --ignore-path .gitignore --ext .jsx,.js --format=node_modules/eslint-formatter-pretty .",
-    "test": "npm run lint",
-    "build": "webpack",
-    "start": "webpack-dev-server --devtool eval --progress --hot --content-base app",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1"
+    "skip:lint": "eslint --cache --ignore-path .gitignore --ext .jsx,.js --format=node_modules/eslint-formatter-pretty .",
+    "deprecated:test": "echo \"Error: no test specified\" && exit 0",
+    "deprecated:compile": "webpack",
+    "start": "webpack-dev-server --devtool eval --progress --hot --content-base app"
   },
   "sn": {
     "main": "dist/index.html"
@@ -28,7 +31,7 @@
     "filesafe-embed": "1.0.9",
     "filesafe-js": "1.0.4",
     "husky": "^3.0.9",
-    "node-sass": "^4.13.0",
+    "node-sass": "*",
     "open-browser-webpack-plugin": "0.0.5",
     "react": "16.11.x",
     "react-dom": "16.11.x",
