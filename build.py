@@ -38,7 +38,7 @@ def gen_readme(content_list: dict, output_dir: str):
         readme.append('# ' + cont_type)
 
         for ext in content_list[cont_type]:
-            readme.append(ext['Name'] + ': ' + ext['Link'])
+            readme.append('- ' + ext['Name'] + ': ' + ext['Link'])
 
     readme = '\n'.join(readme)
 
