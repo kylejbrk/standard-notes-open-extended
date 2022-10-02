@@ -1,0 +1,8 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "A Visual Mardown editor.",
+    "flags": [],
+    "name": "Markdown Visual Editor",
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.markdown-visual-editor.zip"
+}

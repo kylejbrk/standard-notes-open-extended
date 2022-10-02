@@ -1,0 +1,10 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "A powerful spreadsheet editor with formatting and formula support. Not recommended for large data sets, as encryption of such data may decrease editor performance.",
+    "flags": [],
+    "marketing_url": null,
+    "name": "Secure Spreadsheets",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/spreadsheets.png",
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.standard-sheets.zip"
+}

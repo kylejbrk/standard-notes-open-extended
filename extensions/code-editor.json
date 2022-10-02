@@ -1,0 +1,9 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "Syntax highlighting and convenient keyboard shortcuts for over 120 programming languages. Ideal for code snippets and procedures.",
+    "marketing_url": "https://standardnotes.org/extensions/code-editor",
+    "name": "Code Editor",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/code.jpg",
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.code-editor.zip"
+}

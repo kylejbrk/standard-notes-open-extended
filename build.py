@@ -1,122 +1,126 @@
-import requests
-import json
-import yaml
 import os
-from urllib.parse import urljoin
-from io import BytesIO, UnsupportedOperation
-from zipfile import ZipFile
+import zipfile
+import json
+import requests
 
-def main():
-    ext_dir = 'extensions'
-    public_dir = 'public'
+from io import BytesIO
+from urllib.parse import urljoin, urlparse
 
-    os.makedirs(public_dir, exist_ok=True)
+def process_extensions(ext_dir: str, output_dir: str, domain: str):
+    github_session = create_session()
+    content_list = {}
 
-    github_session = create_session(os.environ['GITHUB_TOKEN'])
+    for f in os.listdir(ext_dir):
+        json_path = os.path.join(ext_dir, f)
+        index_info = read_json(json_path)
+        
+        download_url = index_info['download_url']
+        output_path = os.path.join(output_dir, f.replace('.json', ''))
+        
+        extract_zip(download_url, github_session, output_path)
+        gen_index(output_path, index_info, domain)
 
-    if 'CUSTOM_DOMAIN' in os.environ:
-        domain = os.environ['CUSTOM_DOMAIN']
-    else:
-        domain = create_domain(os.environ['GITHUB_REPOSITORY'])
-
-    packages = []
-    for file in os.listdir(ext_dir):
-        fp = os.path.join(ext_dir,file)
-        meta, index = extract_config(fp)
-
-        version, download_url = get_latest(meta['github'], github_session)
-        ext_name = file.replace('.yaml', '')
-
-        # Get source from github releases 
-        output_dir = os.path.join(public_dir, ext_name)
-        get_zip_contents(github_session, download_url, output_dir)
-
-        # Build index.json
-        url, latest_url = create_urls(domain, ext_name, meta['main'])
-        index.update({'version': version, 'download_url': download_url, 'url': url, 'latest_url': latest_url})
-        packages.append(index)
-
-        with open(os.path.join(output_dir, 'index.json'), 'w') as f:
-            json.dump(index, f, indent=4)
-
-        print('{:36} {:16} {:10}\t(created)'.format(index['name'], index['content_type'] , version))
-
-    # Sort packages by content/name
-    packages.sort(key=lambda k: k['name'])
-    packages.sort(key=lambda k: k['content_type'])
-
-    with open(os.path.join(public_dir, 'index.json'), 'w') as f:
-        json.dump({'content_type': 'SN|Repo', 'packages': packages,}, f, indent=4)
-    
-    print("\nResults: {:22s}{} extensions {}".format("", len(packages), get_stats(packages)))
-    print("Repository Endpoint URL: {:6s}{}".format("", urljoin(domain, 'index.json')))
-
-def create_domain(repo):
-    user = repo.split('/')[0]
-    name = repo.split('/')[1]
-
-    return 'https://{}.github.io/{}/'.format(user, name)
-
-def get_stats(packages):
-    stats = {}
-    for package in packages:
-        content = package['content_type']
-
-        if content in stats:
-            stats[content] += 1
+        content_info = {'Name': index_info['name'], 'Link': index_info['latest_url']}
+        content_type = index_info['content_type']
+        if content_type in content_list:
+            content_list[content_type].append(content_info)
         else:
-            stats[content] = 1
+            content_list[content_type] = [content_info]
+
+        print('Hosting {} at {}'.format(index_info['name'], index_info['latest_url']))
     
-    return stats
+    gen_readme(content_list, output_dir)
 
-def create_urls(domain, ext_name, main):
-    url = urljoin(
-        domain, 
-        '/'.join([ext_name, main])
-    )
-    latest_url = urljoin(
-        domain, 
-        '/'.join([ext_name, 'index.json'])
-    )
+def gen_readme(content_list: dict, output_dir: str):
+    readme = []
 
-    return url, latest_url
+    for cont_type in content_list.keys():
+        readme.append('# ' + cont_type)
 
-def get_zip_contents(session, url, output_dir):
-    resp = session.get(url)
-    data = BytesIO(resp.content) 
-    
-    with ZipFile(data) as zip_file:
-        for member in zip_file.namelist():
-            filename = '/'.join(member.split('/')[1:])
+        for ext in content_list[cont_type]:
+            readme.append(ext['Name'] + ': ' + ext['Link'])
 
-            if filename.endswith('/') or not filename:
-                continue 
-            
-            content = zip_file.read(member)
-            output_path = os.path.join(output_dir, filename)
-            
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    readme = '\n'.join(readme)
 
-            with open(output_path, 'wb') as f:
-                f.write(content)
-            
-def create_session(token):
+    with open(os.path.join(output_dir, 'README.md'), 'w') as f:
+        f.write(readme)
+
+
+def gen_index(output_path: str, index_info: dict, domain: str):
+    package_path = os.path.join(output_path, 'package.json')
+    package_info = read_json(package_path)
+
+    root_file = package_info.get('sn', {}).get('main', 'index.html')
+    base_url = urljoin(domain, output_path.replace('\\', '/') + '/')
+
+    index_info['url'] = urljoin(base_url, root_file)
+    index_info['version'] = package_info['version']
+    index_info['latest_url'] = urljoin(base_url, 'index.json')
+    index_info['identifier'] = gen_ident(base_url)
+
+    with open(os.path.join(output_path, 'index.json'), 'w') as f:
+        json.dump(index_info, f, indent = 4)    
+
+def create_session():
     session = requests.Session()
-    session.headers.update({'Authorization': 'token ' + token})
+
+    if 'GITHUB_TOKEN' in os.environ:
+        session.headers.update({'Authorization': 'token ' + os.environ['GITHUB_TOKEN']})
 
     return session
 
-def get_latest(repo, session):
-    resp = session.get('https://api.github.com/repos/{}/releases/latest'.format(repo))
-    data = resp.json()
+def extract_zip(download_url: str, github_session: requests.Session, output_path: str):
+    resp = github_session.get(download_url)
+    data = BytesIO(resp.content) 
 
-    return data['tag_name'], data['zipball_url']
+    with zipfile.ZipFile(data) as z:
+        prefix = os.path.commonprefix(z.namelist())
+    
+        for file_info in z.infolist():
+            if file_info.is_dir():
+                continue
 
-def extract_config(fp):
+            file_path = file_info.filename
+
+            extracted_path = file_path.replace(prefix, '')
+            extracted_path = os.path.join(output_path, extracted_path)
+
+            os.makedirs(os.path.dirname(extracted_path), exist_ok=True)
+
+            content = z.read(file_path)
+            with open(extracted_path, 'wb') as f:
+                f.write(content)
+
+def gen_ident(url: str):
+    parsed_url = urlparse(url)
+    netloc = parsed_url[1]
+    path = parsed_url[2]
+
+    ident = '.'.join(netloc.split('.')[::-1])
+    ident += '.' + path.split('/')[-2]
+
+    return ident
+
+def get_domain() -> str:
+    if 'CUSTOM_DOMAIN' in os.environ:
+        return os.environ['CUSTOM_DOMAIN']
+    elif 'GITHUB_REPOSITORY' in os.environ:
+        repo = os.environ['GITHUB_REPOSITORY']
+        
+        user = repo.split('/')[0]
+        name = repo.split('/')[1]
+
+        return f'https://{user}.github.io/{name}/'
+    else:
+        return 'http://localhost:5500' # this is used for live server when testing
+
+def read_json(fp: str) -> dict:
     with open(fp, 'r') as f:
-        yml_txt = yaml.load(f, Loader=yaml.FullLoader)
+        return json.load(f)
 
-    return yml_txt['meta'], yml_txt['index']
-
-if __name__ == '__main__':
-    main()
+if __name__ == '__main__': 
+    ext_dir = 'extensions'
+    output_dir = 'public'
+    domain = get_domain()
+    
+    process_extensions(ext_dir, output_dir, domain)

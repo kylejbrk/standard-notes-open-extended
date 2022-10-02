@@ -1,0 +1,15 @@
+{
+    "area": "themes",
+    "content_type": "SN|Theme",
+    "description": "The perfect theme for any time.",
+    "dock_icon": {
+        "background_color": "#2AA198",
+        "border_color": "#2AA198",
+        "foreground_color": "#ffffff",
+        "type": "circle"
+    },
+    "marketing_url": "https://standardnotes.org/extensions/solarized-dark",
+    "name": "Solarized Dark",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/solarized-dark.jpg",
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.theme-solarized-dark.zip"
+}
