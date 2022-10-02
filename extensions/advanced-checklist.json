@@ -1,0 +1,10 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "A task editor with grouping functionality.",
+    "flags": [
+        "Beta"
+    ],
+    "name": "Advanced Checklist",
+    "download_url": "https://raw.githubusercontent.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.advanced-checklist.zip"
+}

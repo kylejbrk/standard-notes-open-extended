@@ -1,0 +1,8 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "A Fancy Mardown editor.",
+    "flags": [],
+    "name": "Fancy Markdown Editor",
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.fancy-markdown-editor.zip"
+}

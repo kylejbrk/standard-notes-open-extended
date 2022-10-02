@@ -1,0 +1,10 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "A code editor with Vim key bindings.",
+    "flags": [],
+    "marketing_url": "https://standardnotes.org/extensions/vim-editor",
+    "name": "Vim Editor",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/vim.jpg",
+    "download_url": "https://api.github.com/repos/standardnotes/vim-editor/zipball/"
+}

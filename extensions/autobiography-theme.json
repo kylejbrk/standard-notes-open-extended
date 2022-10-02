@@ -1,0 +1,14 @@
+{
+    "area": "themes",
+    "content_type": "SN|Theme",
+    "description": "A theme for writers and readers.",
+    "dock_icon": {
+        "background_color": "#9D7441",
+        "border_color": "#9D7441",
+        "foreground_color": "#ECE4DB",
+        "type": "circle"
+    },
+    "name": "Autobiography",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/autobiography.jpg",
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.theme-autobiography.zip"
+}

@@ -1,0 +1,10 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "A Markdown editor with dynamic split-pane preview.",
+    "flags": [],
+    "marketing_url": "https://standardnotes.org/extensions/simple-markdown-editor",
+    "name": "Simple Markdown Editor",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/simple-markdown.jpg",
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.simple-markdown-editor.zip"
+}

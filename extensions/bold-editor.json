@@ -1,0 +1,11 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "A simple and peaceful rich editor that helps you write and think clearly. Features FileSafe integration, so you can embed your encrypted images, videos, and audio recordings directly inline.",
+    "flags": [],
+    "identifier": "com.standardnotes.bold-editor",
+    "marketing_url": null,
+    "name": "Bold Editor",
+    "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/bold.jpg",
+    "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.bold-editor.zip"
+}
