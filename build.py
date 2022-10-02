@@ -18,7 +18,7 @@ def process_extensions(ext_dir: str, output_dir: str, domain: str):
         output_path = os.path.join(output_dir, f.replace('.json', ''))
         
         extract_zip(download_url, github_session, output_path)
-        gen_index(output_path, output_dir, index_info, domain)
+        gen_index(output_path, index_info, domain)
 
         content_info = {'Name': index_info['name'], 'Link': index_info['latest_url']}
         content_type = index_info['content_type']
@@ -47,12 +47,13 @@ def gen_readme(content_list: dict, output_dir: str):
         f.write(readme)
 
 
-def gen_index(output_path: str, output_dir: str, index_info: dict, domain: str):
+def gen_index(output_path: str, index_info: dict, domain: str):
     package_path = os.path.join(output_path, 'package.json')
     package_info = read_json(package_path)
 
     root_file = package_info.get('sn', {}).get('main', 'index.html')
-    base_url = urljoin(domain, output_path.replace(output_dir, '').replace('\\', '/') + '/')
+    ext_dir = output_path.split('\\')[-1]
+    base_url = urljoin(domain, ext_dir + '/')
 
     index_info['url'] = urljoin(base_url, root_file)
     index_info['version'] = package_info['version']
@@ -113,7 +114,7 @@ def get_domain() -> str:
 
         return f'https://{user}.github.io/{name}/'
     else:
-        return 'http://localhost:5500' # this is used for live server when testing
+        return 'http://localhost:5500/' # this is used for live server when testing
 
 def read_json(fp: str) -> dict:
     with open(fp, 'r') as f:
