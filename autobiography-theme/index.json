@@ -11,8 +11,8 @@
     "name": "Autobiography",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/themes/autobiography.jpg",
     "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.theme-autobiography.zip",
-    "url": "https://kylejbrk.github.io/standard-notes-open-extended/public/autobiography-theme/dist/dist.css",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/autobiography-theme/dist/dist.css",
     "version": "1.1.1",
-    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/public/autobiography-theme/index.json",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/autobiography-theme/index.json",
     "identifier": "io.github.kylejbrk.autobiography-theme"
 }

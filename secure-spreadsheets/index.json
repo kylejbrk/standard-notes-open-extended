@@ -7,8 +7,8 @@
     "name": "Secure Spreadsheets",
     "thumbnail_url": "https://s3.amazonaws.com/standard-notes/screenshots/models/editors/spreadsheets.png",
     "download_url": "https://raw.github.com/standardnotes/app/main/packages/components/dist/zips/org.standardnotes.standard-sheets.zip",
-    "url": "https://kylejbrk.github.io/standard-notes-open-extended/public/secure-spreadsheets/dist/index.html",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/secure-spreadsheets/dist/index.html",
     "version": "1.5.1",
-    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/public/secure-spreadsheets/index.json",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/secure-spreadsheets/index.json",
     "identifier": "io.github.kylejbrk.secure-spreadsheets"
 }
