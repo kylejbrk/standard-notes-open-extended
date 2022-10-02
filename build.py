@@ -8,6 +8,7 @@ from urllib.parse import urljoin, urlparse
 
 def process_extensions(ext_dir: str, output_dir: str, domain: str):
     github_session = create_session()
+    content_list = {}
 
     for f in os.listdir(ext_dir):
         json_path = os.path.join(ext_dir, f)
@@ -19,7 +20,31 @@ def process_extensions(ext_dir: str, output_dir: str, domain: str):
         extract_zip(download_url, github_session, output_path)
         gen_index(output_path, index_info, domain)
 
+        content_info = {'Name': index_info['name'], 'Link': index_info['latest_url']}
+        content_type = index_info['content_type']
+        if content_type in content_list:
+            content_list[content_type].append(content_info)
+        else:
+            content_list[content_type] = [content_info]
+
         print('Hosting {} at {}'.format(index_info['name'], index_info['latest_url']))
+    
+    gen_readme(content_list, output_dir)
+
+def gen_readme(content_list: dict, output_dir: str):
+    readme = []
+
+    for cont_type in content_list.keys():
+        readme.append('# ' + cont_type)
+
+        for ext in content_list[cont_type]:
+            readme.append(ext['Name'] + ': ' + ext['Link'])
+
+    readme = '\n'.join(readme)
+
+    with open(os.path.join(output_dir, 'README.md'), 'w') as f:
+        f.write(readme)
+
 
 def gen_index(output_path: str, index_info: dict, domain: str):
     package_path = os.path.join(output_path, 'package.json')
