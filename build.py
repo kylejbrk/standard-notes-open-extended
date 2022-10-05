@@ -2,23 +2,32 @@ import os
 import zipfile
 import json
 import requests
+import shutil
 
 from io import BytesIO
 from urllib.parse import urljoin, urlparse
 
-def process_extensions(ext_dir: str, output_dir: str, domain: str):
+def process_extensions(source_dir: str, target_dir: str, domain: str):
+    target_ext_dir = os.path.join(target_dir, 'exts')
+    target_zip_dir = os.path.join(target_dir, 'zips')
+    
     github_session = create_session()
     content_list = {}
 
-    for f in os.listdir(ext_dir):
-        json_path = os.path.join(ext_dir, f)
+    for f in os.listdir(source_dir):
+        json_path = os.path.join(source_dir, f)
         index_info = read_json(json_path)
         
         download_url = index_info['download_url']
-        output_path = os.path.join(output_dir, f.replace('.json', ''))
+        output_path = os.path.join(target_ext_dir, f.replace('.json', ''))
+        rel_output_path = os.path.relpath(output_path, target_dir)
         
         extract_zip(download_url, github_session, output_path)
-        gen_index(output_path, index_info, domain)
+
+        zip_path = create_new_zip(output_path, target_zip_dir, target_ext_dir)
+        rel_zip_path = os.path.relpath(zip_path, target_dir)
+
+        gen_index(output_path, rel_output_path, rel_zip_path, index_info, domain)
 
         content_info = {'Name': index_info['name'], 'Link': index_info['latest_url']}
         content_type = index_info['content_type']
@@ -30,7 +39,19 @@ def process_extensions(ext_dir: str, output_dir: str, domain: str):
 
         print('Hosting {} at {}'.format(index_info['name'], index_info['latest_url']))
     
-    gen_readme(content_list, output_dir)
+    gen_readme(content_list, target_dir)
+
+def create_new_zip(output_path: str, target_zip_dir: str, target_ext_dir: str) -> str:
+    zip_name = os.path.basename(output_path)
+
+    zip_path = shutil.make_archive(
+        os.path.join(target_zip_dir, zip_name), 
+        'zip', 
+        root_dir=target_ext_dir, 
+        base_dir=zip_name
+    )
+
+    return zip_path
 
 def gen_readme(content_list: dict, output_dir: str):
     readme = []
@@ -47,17 +68,19 @@ def gen_readme(content_list: dict, output_dir: str):
         f.write(readme)
 
 
-def gen_index(output_path: str, index_info: dict, domain: str):
+def gen_index(output_path: str, rel_output_path: str, rel_zip_path: str, index_info: dict, domain: str):
     package_path = os.path.join(output_path, 'package.json')
     package_info = read_json(package_path)
 
-    root_file = package_info.get('sn', {}).get('main', 'index.html')
-    base_url = urljoin(domain, os.path.basename(output_path) + '/')
+    root_file = package_info.get('sn', {}).get('main', 'index.html')    
+    base_url = urljoin(domain, rel_output_path.replace('\\', '/') + '/')
+    download_url = urljoin(domain, rel_zip_path.replace('\\', '/'))
 
     index_info['url'] = urljoin(base_url, root_file)
     index_info['version'] = package_info['version']
     index_info['latest_url'] = urljoin(base_url, 'index.json')
     index_info['identifier'] = gen_ident(base_url)
+    index_info['download_url'] = download_url
 
     with open(os.path.join(output_path, 'index.json'), 'w') as f:
         json.dump(index_info, f, indent = 4)    
@@ -102,9 +125,12 @@ def gen_ident(url: str):
 
     return ident
 
-def get_domain() -> str:
+def get_domain(target_dir: str) -> str:
     if 'CUSTOM_DOMAIN' in os.environ:
-        return os.environ['CUSTOM_DOMAIN']
+        if os.environ['CUSTOM_DOMAIN'].endswith('/'):
+            return os.environ['CUSTOM_DOMAIN']
+        else:
+            return urljoin(os.environ['CUSTOM_DOMAIN'], '/')
     elif 'GITHUB_REPOSITORY' in os.environ:
         repo = os.environ['GITHUB_REPOSITORY']
         
@@ -113,15 +139,15 @@ def get_domain() -> str:
 
         return f'https://{user}.github.io/{name}/'
     else:
-        return 'http://localhost:5500/' # this is used for live server when testing
+        return urljoin('http://localhost:5500/', target_dir + '/') # this is used for live server when testing
 
 def read_json(fp: str) -> dict:
     with open(fp, 'r') as f:
         return json.load(f)
 
 if __name__ == '__main__': 
-    ext_dir = 'extensions'
-    output_dir = 'public'
-    domain = get_domain()
+    source_dir = 'extensions'
+    target_dir = 'public'
+    domain = get_domain(target_dir)
     
-    process_extensions(ext_dir, output_dir, domain)
+    process_extensions(source_dir, target_dir, domain)
