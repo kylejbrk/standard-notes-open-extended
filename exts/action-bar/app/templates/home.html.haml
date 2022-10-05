@@ -1,0 +1,40 @@
+.sn-component
+  .sk-panel.static
+    #panel-content.sk-panel-content
+      .sk-panel-section
+        .sk-panel-row#main-content
+          .sk-panel-column.meta
+            .title{"ng-click" => "note.showId = !note.showId"} {{note.content.title}}
+            .created{"ng-if" => "note.showId"} ID {{note.uuid}}
+            .created Created on {{createdAt}}
+            .created Updated on {{updatedAt}}
+
+          .sk-panel-column.info-sections
+            .section
+              .title Words
+              .info-content {{wordCount}}
+
+            .section
+              .title Paragraphs
+              .info-content {{paragraphCount}}
+
+          .sk-panel-column.info-sections
+            .section
+              .title Characters
+              .info-content {{characterCount}}
+
+            .section
+              .title Read Time
+              .info-content {{readTime}}
+
+          .sk-panel-column.sk-segmented-buttons
+            .sk-button.sk-secondary-contrast{"title" => "Copy the current date to the clipboard", "ng-click" => "buttonPressed('date')"}
+              .sk-label {{copiedDate ? "Copied to Clipboard" : "Copy Date"}}
+            .sk-button.sk-secondary-contrast{"title" => "Create a copy of the note", "ng-click" => "buttonPressed('duplicate')"}
+              .sk-label Duplicate
+            .sk-button.sk-secondary-contrast{"title" => "Copy the note's text to the clipboard", "ng-click" => "buttonPressed('copy')"}
+              .sk-label {{copyText || "Copy"}}
+            .sk-button.sk-secondary-contrast{"title" => "Save the note as a file", "ng-click" => "buttonPressed('save')"}
+              .sk-label Save
+            .sk-button.sk-secondary-contrast{"title" => "Start a new email with the note's text", "ng-click" => "buttonPressed('email')"}
+              .sk-label Email

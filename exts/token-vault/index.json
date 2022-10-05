@@ -1,0 +1,15 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "Encrypt and protect your 2FA secrets for all your internet accounts. TokenVault handles your 2FA secrets so that you never lose them again, or have to start over when you get a new device.",
+    "flags": [
+        "Beta"
+    ],
+    "name": "TokenVault",
+    "thumbnail_url": "https://standard-notes.s3.amazonaws.com/screenshots/models/editors/token-vault.png",
+    "download_url": "https://kylejbrk.github.io/standard-notes-open-extended/zips/token-vault.zip",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/exts/token-vault/dist/index.html",
+    "version": "2.2.5",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/exts/token-vault/index.json",
+    "identifier": "io.github.kylejbrk.token-vault"
+}

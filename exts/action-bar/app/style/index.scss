@@ -1,0 +1,147 @@
+@import 'reset';
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  overflow-y: hidden;
+  font-size: var(--sn-stylekit-base-font-size);
+}
+
+html {
+  background-color: transparent;
+  width: 100%;
+}
+
+.ng-scope,
+.sn-component,
+.panel,
+.content {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#panel-content {
+  // On Windows, a horizontal scroll bar also creates a vertical scroll bar on Firefox.
+  // Ideally this interface would be responsive and always scroll vertically instead.
+  overflow-x: hidden !important;
+  padding: 0;
+}
+
+body {
+  background-color: transparent;
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont,
+    "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 12px;
+}
+
+#main-content {
+  padding: 10px 10px;
+  padding-bottom: 6px;
+  height: 100%;
+}
+
+.button-group {
+  padding-right: 10px;
+}
+
+.sn-component {
+  user-select: inherit !important;
+  height: 100%;
+
+  .content {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 100%;
+  }
+
+  .panel-section {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .panel-row {
+    align-items: flex-start !important;
+  }
+
+  .button-group {
+    white-space: nowrap; // prevent buttons from wrapping, makes them stay in one line.
+  }
+
+  .button {
+    margin-bottom: 0.5rem;
+  }
+
+  .button .label {
+    font-weight: normal !important;
+  }
+}
+
+.meta {
+  display: inline-block;
+  vertical-align: middle;
+
+  .title {
+    font-style: italic;
+    margin-bottom: 1px;
+    max-width: 180px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+  }
+
+  .created,
+  .updated {
+    font-size: 10px;
+    opacity: 0.5;
+  }
+
+  .created {
+    margin-top: 2px;
+    white-space: nowrap;
+  }
+
+  .updated {}
+}
+
+
+.info-sections {
+  vertical-align: middle;
+  display: inline-block;
+  margin-left: 22px;
+
+  .section {
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: hidden;
+
+    &:not(:last-child) {
+      margin-bottom: 6px;
+    }
+
+    .title {
+      font-weight: bold;
+      display: inline-block;
+      vertical-align: middle;
+    }
+
+    .info-content {
+      font-weight: normal;
+      display: inline-block;
+      vertical-align: middle;
+    }
+  }
+}
+
+.sk-segmented-buttons {
+  margin-left: 18px;
+  padding-right: 5px;
+}

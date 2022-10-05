@@ -1,0 +1,53 @@
+<div class='sn-component'>
+<div class='sk-panel static'>
+<div class='sk-panel-content' id='panel-content'>
+<div class='sk-panel-section'>
+<div class='sk-panel-row' id='main-content'>
+<div class='sk-panel-column meta'>
+<div class='title' ng-click='note.showId = !note.showId'>{{note.content.title}}</div>
+<div class='created' ng-if='note.showId'>ID {{note.uuid}}</div>
+<div class='created'>Created on {{createdAt}}</div>
+<div class='created'>Updated on {{updatedAt}}</div>
+</div>
+<div class='sk-panel-column info-sections'>
+<div class='section'>
+<div class='title'>Words</div>
+<div class='info-content'>{{wordCount}}</div>
+</div>
+<div class='section'>
+<div class='title'>Paragraphs</div>
+<div class='info-content'>{{paragraphCount}}</div>
+</div>
+</div>
+<div class='sk-panel-column info-sections'>
+<div class='section'>
+<div class='title'>Characters</div>
+<div class='info-content'>{{characterCount}}</div>
+</div>
+<div class='section'>
+<div class='title'>Read Time</div>
+<div class='info-content'>{{readTime}}</div>
+</div>
+</div>
+<div class='sk-panel-column sk-segmented-buttons'>
+<div class='sk-button sk-secondary-contrast' ng-click='buttonPressed(&#39;date&#39;)' title='Copy the current date to the clipboard'>
+<div class='sk-label'>{{copiedDate ? "Copied to Clipboard" : "Copy Date"}}</div>
+</div>
+<div class='sk-button sk-secondary-contrast' ng-click='buttonPressed(&#39;duplicate&#39;)' title='Create a copy of the note'>
+<div class='sk-label'>Duplicate</div>
+</div>
+<div class='sk-button sk-secondary-contrast' ng-click='buttonPressed(&#39;copy&#39;)' title='Copy the note&#39;s text to the clipboard'>
+<div class='sk-label'>{{copyText || "Copy"}}</div>
+</div>
+<div class='sk-button sk-secondary-contrast' ng-click='buttonPressed(&#39;save&#39;)' title='Save the note as a file'>
+<div class='sk-label'>Save</div>
+</div>
+<div class='sk-button sk-secondary-contrast' ng-click='buttonPressed(&#39;email&#39;)' title='Start a new email with the note&#39;s text'>
+<div class='sk-label'>Email</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>

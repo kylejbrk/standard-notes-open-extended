@@ -1,0 +1,9 @@
+{
+    "identifier": "org.standardnotes.action-bar-local",
+    "name": "Action Bar - Local",
+    "description": "Useful utility bar with actions.",
+    "content_type": "SN|Component",
+    "area": "editor-stack",
+    "version": "1.0.0",
+    "url": "http://localhost:8001"
+}

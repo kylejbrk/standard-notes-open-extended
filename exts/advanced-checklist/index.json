@@ -1,0 +1,14 @@
+{
+    "area": "editor-editor",
+    "content_type": "SN|Component",
+    "description": "A task editor with grouping functionality.",
+    "flags": [
+        "Beta"
+    ],
+    "name": "Advanced Checklist",
+    "download_url": "https://kylejbrk.github.io/standard-notes-open-extended/zips/advanced-checklist.zip",
+    "url": "https://kylejbrk.github.io/standard-notes-open-extended/exts/advanced-checklist/build/index.html",
+    "version": "0.2.5",
+    "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/exts/advanced-checklist/index.json",
+    "identifier": "io.github.kylejbrk.advanced-checklist"
+}
