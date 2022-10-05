@@ -3,7 +3,9 @@
 A Free Open Source Standard Notes Extensions Repository Hosted via Github Pages.
 
 # Use 
-Go to https://github.com/kylejbrk/standard-notes-open-extended/tree/gh-pages#readme and install any desired extensions.
+Go to https://github.com/kylejbrk/standard-notes-open-extended/tree/gh-pages#readme to view the list of available extensions.
+
+Simply copy the url for the desired extension, and past it into _Settings -> General -> Advanced Options -> Install External Package_ and then click _Install_
 
 # Features
 - A repository containing official Standard Notes themes and components  
