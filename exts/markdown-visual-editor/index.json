@@ -6,7 +6,7 @@
     "name": "Markdown Visual Editor",
     "download_url": "https://kylejbrk.github.io/standard-notes-open-extended/zips/markdown-visual-editor.zip",
     "url": "https://kylejbrk.github.io/standard-notes-open-extended/exts/markdown-visual-editor/build/index.html",
-    "version": "1.1.4",
+    "version": "1.1.5",
     "latest_url": "https://kylejbrk.github.io/standard-notes-open-extended/exts/markdown-visual-editor/index.json",
     "identifier": "io.github.kylejbrk.markdown-visual-editor"
 }
